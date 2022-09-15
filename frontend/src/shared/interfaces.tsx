@@ -1,5 +1,5 @@
-export interface Screen {
+export interface View {
     path: string;
     component: React.FC<any>;
-    //options?: DrawerScreenOptions | TabScreenOptions | StackScreenOptions;
+    //options?: DrawerViewOptions | TabViewOptions | StackViewOptions;
   }

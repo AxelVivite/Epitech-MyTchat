@@ -6,10 +6,10 @@ import {
   Routes, //replaces "Switch" used till v5
   Route,
 } from "react-router-dom";
-import Screens from './services/navigation/screens';
-import Test from './screens/Test';
-import Test1 from './screens/Test1';
-import PageNotFound from './screens/PageNotFound';
+import Views from './services/navigation/views';
+import Test from './components/views/Test';
+import Test1 from './components/views/Test1';
+import PageNotFound from './components/views/PageNotFound';
 
 function App() {
   return (
