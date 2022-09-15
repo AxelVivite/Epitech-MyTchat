@@ -7,7 +7,7 @@ import {
   Route,
 } from "react-router-dom";
 import Views from './services/navigation/views';
-import Test from './components/views/Test';
+import Login from './components/views/Login';
 import Test1 from './components/views/Test1';
 import PageNotFound from './components/views/PageNotFound';
 
@@ -16,7 +16,7 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path='/' element={<Test/>}/>
+          <Route path='/' element={<Login/>}/>
           <Route path='/test' element={<Test1/>}/>
           <Route path='*' element={<PageNotFound/>}/>
         </Routes>

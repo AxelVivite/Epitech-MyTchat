@@ -1,11 +1,11 @@
-import Test from "../../components/views/Test";
+import Login from "../../components/views/Login";
 import Test1 from "../../components/views/Test1";
 import { View } from "../../shared/interfaces";
 
 const Views: View[] = [
     {
         path: "/",
-        component: Test
+        component: Login
     },
     {
         path: "/test",
