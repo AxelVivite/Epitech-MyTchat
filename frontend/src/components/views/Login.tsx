@@ -1,17 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { TextField, Button, Box } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
-import Input from '@mui/material/Input';
 import FilledInput from '@mui/material/FilledInput';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import * as React from 'react';
-
+import { login } from "../../utils/userManagment";
 interface State {
     email: string;
     password: string;
@@ -80,11 +77,16 @@ const Login: React.FC = () => {
             }
           />
         </FormControl>
-          <Button onClick={() => {
-              console.log(values.email + " et " + values.password);
-              navigate("/test");
-            }} 
-              variant="outlined"
+          <Button onClick={ async () => {
+                try {
+                    const res = await login(values.email, values.password);
+                    if (res?.status === 200) {
+                        navigate("/test");
+                    }
+                } catch (err) {
+                    alert("ntm")
+                }
+                }}
               > 
               Se connecter
           </Button>

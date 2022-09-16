@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import Input from '@mui/material/Input';
 import * as React from 'react';
 import * as yup from 'yup';
 import { withFormik } from "formik";
@@ -10,8 +9,9 @@ import {
     TextField,
     Button
   } from "@mui/material";
+import { register } from "../../utils/userManagment";
 
-interface Input {
+interface InputForm {
     email?: string;
     password?: string;
     passwordConfirmation?: string;
@@ -115,7 +115,7 @@ const validationsForm = yup.object({
         .required("La validation de mot de passe et obligatoire")
    });
 
-const Form = withFormik<Input, Input>({
+const Form = withFormik<InputForm, InputForm>({
     mapPropsToValues: props => {
         return {
         email: props.email || "",
@@ -129,7 +129,8 @@ const Form = withFormik<Input, Input>({
     handleSubmit: (values, { setSubmitting }) => {
       setTimeout(() => {
         // submit to the server
-        alert(JSON.stringify(values, null, 2));
+        //alert(JSON.stringify(values, null, 2));
+        register(values.email!, values.password!);
         setSubmitting(false);
       }, 1000);
     }
