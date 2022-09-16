@@ -23,16 +23,15 @@ loginRouter.get('/users', (req, res) => {
 loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
   return res.status(200).json({
     user: {
-      username: req.state.user.username,
       email: req.state.user.email,
     }
   })
 })
 
-loginRouter.get('/signin/:username', async (req, res) => {
-  // todo: check username
-  const username = req.params.username
-  const user = await User.findOne({ username })
+loginRouter.get('/signin/:email', async (req, res) => {
+  // todo: check email
+  const email = req.params.email
+  const user = await User.findOne({ email })
 
   if (user === null) {
     return res.status(404).json({
@@ -52,7 +51,7 @@ loginRouter.get('/signin/:username', async (req, res) => {
 
   if (authMatch === null) {
     return res.status(400).json({
-      errors: Errors.Login.BadAuthType
+      error: Errors.Login.BadAuthType
     })
   }
 
@@ -61,7 +60,7 @@ loginRouter.get('/signin/:username', async (req, res) => {
 
   if (!passwordCorrect) {
     return res.status(401).json({
-      error: InvalidPassword
+      error: Errors.Login.InvalidPassword
     })
   }
 
@@ -77,22 +76,11 @@ loginRouter.get('/signin/:username', async (req, res) => {
 })
 
 loginRouter.post('/register', async (req, res) => {
-  // todo: check username
-  const username = req.body.username
+
   // todo: check email
   const email = req.body.email
 
   let userExists = await User.findOne({
-    username
-  })
-
- if (userExists !== null) {
-    return res.status(409).json({
-      error: Errors.Registration.UsernameTaken
-    })
-  }
-
-  userExists = await User.findOne({
     email
   })
 
@@ -107,7 +95,6 @@ loginRouter.post('/register', async (req, res) => {
   const passwordHash = await bcrypt.hash(password, 10)
 
   const user = new User({
-    username,
     email,
     passwordHash
   })
