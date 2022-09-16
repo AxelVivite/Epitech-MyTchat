@@ -14,5 +14,6 @@ module.exports = {
     InvalidPassword: 'InvalidPassword',
     AccountNotFound: 'AccountNotFound'
   },
-  RouteNotFound: 'RouteNotFound'
+  RouteNotFound: 'RouteNotFound',
+  InternalError: 'InternalError'
 }

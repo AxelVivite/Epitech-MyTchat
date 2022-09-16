@@ -8,5 +8,9 @@ module.exports = [
 	{
 		path: 'login',
 		router: loginRouter
+	},
+	{
+		path: 'room',
+		router: roomRouter
 	}
 ]

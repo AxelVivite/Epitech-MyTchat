@@ -1,3 +1,11 @@
+const jwt = require('jsonwebtoken')
+
+const Errors = require('../errors')
+const User = require('../models/user')
+
+// todo: use better secret + put in .env file
+const SECRET = 'secret'
+
 module.exports.checkToken = function checkToken(req, res, next) {
   const auth = req.headers["Authorization"] || req.headers["authorization"]
 
@@ -19,7 +27,6 @@ module.exports.checkToken = function checkToken(req, res, next) {
   let userId
 
   try {
-    // todo: check token is not outdated
     userId = jwt.verify(token, SECRET).userId
   } catch (e) {
     return res.status(400).json({
@@ -31,11 +38,10 @@ module.exports.checkToken = function checkToken(req, res, next) {
   next()
 }
 
-module.exports.getUser = function getUser(req, res, next) {
-  // todo: get from db
-  const user = users[req.state.userId]
+module.exports.getUser = async function getUser(req, res, next) {
+  const user = await User.findById(req.state.userId)
 
-  if (user === undefined) {
+  if (user === null) {
     return res.status(404).json({
       error: Errors.Login.AccountNotFound
     })
@@ -46,12 +52,19 @@ module.exports.getUser = function getUser(req, res, next) {
 }
 
 module.exports.checkUserExists = function checkUserExists(req, res, next) {
-  // todo: check in db
-  if (!(req.state.userId in users)) {
+  if (!(User.exists({ _id: req.state.userId }))) {
     return res.status(404).json({
       error: Errors.Login.AccountNotFound
     })
   }
 
   next()
+}
+
+module.exports.internalError = function internalError(err, req, res, next) {
+  console.error(err)
+
+  res.status(500).json({
+    error: Errors.InternalError
+  })
 }
