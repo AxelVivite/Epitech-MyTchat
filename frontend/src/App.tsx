@@ -10,6 +10,7 @@ import Views from './services/navigation/views';
 import Login from './components/views/Login';
 import Test1 from './components/views/Test1';
 import PageNotFound from './components/views/PageNotFound';
+import Register from './components/views/Register';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Login/>}/>
           <Route path='/test' element={<Test1/>}/>
+          <Route path="/register" element={<Register/>}/>
           <Route path='*' element={<PageNotFound/>}/>
         </Routes>
       </Router>

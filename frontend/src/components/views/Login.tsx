@@ -90,7 +90,7 @@ const Login: React.FC = () => {
           </Button>
           <Button onClick={() => {
             //   console.log(values.email + " et " + values.password);
-            //   navigate("/test");
+              navigate("/register");
             }} 
               variant="outlined"
               sx={{marginTop: 3}}
