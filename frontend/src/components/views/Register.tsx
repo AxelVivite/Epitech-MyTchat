@@ -1,36 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
-import FilledInput from '@mui/material/FilledInput';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import * as React from 'react';
-import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { withFormik } from "formik";
 import {
-    withStyles,
     Card,
     CardContent,
     CardActions,
     TextField,
-    MenuItem,
     Button
   } from "@mui/material";
-
-interface State {
-    email: string;
-    password: string;
-    passwordConfirmation: string;
-    showPassword: boolean;
-    formIsValid: boolean;
-    emailIsValid: boolean;
-}
 
 interface Input {
     email?: string;
@@ -41,67 +20,15 @@ interface Input {
  export const validPassword = new RegExp('^(?=.*?[A-Z])(?=.*?[0-9]).{7,}$');
 
 const Register: React.ComponentType<any> = () => {
+    //eslint-disable-next-line
     let navigate = useNavigate();
     
-
-    const validationSchema = yup.object({
-        email: yup
-             .string()
-             .email('Entrer un email valide')
-             .required('Email obligatoire'),    
-        password: yup
-            .string()
-            .matches(validPassword, "Le mot de passe doit contenir au moins une majuscule et 1 chiffre")
-            .required("Mot de passe obligatoire"),
-        passwordConfirmation: yup
-            .string()
-            .oneOf([yup.ref('password'), null], "Les mots de passe ne correspondent pas")
-            .required("La validation de mot de passe et obligatoire")
-       });
-
-    const [values, setValues] = React.useState<State>({
-        email: '',
-        password: '',
-        passwordConfirmation: '',
-        showPassword: false,
-        formIsValid: false,
-        emailIsValid: false,
-      });
-
-      const formik = useFormik({
-        initialValues: {
-          email: '',
-          password: '',
-          passwordConfirmation: ''
-        },
-        validationSchema: validationSchema ,    
-        onSubmit: values => {  
-            console.log(values);
-        },
-    });
-    
-      const handleChange =
-        (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-          setValues({ ...values, [prop]: event.target.value });
-        };
-
-      const handleClickShowPassword = () => {
-        setValues({
-          ...values,
-          showPassword: !values.showPassword,
-        });
-      };
-    
-      const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-      };
     return (
         <Form/>
     );
 }
 const form = (props: any) => {
         const {
-          classes,
           values,
           touched,
           errors,
@@ -187,22 +114,6 @@ const validationsForm = yup.object({
         .oneOf([yup.ref('password')], "Les mots de passe ne correspondent pas")
         .required("La validation de mot de passe et obligatoire")
    });
-
-// const validationsForm = {
-//     email: yup
-//          .string()
-//          .email('Entrer un email valide')
-//          .required('Email obligatoire'),    
-//     password: yup
-//         .string()
-//         .length(7, "Le mot de passe doit contenir au moins 7 charactére")
-//         .matches(validPassword, "Le mot de passe doit contenir au moins une majuscule et 1 chiffre")
-//         .required("Mot de passe obligatoire"),
-//     passwordConfirmation: yup
-//         .string()
-//         .oneOf([yup.ref('password'), null], "Les mots de passe ne correspondent pas")
-//         .required("La validation de mot de passe et obligatoire")
-// };
 
 const Form = withFormik<Input, Input>({
     mapPropsToValues: props => {
