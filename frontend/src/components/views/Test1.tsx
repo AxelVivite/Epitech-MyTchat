@@ -1,10 +1,11 @@
-import Header from "../layouts/Header";
+import PageLayout from "../layouts/pageLayout/PageLayout";
 
 const Test1: React.FC = () => {
     return (
         <div className="Test">
-            <Header />
+            <PageLayout>
             <text>Test de navigation réussi !!!</text>
+            </PageLayout>
         </div>
     );
 };
