@@ -2,7 +2,6 @@ import React from "react";
 
 import {
     AppBar,
-    Avatar,
     Box,
     IconButton,
     Toolbar,
@@ -10,7 +9,7 @@ import {
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 
-import getInitials from "../../../utils/getInitials";
+import Avatar from "../../atoms/Avatar";
 import logo from "../../../assets/logo.png";
 
 interface HeaderProps {
@@ -33,9 +32,7 @@ const Header = (props: HeaderProps): JSX.Element => {
                         MyChat
                     </Typography>
                 </Box>
-                <Avatar>
-                    {getInitials("Axel Virot")}
-                </Avatar>
+                <Avatar />
             </Toolbar>
         </AppBar >
     );

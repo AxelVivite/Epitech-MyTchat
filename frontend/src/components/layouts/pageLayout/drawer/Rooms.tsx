@@ -1,21 +1,19 @@
 import React from "react";
 
 import {
-    Avatar,
     Box,
     List,
     ListItem,
     Typography,
 } from "@mui/material";
 
-import getInitials from "../../../../utils/getInitials";
+
+import Avatar from "../../../atoms/Avatar";
 
 export const Room = (): JSX.Element => {
     return (
         <>
-            <Avatar>
-                {getInitials("Axel Virot")}
-            </Avatar>
+            <Avatar />
             <Box>
                 <Typography>Title</Typography>
                 <Typography>User1, Users2, User3...</Typography>
