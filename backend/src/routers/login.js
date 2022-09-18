@@ -1,23 +1,23 @@
-const express = require('express')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+import express from 'express'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 
-const Errors = require('../errors')
-const { checkToken, checkUserExists, getUser } = require('./middlewares')
-const User = require('../models/user')
+import Errors from '../errors.js'
+import { checkToken, checkUserExists, getUser } from './middlewares.js'
+import User from '../models/user.js'
 
 // todo: use better secret + put in .env file
 const SECRET = 'secret'
 // Format for describing time: https://github.com/vercel/ms#examples
 const TOKEN_EXPIRES_IN = '10 days'
 
-let userCounter = 0
-const users = {}
-
 const loginRouter = express.Router()
 
-loginRouter.get('/users', (req, res) => {
-  res.status(200).json(Object.values(users).map(({id}) => id))
+// todo: Should probably be removed
+loginRouter.get('/users', async (req, res) => {
+  const users = await User.find({})
+
+  res.status(200).json(users.map(({_id}) => _id))
 })
 
 loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
@@ -70,13 +70,13 @@ loginRouter.get('/signin/:email', async (req, res) => {
     { expiresIn: TOKEN_EXPIRES_IN })
 
   res.status(200).json({
+    userId: user._id.toString(),
     token,
     expiresIn: TOKEN_EXPIRES_IN
   })
 })
 
 loginRouter.post('/register', async (req, res) => {
-
   // todo: check email
   const email = req.body.email
 
@@ -107,15 +107,18 @@ loginRouter.post('/register', async (req, res) => {
     { expiresIn: TOKEN_EXPIRES_IN })
 
   res.status(200).json({
+    userId: user._id.toString(),
     token,
     expiresIn: TOKEN_EXPIRES_IN
   })
 })
 
-loginRouter.delete('/delete', [checkToken, checkUserExists], (req, res) => {
-  User.findByIdAndRemove(req.state.userId)
+// todo: remove user from rooms
+// todo: maybe archive account instead so there aren't posts pointing to deleted users
+loginRouter.delete('/delete', [checkToken, checkUserExists], async (req, res) => {
+  await User.findByIdAndRemove(req.state.userId)
 
   res.status(201).send()
 })
 
-module.exports = loginRouter
+export default loginRouter

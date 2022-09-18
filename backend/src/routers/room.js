@@ -1,34 +1,113 @@
-const express = require('express')
+import express from 'express'
 
-const Errors = require('../errors')
-
-let roomCounter = 0
-const rooms = {}
+import Errors from '../errors.js'
+import { checkToken, checkUserExists, getUser } from './middlewares.js'
+import User from '../models/user.js'
+import Room from '../models/room.js'
+import Post from '../models/post.js'
 
 const roomRouter = express.Router()
 
-roomRouter.get('/rooms', (req, res) => {
-  res.status(200).json(Object.values(rooms).map(({id}) => id))
+// todo: remove this function
+roomRouter.get('/rooms', async (req, res) => {
+  const rooms = await Room.find({})
+
+  res.status(200).json(rooms.map(({_id}) => _id))
 })
 
-roomRouter.post('/create', (req, res) => {
-  res.status(200)
+roomRouter.get('/info/:roomId', [checkToken, checkUserExists], async (req, res) => {
+  const room = await Room.findById({ _id: req.params.roomId })
+  // todo: check user is in room
+
+  if (room === null) {
+    return res.status(404).json({
+      error: Errors.Room.NotFound
+    })
+  } else if (!room.users.includes(req.state.userId)) {
+    return res.status(401).json({
+      error: Errors.Room.NotInRoon
+    })
+  }
+
+  return res.status(200).json({
+    room: {
+      users: room.users,
+      posts: room.posts
+    }
+  })
 })
 
-roomRouter.delete('/delete', (req, res) => {
-  res.status(200)
+roomRouter.post('/create', [checkToken], async (req, res) => {
+  // check req.body.otherUsers presence and type
+  const userIds = [...new Set([req.state.userId, ...req.body.otherUsers])]
+  const users = await User.find({ _id: { $in: userIds } })
+
+  if (userIds.length > users.length) {
+    const missingUsers = userIds.filter(userId => users.some(({_id}) => userId === _id))
+
+    return res.status(404).json({
+      // todo: maybe use a more appropriate error type
+      error: Errors.Login.AccountNotFound,
+      missingUsers
+    })
+  }
+
+  const room = new Room({
+    users
+  })
+
+  await room.save()
+
+  res.status(200).json({
+    roomId: room._id
+  })
 })
 
+// todo: maybe replace with a leave route, remove when room has no more users
+roomRouter.delete('/delete/:roomId', [checkToken, checkUserExists], async (req, res) => {
+  // todo: check roomId param
+  // todo: check room exists
+  // todo: check user is in room
+  const room = await Room.findByIdAndRemove(({ _id: req.params.roomId }))
+
+  await Promise.all(room.posts.map(postId => Post.findByIdAndRemove({ _id: postId })))
+
+  res.status(200).send()
+})
+
+// todo
 roomRouter.get('/websocket', (req, res) => {
   res.status(200)
 })
 
-roomRouter.post('/post', (req, res) => {
+// todo: test this route
+roomRouter.post('/post/:roomId', [checkToken, checkUserExists], async (req, res) => {
+  // todo: check roomId param
+  // todo: check room exists
+  // todo: check user is in room
+  const room = await Room.findById({ _id: req.params.roomId })
+
+  const post = new Post({
+    user: req.state.userId,
+    content: req.body.content
+  })
+  room.posts.push(post._id)
+
+  await Promise.all(
+    post.save(),
+    room.save()
+  )
+
+  // todo: use websocket to notify users
+
+  res.status(200).json({
+    post: post._id
+  })
+})
+
+// todo
+roomRouter.get('/read', async (req, res) => {
   res.status(200)
 })
 
-roomRouter.get('/read', (req, res) => {
-  res.status(200)
-})
-
-module.exports = roomRouter
+export default roomRouter

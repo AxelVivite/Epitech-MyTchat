@@ -1,12 +1,16 @@
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken'
+import morgan from 'morgan'
+import chalk from 'chalk'
 
-const Errors = require('../errors')
-const User = require('../models/user')
+import Errors from '../errors.js'
+import User from '../models/user.js'
 
 // todo: use better secret + put in .env file
 const SECRET = 'secret'
 
-module.exports.checkToken = function checkToken(req, res, next) {
+export const logger = morgan(`[:user-agent] ${chalk.green(':method')} ${chalk.red(':url')} ${chalk.blue(':status')} - :date`)
+
+export function checkToken(req, res, next) {
   const auth = req.headers["Authorization"] || req.headers["authorization"]
 
   if (auth === undefined) {
@@ -38,7 +42,7 @@ module.exports.checkToken = function checkToken(req, res, next) {
   next()
 }
 
-module.exports.getUser = async function getUser(req, res, next) {
+export async function getUser(req, res, next) {
   const user = await User.findById(req.state.userId)
 
   if (user === null) {
@@ -51,7 +55,7 @@ module.exports.getUser = async function getUser(req, res, next) {
   next()
 }
 
-module.exports.checkUserExists = function checkUserExists(req, res, next) {
+export function checkUserExists(req, res, next) {
   if (!(User.exists({ _id: req.state.userId }))) {
     return res.status(404).json({
       error: Errors.Login.AccountNotFound
@@ -61,7 +65,7 @@ module.exports.checkUserExists = function checkUserExists(req, res, next) {
   next()
 }
 
-module.exports.internalError = function internalError(err, req, res, next) {
+export function internalError(err, req, res, next) {
   console.error(err)
 
   res.status(500).json({

@@ -1,20 +1,23 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const helmet = require('helmet')
-const mongoose = require('mongoose')
-require('express-async-errors');
+import express from 'express'
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import helmet from 'helmet'
+import * as mongoose from 'mongoose'
+import 'express-async-errors'
 
-const Errors = require('./src/errors')
-const routers = require('./src/routers/routers')
-const { internalError } = require('./src/routers/middlewares')
+import Errors from './src/errors.js'
+import routers from './src/routers/routers.js'
+import { logger, internalError } from './src/routers/middlewares.js'
 
 const app = express()
 const port = 3000
 
+// todo: only enable logger in dev env
+app.use(logger)
 app.use(cors())
 app.use(helmet())
 app.use(bodyParser.json())
+// todo: add logger middleware
 
 for (const {path, router} of routers)
   app.use('/' + path, router)

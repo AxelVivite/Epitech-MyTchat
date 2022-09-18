@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   Registration: {
     BadUsername: 'BadUsername',
     BadEmail: 'BadEmail',
@@ -13,6 +13,10 @@ module.exports = {
     UsernameNotFound: 'UsernameNotFound',
     InvalidPassword: 'InvalidPassword',
     AccountNotFound: 'AccountNotFound'
+  },
+  Room: {
+    NotFound: 'NotFound',
+    NotInRoom: 'NotInRoom'
   },
   RouteNotFound: 'RouteNotFound',
   InternalError: 'InternalError'
