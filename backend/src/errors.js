@@ -4,7 +4,7 @@ export default {
     BadEmail: 'BadEmail',
     BadPassword: 'BadPassword',
     UsernameTaken: 'UsernameTaken',
-    EmailTaken: 'EmailTaken'
+    EmailTaken: 'EmailTaken',
   },
   Login: {
     MissingToken: 'MissingToken',
@@ -12,12 +12,12 @@ export default {
     BadToken: 'BadToken',
     UsernameNotFound: 'UsernameNotFound',
     InvalidPassword: 'InvalidPassword',
-    AccountNotFound: 'AccountNotFound'
+    AccountNotFound: 'AccountNotFound',
   },
   Room: {
     NotFound: 'NotFound',
-    NotInRoom: 'NotInRoom'
+    NotInRoom: 'NotInRoom',
   },
   RouteNotFound: 'RouteNotFound',
-  InternalError: 'InternalError'
-}
+  InternalError: 'InternalError',
+};

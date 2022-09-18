@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const roomSchema = new mongoose.Schema({
   users: {
@@ -8,8 +8,8 @@ const roomSchema = new mongoose.Schema({
   posts: {
     type: [mongoose.ObjectId],
     required: true,
-    default: []
-  }
-})
+    default: [],
+  },
+});
 
-export default mongoose.model('Room', roomSchema)
+export default mongoose.model('Room', roomSchema);
