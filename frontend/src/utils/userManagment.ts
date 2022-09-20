@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const devUrl = "http://localhost:3000";
 
@@ -15,6 +16,13 @@ export const register = async (email: String, password: String) => {
     }
 }
 
+const ERRORS_REGISTER = new Map ([
+    ["BadEmail", "Mauvais format d'email. Veuillez le modifier et recommencer"],
+    ["BadPassword", "Mauvais format de mot de passe. Veuillez le modifier et recommencer"],
+    ["EmailTaken", "Cet adresse email est déjà utiliser. Veuillez en utiliser une autre et recommencer"],
+]);
+
+
 export const login = async (email: String, password: String) => {
     console.log("fait moi un bisou");
     try {
@@ -26,6 +34,17 @@ export const login = async (email: String, password: String) => {
                 }
             }
         );
+        if (status === 200) {
+            // const navigator = useNavigate();
+            // navigator('/test');
+            console.log("Salut");
+            //TODO: Here change it with the home page screen when implemented
+        } else {
+            console.log(status);
+            console.log(data);
+            let error = data.error;
+            alert(ERRORS_REGISTER.get(error));
+        }
         alert(data.token + " | status => " + status);
         return {data, status};
     } catch (err) {
