@@ -33,7 +33,7 @@ export function checkToken(req, res, next) {
   try {
     userId = jwt.verify(token, SECRET).userId;
   } catch (e) {
-    return res.status(400).json({
+    return res.status(401).json({
       error: Errors.Login.BadToken,
     });
   }
