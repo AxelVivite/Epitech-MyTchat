@@ -6,7 +6,7 @@ import Errors from '../errors';
 import User from '../models/user';
 
 // todo: use better secret + put in .env file
-const SECRET = 'secret';
+export const SECRET = 'secret';
 
 export const logger = morgan(`[:user-agent] ${chalk.green(':method')} ${chalk.red(':url')} ${chalk.blue(':status')} - :date`);
 

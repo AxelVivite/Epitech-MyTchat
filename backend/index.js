@@ -1,6 +1,7 @@
 /* eslint no-console: 0 */ // --> OFF
 
 import express from 'express';
+import expressWs from 'express-ws';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -15,14 +16,16 @@ const app = express();
 const port = 3000;
 
 // todo: only enable logger in dev env
+expressWs(app)
 app.use(logger);
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
 
-// for (const { path, router } of routers) {
-//   app.use(`/${path}`, router);
-// }
+app.locals = {
+  ws: new Map(),
+  roomActiveUsers: new Map()
+}
 
 routers.forEach(({ path, router }) => app.use(`/${path}`, router));
 

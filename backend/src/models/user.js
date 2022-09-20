@@ -10,6 +10,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  rooms: {
+    type: [mongoose.ObjectId],
+    required: true,
+    default: [],
+  },
 });
 
 export default mongoose.model('User', userSchema);

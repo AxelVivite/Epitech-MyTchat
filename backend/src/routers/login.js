@@ -1,6 +1,7 @@
 /* eslint no-underscore-dangle: 0 */ // --> OFF
 
 import express from 'express';
+import validator from 'express-validator';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
@@ -116,6 +117,7 @@ loginRouter.post('/register', async (req, res) => {
 
 // todo: remove user from rooms
 // todo: maybe archive account instead so there aren't posts pointing to deleted users
+// todo: update webSockets
 loginRouter.delete('/delete', [checkToken, checkUserExists], async (req, res) => {
   await User.findByIdAndRemove(req.state.userId);
 
