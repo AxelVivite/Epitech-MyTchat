@@ -1,7 +1,6 @@
 /* eslint no-underscore-dangle: 0 */ // --> OFF
 
 import express from 'express';
-import validator from 'express-validator';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
@@ -39,7 +38,8 @@ const loginRouter = express.Router();
  *       409:
  *         description: Email is already taken
  *       200:
- *         description: Returns the new user id, a token, and the time it will take for the token to expire
+ *         description: >-
+ *           Returns the new user id, a token, and the time it will take for the token to expire
  *         content:
  *           application/json:
  *             schema:
@@ -98,13 +98,16 @@ loginRouter.post('/register', async (req, res) => {
  *       - basicAuth: []
  *     responses:
  *       400:
- *         description: 'Bad request, details are returned, can be because of: MissingToken, BadAuthType (ex: Bearer instead of Basic)'
+ *         description: >-
+ *           Bad request, details are returned, can be because of:
+ *           MissingToken, BadAuthType (ex: Bearer instead of Basic)
  *       401:
  *         description: Invalid password
  *       404:
  *         description: User not found
  *       200:
- *         description: Returns the user id, a token, and the time it will take for the token to expire
+ *         description: >-
+ *           Returns the user id, a token, and the time it will take for the token to expire
  *         content:
  *           application/json:
  *             schema:
@@ -170,7 +173,9 @@ loginRouter.get('/signin/:email', async (req, res) => {
  *       - bearerAuth: []
  *     responses:
  *       400:
- *         description: 'Bad request, details are returned, can be because of: MissingToken, BadAuthType (ex: Basic instead of Bearer)'
+ *         description: >-
+ *           Bad request, details are returned, can be because of:
+ *           MissingToken, BadAuthType (ex: Basic instead of Bearer)
  *       401:
  *         description: Bad token (not created by this server or expired)
  *       404:
@@ -202,7 +207,6 @@ loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
   });
 });
 
-
 // todo: remove user from rooms
 // todo: maybe archive account instead so there aren't posts pointing to deleted users
 // todo: update webSockets
@@ -217,7 +221,9 @@ loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
  *       - bearerAuth: []
  *     responses:
  *       400:
- *         description: 'Bad request, details are returned, can be because of: MissingToken, BadAuthType (ex: Basic instead of Bearer)'
+ *         description: >-
+ *           Bad request, details are returned, can be because of:
+ *           MissingToken, BadAuthType (ex: Basic instead of Bearer)
  *       401:
  *         description: Bad token (not created by this server or expired)
  *       404:

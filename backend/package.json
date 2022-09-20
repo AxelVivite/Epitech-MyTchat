@@ -7,7 +7,7 @@
     "start": "node --es-module-specifier-resolution=node .",
     "watch": "nodemon --es-module-specifier-resolution=node .",
     "lint": "eslint .",
-    "gen-swagger": "node ./scripts/genSwaggerDoc.js"
+    "gen-swagger": "node ./scripts/gen-swagger"
   },
   "repository": {
     "type": "git",
@@ -38,7 +38,6 @@
   "devDependencies": {
     "eslint": "^8.23.1",
     "eslint-config-airbnb-base": "^15.0.0",
-    "nodemon": "^2.0.20",
-    "swagger-jsdoc": "^6.2.5"
+    "nodemon": "^2.0.20"
   }
 }

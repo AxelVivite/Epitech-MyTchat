@@ -16,7 +16,7 @@ const app = express();
 const port = 3000;
 
 // todo: only enable logger in dev env
-expressWs(app)
+expressWs(app);
 app.use(logger);
 app.use(cors());
 app.use(helmet());
@@ -24,8 +24,8 @@ app.use(bodyParser.json());
 
 app.locals = {
   ws: new Map(),
-  roomActiveUsers: new Map()
-}
+  roomActiveUsers: new Map(),
+};
 
 routers.forEach(({ path, router }) => app.use(`/${path}`, router));
 

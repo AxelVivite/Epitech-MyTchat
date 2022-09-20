@@ -13,7 +13,7 @@ import Room from '../models/room';
 import Post from '../models/post';
 
 const roomRouter = express.Router();
-expressWs(roomRouter)
+expressWs(roomRouter);
 
 // todo: make route(s) so you don't load all messages at once
 
@@ -36,12 +36,15 @@ expressWs(roomRouter)
  *             properties:
  *               otherUsers:
  *                 type: array
- *                 description: Other users (besides the one calling the route) to give access to the route
+ *                 description: >-
+ *                   Other users (besides the one calling the route) to give access to the route
  *                 items:
  *                   $ref: '#/components/schemas/MongoId'
  *     responses:
  *       400:
- *         description: 'Bad request, details are returned, can be because of: MissingToken, BadAuthType (ex: Basic instead of Bearer)'
+ *         description: >-
+ *           Bad request, details are returned, can be because of:
+ *           MissingToken, BadAuthType (ex: Basic instead of Bearer)
  *       401:
  *         description: Bad token (not created by this server or expired)
  *       404:
@@ -95,9 +98,9 @@ roomRouter.post('/create', [checkToken], async (req, res) => {
   await room.save();
 
   await Promise.all(users.map((user) => {
-    user.rooms.push(room._id)
-    return user.save()
-  }))
+    user.rooms.push(room._id);
+    return user.save();
+  }));
 
   return res.status(200).json({
     roomId: room._id,
@@ -121,9 +124,13 @@ roomRouter.post('/create', [checkToken], async (req, res) => {
  *       - bearerAuth: []
  *     responses:
  *       400:
- *         description: 'Bad request, details are returned, can be because of: MissingToken, BadAuthType (ex: Basic instead of Bearer)'
+ *         description: >-
+ *           Bad request, details are returned, can be because of:
+ *           MissingToken, BadAuthType (ex: Basic instead of Bearer)
  *       401:
- *         description: Bad token (not created by this server or expired) or user doesn't have access to the room
+ *         description: >-
+ *           Bad token (not created by this server or expired)
+ *           or user doesn't have access to the room
  *       404:
  *         description: The user or the room was not found
  *       200:
@@ -192,9 +199,13 @@ roomRouter.get('/read', async (req, res) => {
  *       - bearerAuth: []
  *     responses:
  *       400:
- *         description: 'Bad request, details are returned, can be because of: MissingToken, BadAuthType (ex: Basic instead of Bearer)'
+ *         description: >-
+ *           Bad request, details are returned, can be because of:
+ *           MissingToken, BadAuthType (ex: Basic instead of Bearer)
  *       401:
- *         description: Bad token (not created by this server or expired) or user doesn't have access to the room
+ *         description: >-
+ *           Bad token (not created by this server or expired)
+ *           or user doesn't have access to the room
  *       404:
  *         description: The user or the room was not found
  *       200:
@@ -232,22 +243,22 @@ roomRouter.delete('/delete/:roomId', [checkToken, checkUserExists], async (req, 
   });
 });
 
-// todo: implement ticket based auth ? (https://devcenter.heroku.com/articles/websocket-security#authentication-authorization)
+// todo: implement ticket based auth ?
+// -> (https://devcenter.heroku.com/articles/websocket-security#authentication-authorization)
 // todo: more logging, at least in dev mode
 // todo: logger doesn't detect this route
 // todo: openapi comment
 roomRouter.ws('/websocket', async (ws, req) => {
   // todo: check token is there
-  const token = url.parse(req.url, true).query.token
-  let userId
+  const { query: { token } } = url.parse(req.url, true);
+  let userId;
 
   try {
     userId = jwt.verify(token, SECRET).userId;
   } catch (e) {
-    ws.send(Errors.Login.BadToken, _err => {
+    ws.send(Errors.Login.BadToken, () => {
       ws.close();
     });
-    console.error(e)
     return;
   }
 
@@ -260,7 +271,7 @@ roomRouter.ws('/websocket', async (ws, req) => {
 
     const post = new Post({
       user: userId,
-      content: content,
+      content,
     });
     room.posts.push(post._id);
 
@@ -275,50 +286,50 @@ roomRouter.ws('/websocket', async (ws, req) => {
 
     const activeUsers = req.app.locals.roomActiveUsers.get(roomId);
 
-    for (let userId2 of activeUsers) {
+    activeUsers.forEach((userId2) => {
       if (userId2 === userId) {
-        continue;
+        return;
       }
 
-      const wsUser = req.app.locals.ws.get(userId2)
+      const wsUser = req.app.locals.ws.get(userId2);
 
       wsUser.send(JSON.stringify({
         roomId,
         postId: post._id,
       }));
-    }
+    });
   });
 
-  ws.on('close', async (event) => {
-    req.app.locals.ws.delete(userId)
+  ws.on('close', async () => {
+    req.app.locals.ws.delete(userId);
 
     // todo: check user still exists
-    const user = await User.findById({ _id: userId })
+    const user = await User.findById({ _id: userId });
 
-    for (let roomId of user.rooms) {
-      const activeUsers = req.app.locals.roomActiveUsers.get(roomId.toString())
-      activeUsers.delete(userId)
+    user.room.forEach((roomId) => {
+      const activeUsers = req.app.locals.roomActiveUsers.get(roomId.toString());
+      activeUsers.delete(userId);
 
       if (activeUsers.size === 0) {
-        req.app.locals.roomActiveUsers.delete(roomId.toString())
+        req.app.locals.roomActiveUsers.delete(roomId.toString());
       }
-    }
+    });
   });
 
   // todo: check user exists
-  const user = await User.findById({ _id: userId })
+  const user = await User.findById({ _id: userId });
 
   // todo: handle multiple ws for same user
-  req.app.locals.ws.set(userId, ws)
+  req.app.locals.ws.set(userId, ws);
 
-  for (let roomId of user.rooms) {
+  user.room.forEach((roomId) => {
     if (!req.app.locals.roomActiveUsers.has(roomId.toString())) {
-      req.app.locals.roomActiveUsers.set(roomId.toString(), new Set())
+      req.app.locals.roomActiveUsers.set(roomId.toString(), new Set());
     }
 
-    const roomActiveUsers = req.app.locals.roomActiveUsers.get(roomId.toString())
-    roomActiveUsers.add(userId)
-  }
+    const roomActiveUsers = req.app.locals.roomActiveUsers.get(roomId.toString());
+    roomActiveUsers.add(userId);
+  });
 
   // todo
   // ws.on('error', (err) => {});

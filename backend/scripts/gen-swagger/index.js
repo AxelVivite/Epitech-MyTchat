@@ -21,9 +21,7 @@ const options = {
   ],
 };
 
-const spec = await swaggerJsdoc(options);
-
-spec.components = {
+const components = {
   schemas: {
     MongoId: {
       type: 'string',
@@ -50,11 +48,11 @@ spec.components = {
         },
         expiresIn: {
           type: 'string',
-          description: "TTL of the token, format explained at https://github.com/vercel/ms#examples",
+          description: 'TTL of the token, format explained at https://github.com/vercel/ms#examples',
           example: '10 days',
         },
-      }
-    }
+      },
+    },
   },
   securitySchemes: {
     basicAuth: {
@@ -67,17 +65,23 @@ spec.components = {
       bearerFormat: 'JWT',
     },
   },
-}
+};
 
-spec.security = [
+const security = [
   {
     basicAuth: [],
     bearerAuth: [],
-  }
-]
+  },
+];
 
-const jsonSpec = JSON.stringify(spec, null, 2)
+async function main() {
+  const spec = await swaggerJsdoc(options);
 
-await fs.writeFile('./doc/swagger-api.json', jsonSpec, { flag: 'w' })
+  spec.components = components;
+  spec.security = security;
 
-// console.log(JSON.stringify(spec, null, 2))
+  const jsonSpec = JSON.stringify(spec, null, 2);
+  await fs.writeFile('./doc/swagger-api.json', jsonSpec, { flag: 'w' });
+}
+
+main();
