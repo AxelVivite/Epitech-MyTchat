@@ -10,6 +10,7 @@ import {
   checkUserExists,
   getUser,
   getRoom,
+  getPost,
   validateArgs,
 } from './middlewares';
 import User from '../models/user';
@@ -289,9 +290,16 @@ roomRouter.post('/post/:roomId', [checkToken, checkUserExists], async (req, res)
   });
 });
 
-// todo
-roomRouter.get('/read', async (req, res) => {
-  res.status(200);
+// todo: test this
+// todo: write swagger jsdoc
+roomRouter.get('/read/:postId', [checkToken, getUser, getPost], async (req, res) => {
+  res.status(200).json({
+    post: {
+      user: req.state.post.user,
+      room: req.state.post.room,
+      content: req.state.post.content,
+    },
+  });
 });
 
 export default roomRouter;

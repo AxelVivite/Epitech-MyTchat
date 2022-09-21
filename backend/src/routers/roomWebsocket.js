@@ -25,6 +25,7 @@ async function onMessage(ws, req, userId, data) {
 
   const post = new Post({
     user: userId,
+    room: roomId,
     content,
   });
   room.posts.push(post._id);
@@ -48,8 +49,10 @@ async function onMessage(ws, req, userId, data) {
     const wsUser = req.app.locals.ws.get(userId2);
 
     wsUser.send(JSON.stringify({
+      userId,
       roomId,
       postId: post._id,
+      content,
     }));
   });
 }

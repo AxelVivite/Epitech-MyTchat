@@ -16,6 +16,7 @@ export default {
   },
   Room: {
     MissingRoomId: 'MissingRoomId',
+    MissingPostId: 'MissingPostId',
     BadOtherUsers: 'BadOtherUsers',
     RoomNotFound: 'RoomNotFound',
     NotInRoom: 'NotInRoom',

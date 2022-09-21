@@ -6,6 +6,7 @@ import chalk from 'chalk';
 import Errors from '../errors';
 import User from '../models/user';
 import Room from '../models/room';
+import Post from '../models/post';
 
 // todo: use better secret + put in .env file
 export const SECRET = 'secret';
@@ -90,6 +91,31 @@ export async function getRoom(req, res, next) {
   }
 
   req.state = { ...req.state, room };
+  return next();
+}
+
+export async function getPost(req, res, next) {
+  if (req.params.postId === undefined) {
+    return res.status(400).json({
+      error: Errors.Room.MissingPostId,
+    });
+  }
+
+  const post = await Post.findById({ _id: req.params.postId });
+
+  if (post === null) {
+    return res.status(404).json({
+      error: Errors.Room.PostNotFound,
+    });
+  }
+
+  if (!req.state.user.rooms.includes(post.room)) {
+    return res.status(401).json({
+      error: Errors.Room.NotInRoom,
+    });
+  }
+
+  req.state = { ...req.state, post };
   return next();
 }
 

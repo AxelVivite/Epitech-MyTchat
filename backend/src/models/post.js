@@ -5,6 +5,10 @@ const postSchema = new mongoose.Schema({
     type: mongoose.ObjectId,
     required: true,
   },
+  room: {
+    type: mongoose.ObjectId,
+    required: true,
+  },
   content: {
     type: String,
     required: true,
