@@ -40,6 +40,9 @@
               }
             }
           },
+          "400": {
+            "description": "Email or password is missing or has bad format"
+          },
           "409": {
             "description": "Email is already taken"
           }
