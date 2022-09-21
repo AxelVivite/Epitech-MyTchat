@@ -22,6 +22,7 @@ expressWs(roomRouter);
 
 // todo: make route(s) so you don't load all messages at once
 
+// todo: maybe don't use ids to give other users (or give other ways)
 /**
  * @openapi
  * /room/create:
@@ -183,6 +184,8 @@ roomRouter.get('/read', async (req, res) => {
 });
 
 // todo: maybe replace with a leave route, remove when room has no more users
+// todo: remove from users
+// todo: remove associated posts
 /**
  * @openapi
  * /room/delete/{roomId}:
