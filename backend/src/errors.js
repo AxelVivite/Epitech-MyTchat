@@ -15,7 +15,9 @@ export default {
     AccountNotFound: 'AccountNotFound',
   },
   Room: {
-    NotFound: 'NotFound',
+    MissingRoomId: 'MissingRoomId',
+    BadOtherUsers: 'BadOtherUsers',
+    RoomNotFound: 'RoomNotFound',
     NotInRoom: 'NotInRoom',
   },
   RouteNotFound: 'RouteNotFound',

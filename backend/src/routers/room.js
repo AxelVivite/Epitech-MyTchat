@@ -4,10 +4,18 @@ import url from 'url';
 
 import express from 'express';
 import expressWs from 'express-ws';
+import { body as checkBody } from 'express-validator';
 import jwt from 'jsonwebtoken';
 
 import Errors from '../errors';
-import { SECRET, checkToken, checkUserExists } from './middlewares';
+import {
+  SECRET,
+  checkToken,
+  checkUserExists,
+  getUser,
+  getRoom,
+  validateArgs,
+} from './middlewares';
 import User from '../models/user';
 import Room from '../models/room';
 import Post from '../models/post';
@@ -76,36 +84,47 @@ expressWs(roomRouter);
  *                 roomId:
  *                   $ref: '#/components/schemas/MongoId'
  */
-roomRouter.post('/create', [checkToken], async (req, res) => {
-  // check req.body.otherUsers presence and type
-  const userIds = [...new Set([req.state.userId, ...req.body.otherUsers])];
-  const users = await User.find({ _id: { $in: userIds } });
+roomRouter.post(
+  '/create',
+  [
+    checkToken,
+    checkBody('otherUsers').default([]).isArray().withMessage(Errors.Room.BadOtherUsers),
+    checkBody('otherUsers.*').isString().withMessage((value) => ({
+      error: Errors.Room.BadOtherUsers,
+      value,
+    })),
+    validateArgs,
+  ],
+  async (req, res) => {
+    const userIds = [...new Set([req.state.userId, ...req.body.otherUsers])];
+    const users = await User.find({ _id: { $in: userIds } });
 
-  if (userIds.length > users.length) {
-    const missingUsers = userIds.filter((userId) => users.some(({ _id }) => userId === _id));
+    if (userIds.length > users.length) {
+      const missingUsers = userIds.filter((userId) => users.some(({ _id }) => userId === _id));
 
-    return res.status(404).json({
-      // todo: maybe use a more appropriate error type
-      error: Errors.Login.AccountNotFound,
-      missingUsers,
+      return res.status(404).json({
+        // todo: maybe use a more appropriate error type
+        error: Errors.Login.AccountNotFound,
+        missingUsers,
+      });
+    }
+
+    const room = new Room({
+      users,
     });
-  }
 
-  const room = new Room({
-    users,
-  });
+    await room.save();
 
-  await room.save();
+    await Promise.all(users.map((user) => {
+      user.rooms.push(room._id);
+      return user.save();
+    }));
 
-  await Promise.all(users.map((user) => {
-    user.rooms.push(room._id);
-    return user.save();
-  }));
-
-  return res.status(200).json({
-    roomId: room._id,
-  });
-});
+    return res.status(200).json({
+      roomId: room._id,
+    });
+  },
+);
 
 /**
  * @openapi
@@ -152,26 +171,11 @@ roomRouter.post('/create', [checkToken], async (req, res) => {
  *                   items:
  *                     $ref: '#/components/schemas/MongoId'
  */
-roomRouter.get('/info/:roomId', [checkToken, checkUserExists], async (req, res) => {
-  const room = await Room.findById({ _id: req.params.roomId });
-  // todo: check user is in room
-
-  if (room === null) {
-    return res.status(404).json({
-      error: Errors.Room.NotFound,
-    });
-  }
-
-  if (!room.users.includes(req.state.userId)) {
-    return res.status(401).json({
-      error: Errors.Room.NotInRoon,
-    });
-  }
-
-  return res.status(200).json({
+roomRouter.get('/info/:roomId', [checkToken, checkUserExists, getRoom], async (req, res) => {
+  res.status(200).json({
     room: {
-      users: room.users,
-      posts: room.posts,
+      users: req.state.room.users,
+      posts: req.state.room.posts,
     },
   });
 });
@@ -227,15 +231,26 @@ roomRouter.get('/read', async (req, res) => {
  *                   items:
  *                     $ref: '#/components/schemas/MongoId'
  */
-roomRouter.delete('/delete/:roomId', [checkToken, checkUserExists], async (req, res) => {
-  // todo: check roomId param
-  // todo: check room exists
-  // todo: check user is in room
-  const room = await Room.findByIdAndRemove(({ _id: req.params.roomId }));
+roomRouter.delete('/delete/:roomId', [checkToken, getUser], async (req, res) => {
+  if (!req.state.user.rooms.includes(req.params.roomId)) {
+    return res.status(401).json({
+      error: Errors.Room.NotInRoom,
+    });
+  }
 
-  await Promise.all(room.posts.map((postId) => Post.findByIdAndRemove({ _id: postId })));
+  const room = await Room.findByIdAndRemove(req.params.roomId);
 
-  res.status(200).json({
+  // todo: if this is true this means the User data is corrupted since it says the user is
+  // in a room that doesn't exist. Internal error ? Correct User data ?
+  if (room === null) {
+    return res.status(404).json({
+      error: Errors.Room.RoomNotFound,
+    });
+  }
+
+  await Promise.all(room.posts.map((postId) => Post.findByIdAndRemove(postId)));
+
+  return res.status(200).json({
     room: {
       users: room.users,
       posts: room.posts,
@@ -247,6 +262,7 @@ roomRouter.delete('/delete/:roomId', [checkToken, checkUserExists], async (req, 
 // -> (https://devcenter.heroku.com/articles/websocket-security#authentication-authorization)
 // todo: more logging, at least in dev mode
 // todo: logger doesn't detect this route
+// todo: internalError middleware doesn't work with this route
 // todo: openapi comment
 roomRouter.ws('/websocket', async (ws, req) => {
   // todo: check token is there
@@ -306,7 +322,7 @@ roomRouter.ws('/websocket', async (ws, req) => {
     // todo: check user still exists
     const user = await User.findById({ _id: userId });
 
-    user.room.forEach((roomId) => {
+    user.rooms.forEach((roomId) => {
       const activeUsers = req.app.locals.roomActiveUsers.get(roomId.toString());
       activeUsers.delete(userId);
 
@@ -322,7 +338,7 @@ roomRouter.ws('/websocket', async (ws, req) => {
   // todo: handle multiple ws for same user
   req.app.locals.ws.set(userId, ws);
 
-  user.room.forEach((roomId) => {
+  user.rooms.forEach((roomId) => {
     if (!req.app.locals.roomActiveUsers.has(roomId.toString())) {
       req.app.locals.roomActiveUsers.set(roomId.toString(), new Set());
     }

@@ -1,15 +1,18 @@
 import jwt from 'jsonwebtoken';
+import { validationResult } from 'express-validator';
 import morgan from 'morgan';
 import chalk from 'chalk';
 
 import Errors from '../errors';
 import User from '../models/user';
+import Room from '../models/room';
 
 // todo: use better secret + put in .env file
 export const SECRET = 'secret';
 
 export const logger = morgan(`[:user-agent] ${chalk.green(':method')} ${chalk.red(':url')} ${chalk.blue(':status')} - :date`);
 
+// todo: handle token versionning
 export function checkToken(req, res, next) {
   const auth = req.headers.Authorization || req.headers.authorization;
 
@@ -59,6 +62,43 @@ export function checkUserExists(req, res, next) {
   if (!(User.exists({ _id: req.state.userId }))) {
     return res.status(404).json({
       error: Errors.Login.AccountNotFound,
+    });
+  }
+
+  return next();
+}
+
+export async function getRoom(req, res, next) {
+  if (req.params.roomId === undefined) {
+    return res.status(400).json({
+      error: Errors.Room.MissingRoomId,
+    });
+  }
+
+  const room = await Room.findById({ _id: req.params.roomId });
+
+  if (room === null) {
+    return res.status(404).json({
+      error: Errors.Room.RoomNotFound,
+    });
+  }
+
+  if (!room.users.includes(req.state.userId)) {
+    return res.status(401).json({
+      error: Errors.Room.NotInRoom,
+    });
+  }
+
+  req.state = { ...req.state, room };
+  return next();
+}
+
+export function validateArgs(req, res, next) {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array().map(({ msg }) => msg),
     });
   }
 

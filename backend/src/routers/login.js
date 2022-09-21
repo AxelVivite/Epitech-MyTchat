@@ -1,11 +1,16 @@
 /* eslint no-underscore-dangle: 0 */ // --> OFF
 
 import express from 'express';
+import { body as checkBody, param as checkParam } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import Errors from '../errors';
-import { checkToken, checkUserExists, getUser } from './middlewares';
+import {
+  checkToken,
+  getUser,
+  validateArgs,
+} from './middlewares';
 import User from '../models/user';
 
 // todo: use better secret + put in .env file
@@ -35,6 +40,8 @@ const loginRouter = express.Router();
  *                 type: string
  *                 format: email
  *     responses:
+ *       400:
+ *         description: Email or password is missing or has bad format
  *       409:
  *         description: Email is already taken
  *       200:
@@ -45,40 +52,48 @@ const loginRouter = express.Router();
  *             schema:
  *               $ref: '#/components/schemas/SigninResult'
  */
-loginRouter.post('/register', async (req, res) => {
-  // todo: check email
-  const { body: { email } } = req;
+loginRouter.post(
+  '/register',
+  [
+    checkBody('email').isEmail().withMessage(Errors.Registration.BadEmail),
+    checkBody('password')
+      .matches(/^(?=.+[A-Z])(?=.+[0-9]).{7,}$/)
+      .withMessage(Errors.Registration.BadPassword),
+    validateArgs,
+  ],
+  async (req, res) => {
+    const { body: { email, password } } = req;
 
-  const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email });
 
-  if (userExists !== null) {
-    return res.status(409).json({
-      error: Errors.Registration.EmailTaken,
+    if (userExists !== null) {
+      return res.status(409).json({
+        error: Errors.Registration.EmailTaken,
+      });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      email,
+      passwordHash,
     });
-  }
 
-  // todo: check password
-  const passwordHash = await bcrypt.hash(req.body.password, 10);
+    await user.save();
 
-  const user = new User({
-    email,
-    passwordHash,
-  });
+    const token = jwt.sign(
+      { userId: user._id.toString() },
+      SECRET,
+      { expiresIn: TOKEN_EXPIRES_IN },
+    );
 
-  await user.save();
-
-  const token = jwt.sign(
-    { userId: user._id.toString() },
-    SECRET,
-    { expiresIn: TOKEN_EXPIRES_IN },
-  );
-
-  return res.status(200).json({
-    userId: user._id.toString(),
-    token,
-    expiresIn: TOKEN_EXPIRES_IN,
-  });
-});
+    return res.status(200).json({
+      userId: user._id.toString(),
+      token,
+      expiresIn: TOKEN_EXPIRES_IN,
+    });
+  },
+);
 
 /**
  * @openapi
@@ -113,54 +128,60 @@ loginRouter.post('/register', async (req, res) => {
  *             schema:
  *               $ref: '#/components/schemas/SigninResult'
  */
-loginRouter.get('/signin/:email', async (req, res) => {
-  // todo: check email
-  const { params: { email } } = req;
-  const user = await User.findOne({ email });
+loginRouter.get(
+  '/signin/:email',
+  [
+    checkParam('email').not().isEmpty().withMessage(Errors.Registration.BadEmail),
+    validateArgs,
+  ],
+  async (req, res) => {
+    const { params: { email } } = req;
+    const user = await User.findOne({ email });
 
-  if (user === null) {
-    return res.status(404).json({
-      error: Errors.Login.AccountNotFound,
+    if (user === null) {
+      return res.status(404).json({
+        error: Errors.Login.AccountNotFound,
+      });
+    }
+
+    const auth = req.headers.Authorization || req.headers.authorization;
+
+    if (auth === undefined) {
+      return res.status(400).json({
+        error: Errors.Login.MissingToken,
+      });
+    }
+
+    const authMatch = auth.match(/^Basic (?<password>.+)$/);
+
+    if (authMatch === null) {
+      return res.status(400).json({
+        error: Errors.Login.BadAuthType,
+      });
+    }
+
+    const { groups: { password } } = authMatch;
+    const passwordCorrect = await bcrypt.compare(password, user.passwordHash);
+
+    if (!passwordCorrect) {
+      return res.status(401).json({
+        error: Errors.Login.InvalidPassword,
+      });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id.toString() },
+      SECRET,
+      { expiresIn: TOKEN_EXPIRES_IN },
+    );
+
+    return res.status(200).json({
+      userId: user._id.toString(),
+      token,
+      expiresIn: TOKEN_EXPIRES_IN,
     });
-  }
-
-  const auth = req.headers.Authorization || req.headers.authorization;
-
-  if (auth === undefined) {
-    return res.status(400).json({
-      error: Errors.Login.MissingToken,
-    });
-  }
-
-  const authMatch = auth.match(/^Basic (?<password>.+)$/);
-
-  if (authMatch === null) {
-    return res.status(400).json({
-      error: Errors.Login.BadAuthType,
-    });
-  }
-
-  const { groups: { password } } = authMatch;
-  const passwordCorrect = await bcrypt.compare(password, user.passwordHash);
-
-  if (!passwordCorrect) {
-    return res.status(401).json({
-      error: Errors.Login.InvalidPassword,
-    });
-  }
-
-  const token = jwt.sign(
-    { userId: user._id.toString() },
-    SECRET,
-    { expiresIn: TOKEN_EXPIRES_IN },
-  );
-
-  return res.status(200).json({
-    userId: user._id.toString(),
-    token,
-    expiresIn: TOKEN_EXPIRES_IN,
-  });
-});
+  },
+);
 
 /**
  * @openapi
@@ -246,10 +267,16 @@ loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
  *                   items:
  *                     $ref: '#/components/schemas/MongoId'
  */
-loginRouter.delete('/delete', [checkToken, checkUserExists], async (req, res) => {
-  await User.findByIdAndRemove(req.state.userId);
+loginRouter.delete('/delete', [checkToken], async (req, res) => {
+  const user = await User.findByIdAndRemove(req.state.userId);
 
-  res.status(201).send();
+  if (user === null) {
+    return res.status(404).json({
+      error: Errors.Login.AccountNotFound,
+    });
+  }
+
+  return res.status(201).send();
 });
 
 export default loginRouter;
