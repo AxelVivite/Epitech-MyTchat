@@ -1,15 +1,11 @@
 /* eslint no-underscore-dangle: 0 */ // --> OFF
 
-import url from 'url';
-
 import express from 'express';
 import expressWs from 'express-ws';
 import { body as checkBody } from 'express-validator';
-import jwt from 'jsonwebtoken';
 
 import Errors from '../errors';
 import {
-  SECRET,
   checkToken,
   checkUserExists,
   getUser,
@@ -19,6 +15,7 @@ import {
 import User from '../models/user';
 import Room from '../models/room';
 import Post from '../models/post';
+import roomWebsocket from './roomWebsocket';
 
 const roomRouter = express.Router();
 expressWs(roomRouter);
@@ -260,96 +257,8 @@ roomRouter.delete('/delete/:roomId', [checkToken, getUser], async (req, res) => 
 
 // todo: implement ticket based auth ?
 // -> (https://devcenter.heroku.com/articles/websocket-security#authentication-authorization)
-// todo: more logging, at least in dev mode
-// todo: logger doesn't detect this route
-// todo: internalError middleware doesn't work with this route
 // todo: openapi comment
-roomRouter.ws('/websocket', async (ws, req) => {
-  // todo: check token is there
-  const { query: { token } } = url.parse(req.url, true);
-  let userId;
-
-  try {
-    userId = jwt.verify(token, SECRET).userId;
-  } catch (e) {
-    ws.send(Errors.Login.BadToken, () => {
-      ws.close();
-    });
-    return;
-  }
-
-  ws.on('message', async (data) => {
-    // todo: check data
-    const { roomId, content } = JSON.parse(data);
-
-    // todo: check room exists
-    const room = await Room.findById({ _id: roomId });
-
-    const post = new Post({
-      user: userId,
-      content,
-    });
-    room.posts.push(post._id);
-
-    await Promise.all([
-      post.save(),
-      room.save(),
-    ]);
-
-    if (!req.app.locals.roomActiveUsers.has(roomId)) {
-      return;
-    }
-
-    const activeUsers = req.app.locals.roomActiveUsers.get(roomId);
-
-    activeUsers.forEach((userId2) => {
-      if (userId2 === userId) {
-        return;
-      }
-
-      const wsUser = req.app.locals.ws.get(userId2);
-
-      wsUser.send(JSON.stringify({
-        roomId,
-        postId: post._id,
-      }));
-    });
-  });
-
-  ws.on('close', async () => {
-    req.app.locals.ws.delete(userId);
-
-    // todo: check user still exists
-    const user = await User.findById({ _id: userId });
-
-    user.rooms.forEach((roomId) => {
-      const activeUsers = req.app.locals.roomActiveUsers.get(roomId.toString());
-      activeUsers.delete(userId);
-
-      if (activeUsers.size === 0) {
-        req.app.locals.roomActiveUsers.delete(roomId.toString());
-      }
-    });
-  });
-
-  // todo: check user exists
-  const user = await User.findById({ _id: userId });
-
-  // todo: handle multiple ws for same user
-  req.app.locals.ws.set(userId, ws);
-
-  user.rooms.forEach((roomId) => {
-    if (!req.app.locals.roomActiveUsers.has(roomId.toString())) {
-      req.app.locals.roomActiveUsers.set(roomId.toString(), new Set());
-    }
-
-    const roomActiveUsers = req.app.locals.roomActiveUsers.get(roomId.toString());
-    roomActiveUsers.add(userId);
-  });
-
-  // todo
-  // ws.on('error', (err) => {});
-});
+roomRouter.ws('/websocket', roomWebsocket);
 
 // todo: rework this route work like the ws
 // todo: openapi comment
