@@ -151,6 +151,8 @@ roomRouter.post(
  *           $ref: '#/components/schemas/MongoId'
  *       - in: query
  *         name: getLastPost
+ *         schema:
+ *           type: boolean
  *         description: If present, the last post in the room will be returned
  *     security:
  *       - bearerAuth: []
@@ -191,7 +193,6 @@ roomRouter.post(
  *                   $ref: '#/components/schemas/Post'
  */
 roomRouter.get('/info/:roomId', [
-  checkQuery('getLastPost').customSanitizer((value) => value !== undefined),
   checkToken,
   checkUserExists,
   getRoom,
@@ -204,7 +205,7 @@ roomRouter.get('/info/:roomId', [
     },
   };
 
-  if (req.query.getLastPost) {
+  if (req.query.getLastPost === 'true' || req.query.getLastPost === '') {
     if (data.room.posts.length === 0) {
       data.room.lastPost = null;
     } else {

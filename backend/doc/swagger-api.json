@@ -322,6 +322,9 @@
           {
             "in": "query",
             "name": "getLastPost",
+            "schema": {
+              "type": "boolean"
+            },
             "description": "If present, the last post in the room will be returned"
           }
         ],
