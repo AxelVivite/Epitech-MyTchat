@@ -14,14 +14,14 @@ interface MessageProps {
 
 const Message = (props: MessageProps): JSX.Element => {
     return (
-        <Card>
-            <Avatar name={props.username} />
-            <Box>
-                <Box>
-                    <Typography>{props.username}</Typography>
-                    <Typography>{props.datetime}</Typography>
+        <Card className="row p--16 mb--16">
+            <Avatar name={props.username} className="mr--16" />
+            <Box className="col flex-grow--1">
+                <Box className="row">
+                    <Typography className="name">{props.username}</Typography>
+                    <Typography className="datetime">{props.datetime}</Typography>
                 </Box>
-                <Typography>{props.message}</Typography>
+                <Typography className="message">{props.message}</Typography>
             </Box>
         </Card>
     );

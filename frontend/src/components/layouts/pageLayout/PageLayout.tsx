@@ -31,14 +31,7 @@ const PageLayout = (props: PageLayoutProps): JSX.Element => {
                 }}
             >
                 <Header handleClickDrawerButton={handleClickDrawerButton} />
-                <Box
-                    sx={{
-                        margin: "64 auto 0 auto",
-                        minHeight: "calc(100vh - 64px)"
-                    }}
-                >
-                    {props.children}
-                </Box>
+                {props.children}
             </Box>
         </>
     );

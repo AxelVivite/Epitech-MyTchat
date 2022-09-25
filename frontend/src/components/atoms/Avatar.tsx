@@ -17,15 +17,17 @@ const Avatar = (props: AvatarProps): JSX.Element => {
     const getInitial = (str: string): string => {
         if (str.length === 0)
             return (intToChar(getRandomInt(26)));
+        if (str.indexOf(' ') >= 0)
+            return(`${str[0]}${str.split(" ")[1][0]}`)
         return (str[0]);
     };
 
     return (
         <MuiAvatar
             className={props.className}
-            sx={{ backgroundColor: stringToColor("Axel") }}
+            sx={{ backgroundColor: stringToColor(props.name) }}
         >
-            {getInitial(props.name)}
+            {getInitial(props.name).toUpperCase()}
         </MuiAvatar>
     );
 };

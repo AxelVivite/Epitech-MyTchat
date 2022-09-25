@@ -7,7 +7,7 @@ import {
     Typography,
 } from "@mui/material";
 
-import Avatar from "../../atoms/Avatar";
+import Avatar from "../atoms/Avatar";
 
 interface RoomProps {
     "name": string;
@@ -23,7 +23,7 @@ export const Room = (props: RoomProps): JSX.Element => {
                 <Box className="col pl--8" sx={{width: "calc(100% - 48px)"}}>
                     <Box className="row">
                         <Typography className="name flex-grow--1">{props.name}</Typography>
-                        <Typography className="date pl--8">{props.date}</Typography>
+                        <Typography className="date">{props.date}</Typography>
                     </Box>
                     <Typography className="message">{props.message}</Typography>
                 </Box>
