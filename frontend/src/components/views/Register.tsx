@@ -122,7 +122,7 @@ const ERRORS_REGISTER = new Map ([
     ["EmailTaken", "Cet adresse email est déjà utiliser. Veuillez en utiliser une autre et recommencer"],
 ]);
 
-const registration = async (email: string, password:) => {
+const registration = async (email: string, password: string) => {
 
 }
 
@@ -145,7 +145,7 @@ const Form = withFormik<InputForm, InputForm>({
         const res = await register(values.email!, values.password!);
         if (res?.status === 200) {
             const navigator = useNavigate();
-            navigator('/test');
+            navigator('/home');
             //TODO: Here change it with the home page screen when implemented
         } else {
             console.log(res?.status);

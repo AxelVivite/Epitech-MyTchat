@@ -6,7 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 import Login from './components/views/Login';
-import Test1 from './components/views/Test1';
+import Home from './components/views/Test1';
 import PageNotFound from './components/views/PageNotFound';
 import Register from './components/views/Register';
 
@@ -16,7 +16,7 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' element={<Login/>}/>
-          <Route path='/test' element={<Test1/>}/>
+          <Route path='/home' element={<Home/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path='*' element={<PageNotFound/>}/>
         </Routes>

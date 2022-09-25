@@ -1,5 +1,5 @@
 import Login from "../../components/views/Login";
-import Test1 from "../../components/views/Test1";
+import Home from "../../components/views/Test1";
 import { View } from "../../shared/interfaces";
 
 const Views: View[] = [
@@ -9,7 +9,7 @@ const Views: View[] = [
     },
     {
         path: "/test",
-        component: Test1,
+        component: Home,
     }
 ]
 

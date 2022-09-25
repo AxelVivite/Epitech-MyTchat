@@ -81,7 +81,7 @@ const Login: React.FC = () => {
                 try {
                     const res = await login(values.email, values.password);
                     if (res?.status === 200) {
-                        navigate("/test");
+                        navigate("/home");
                     }
                 } catch (err) {
                     alert("ntm")

@@ -1,8 +1,8 @@
 import PageLayout from "../layouts/pageLayout/PageLayout";
 
-const Test1: React.FC = () => {
+const Home: React.FC = () => {
     return (
-        <div className="Test">
+        <div className="Home">
             <PageLayout>
             <text>Test de navigation réussi !!!</text>
             </PageLayout>
@@ -10,4 +10,4 @@ const Test1: React.FC = () => {
     );
 };
 
-export default Test1;
+export default Home;
