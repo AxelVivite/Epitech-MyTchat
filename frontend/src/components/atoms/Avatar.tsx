@@ -8,7 +8,12 @@ import getRandomInt from "../../utils/getRandomInt";
 import intToChar from "../../utils/intToChar";
 import stringToColor from '../../utils/stringToColor';
 
-const Avatar = (): JSX.Element => {
+interface AvatarProps {
+    className?: string;
+    name: string;
+}
+
+const Avatar = (props: AvatarProps): JSX.Element => {
     const getInitial = (str: string): string => {
         if (str.length === 0)
             return (intToChar(getRandomInt(26)));
@@ -16,8 +21,11 @@ const Avatar = (): JSX.Element => {
     };
 
     return (
-        <MuiAvatar sx={{ backgroundColor: stringToColor("Axel") }}>
-            {getInitial("Axel")}
+        <MuiAvatar
+            className={props.className}
+            sx={{ backgroundColor: stringToColor("Axel") }}
+        >
+            {getInitial(props.name)}
         </MuiAvatar>
     );
 };

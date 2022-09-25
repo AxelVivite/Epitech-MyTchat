@@ -1,16 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
 import {
   BrowserRouter as Router,
   Routes, //replaces "Switch" used till v5
   Route,
 } from "react-router-dom";
-import Views from './services/navigation/views';
+
 import Login from './components/views/Login';
-import Test1 from './components/views/Test1';
+import Test1 from './components/views/Tchat';
 import PageNotFound from './components/views/PageNotFound';
 import Register from './components/views/Register';
+
+import './App.scss';
 
 function App() {
   return (

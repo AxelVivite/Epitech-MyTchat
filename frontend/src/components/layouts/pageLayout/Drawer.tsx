@@ -1,8 +1,9 @@
+import { useTranslation } from "react-i18next";
+
 import {
     Box,
-    Divider,
     Drawer as MuiDrawer,
-    IconButton,
+    Fab,
     Typography
 } from "@mui/material/";
 import AddIcon from '@mui/icons-material/Add';
@@ -15,21 +16,21 @@ interface DrawerProps {
 }
 
 const Drawer = (props: DrawerProps): JSX.Element => {
+    const { t } = useTranslation();
+
     const drawer = (
         <>
-            <Box sx={{
-                display: "flex",
-                flexWrap: "nowrap",
-                flexDirection: "row",
-                height: "64px"
-            }}>
-                <Typography>Conversations</Typography>
-
-                <IconButton onClick={props.handleClickDrawerButton}>
+            <Box className="row border--bottom pl--16 pr--16 flex--space-between" sx={{ height: "64px" }}>
+                <Typography className="rooms">{t("rooms")}</Typography>
+                <Fab
+                    className="btn--circle"
+                    onClick={props.handleClickDrawerButton}
+                    size="small"
+                    sx={{margin: "auto 0"}}
+                >
                     <AddIcon />
-                </IconButton>
+                </Fab>
             </Box>
-            <Divider />
             <Rooms />
         </>
     );

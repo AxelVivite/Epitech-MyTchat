@@ -15,7 +15,7 @@ interface MessageProps {
 const Message = (props: MessageProps): JSX.Element => {
     return (
         <Card>
-            <Avatar />
+            <Avatar name={props.username} />
             <Box>
                 <Box>
                     <Typography>{props.username}</Typography>
