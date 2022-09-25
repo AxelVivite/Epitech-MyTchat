@@ -53,6 +53,44 @@ const components = {
         },
       },
     },
+    Post: {
+      type: 'object',
+      required: [
+        'user',
+        'room',
+        'content',
+        'createdAt',
+        'updatedAt',
+      ],
+      properties: {
+        user: {
+          type: 'string',
+          format: 'uuid',
+          example: '632999f5bb5e77c72e9bf905',
+        },
+        room: {
+          type: 'string',
+          format: 'uuid',
+          example: '632999f5bb5e77c72e9bf905',
+        },
+        content: {
+          type: 'string',
+          format: 'string',
+          description: 'Content of the post',
+        },
+        createdAt: {
+          type: 'string',
+          format: 'date-time',
+          example: '2017-07-21T17:32:28Z',
+        },
+        updatedAt: {
+          type: 'string',
+          format: 'date-time',
+          example: '2017-07-21T17:32:28Z',
+        },
+      },
+    },
+
   },
   securitySchemes: {
     basicAuth: {

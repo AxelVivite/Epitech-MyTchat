@@ -13,6 +13,7 @@ export const SECRET = 'secret';
 
 export const logger = morgan(`[:user-agent] ${chalk.green(':method')} ${chalk.red(':url')} ${chalk.blue(':status')} - :date`);
 
+// todo: check id is valid mongoose ID (https://stackoverflow.com/a/29231016/12864941)
 // todo: handle token versionning
 export function checkToken(req, res, next) {
   const auth = req.headers.Authorization || req.headers.authorization;
@@ -46,6 +47,7 @@ export function checkToken(req, res, next) {
   return next();
 }
 
+// todo: check id is valid mongoose ID (https://stackoverflow.com/a/29231016/12864941)
 export async function getUser(req, res, next) {
   const user = await User.findById(req.state.userId);
 
@@ -59,6 +61,7 @@ export async function getUser(req, res, next) {
   return next();
 }
 
+// todo: check id is valid mongoose ID (https://stackoverflow.com/a/29231016/12864941)
 export function checkUserExists(req, res, next) {
   if (!(User.exists({ _id: req.state.userId }))) {
     return res.status(404).json({
@@ -69,6 +72,7 @@ export function checkUserExists(req, res, next) {
   return next();
 }
 
+// todo: check id is valid mongoose ID (https://stackoverflow.com/a/29231016/12864941)
 export async function getRoom(req, res, next) {
   if (req.params.roomId === undefined) {
     return res.status(400).json({
@@ -76,7 +80,7 @@ export async function getRoom(req, res, next) {
     });
   }
 
-  const room = await Room.findById({ _id: req.params.roomId });
+  const room = await Room.findById(req.params.roomId);
 
   if (room === null) {
     return res.status(404).json({
@@ -94,6 +98,7 @@ export async function getRoom(req, res, next) {
   return next();
 }
 
+// todo: check id is valid mongoose ID (https://stackoverflow.com/a/29231016/12864941)
 export async function getPost(req, res, next) {
   if (req.params.postId === undefined) {
     return res.status(400).json({

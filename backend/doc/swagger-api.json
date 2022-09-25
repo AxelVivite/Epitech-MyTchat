@@ -17,12 +17,22 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "email"
+                  "username",
+                  "email",
+                  "password"
                 ],
                 "properties": {
+                  "username": {
+                    "type": "string",
+                    "format": "string"
+                  },
                   "email": {
                     "type": "string",
                     "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "pattern": "/^(?=.+[A-Z])(?=.+[0-9]).{7,}$/"
                   }
                 }
               }
@@ -49,7 +59,7 @@
         }
       }
     },
-    "/login/signin/{email}": {
+    "/login/signin/{username}": {
       "get": {
         "tags": [
           "login"
@@ -58,11 +68,11 @@
         "parameters": [
           {
             "in": "path",
-            "name": "email",
+            "name": "username",
             "required": true,
             "schema": {
               "type": "string",
-              "format": "email"
+              "format": "username"
             }
           }
         ],
@@ -107,19 +117,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns the user's email and the ids of the rooms they're in",
+            "description": "Returns the user's username, email and the ids of the rooms they're in",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "required": [
+                    "username",
                     "email",
                     "rooms"
                   ],
                   "properties": {
-                    "email": {
+                    "username": {
                       "type": "string",
                       "format": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "format"
                     },
                     "rooms": {
                       "type": "array",
@@ -157,19 +172,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns the user's email and the ids of the rooms they're in",
+            "description": "Returns the user's username, email and the ids of the rooms they're in",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "required": [
+                    "username",
                     "email",
                     "rooms"
                   ],
                   "properties": {
-                    "email": {
+                    "username": {
                       "type": "string",
                       "format": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "format"
                     },
                     "rooms": {
                       "type": "array",
@@ -214,6 +234,10 @@
                   "otherUsers"
                 ],
                 "properties": {
+                  "name": {
+                    "type": "string",
+                    "format": "string"
+                  },
                   "otherUsers": {
                     "type": "array",
                     "description": "Other users (besides the one calling the route) to give access to the route",
@@ -294,6 +318,11 @@
             "schema": {
               "$ref": "#/components/schemas/MongoId"
             }
+          },
+          {
+            "in": "query",
+            "name": "getLastPost",
+            "description": "If present, the last post in the room will be returned"
           }
         ],
         "security": [
@@ -309,10 +338,15 @@
                 "schema": {
                   "type": "object",
                   "required": [
+                    "name",
                     "users",
                     "posts"
                   ],
                   "properties": {
+                    "name": {
+                      "type": "string",
+                      "format": "string"
+                    },
                     "users": {
                       "type": "array",
                       "items": {
@@ -324,6 +358,9 @@
                       "items": {
                         "$ref": "#/components/schemas/MongoId"
                       }
+                    },
+                    "lastPost": {
+                      "$ref": "#/components/schemas/Post"
                     }
                   }
                 }
@@ -434,6 +471,43 @@
             "type": "string",
             "description": "TTL of the token, format explained at https://github.com/vercel/ms#examples",
             "example": "10 days"
+          }
+        }
+      },
+      "Post": {
+        "type": "object",
+        "required": [
+          "user",
+          "room",
+          "content",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "user": {
+            "type": "string",
+            "format": "uuid",
+            "example": "632999f5bb5e77c72e9bf905"
+          },
+          "room": {
+            "type": "string",
+            "format": "uuid",
+            "example": "632999f5bb5e77c72e9bf905"
+          },
+          "content": {
+            "type": "string",
+            "format": "string",
+            "description": "Content of the post"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-07-21T17:32:28Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2017-07-21T17:32:28Z"
           }
         }
       }

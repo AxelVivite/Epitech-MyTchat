@@ -21,6 +21,7 @@ const TOKEN_EXPIRES_IN = '10 days';
 const loginRouter = express.Router();
 
 // todo: body should be form
+// todo: maybe make regex for username
 /**
  * @openapi
  * /login/register:
@@ -34,11 +35,19 @@ const loginRouter = express.Router();
  *           schema:
  *             type: object
  *             required:
+ *               - username
  *               - email
+ *               - password
  *             properties:
+ *               username:
+ *                 type: string
+ *                 format: string
  *               email:
  *                 type: string
  *                 format: email
+ *               password:
+ *                 type: string
+ *                 pattern: /^(?=.+[A-Z])(?=.+[0-9]).{7,}$/
  *     responses:
  *       400:
  *         description: Email or password is missing or has bad format
@@ -56,14 +65,18 @@ loginRouter.post(
   '/register',
   [
     checkBody('email').isEmail().withMessage(Errors.Registration.BadEmail),
+    checkBody('username')
+      .not().isEmpty()
+      .withMessage(Errors.Registration.BadUsername),
     checkBody('password')
       .matches(/^(?=.+[A-Z])(?=.+[0-9]).{7,}$/)
       .withMessage(Errors.Registration.BadPassword),
     validateArgs,
   ],
   async (req, res) => {
-    const { body: { email, password } } = req;
+    const { body: { username, email, password } } = req;
 
+    // todo: check username is unique
     const userExists = await User.findOne({ email });
 
     if (userExists !== null) {
@@ -75,6 +88,7 @@ loginRouter.post(
     const passwordHash = await bcrypt.hash(password, 10);
 
     const user = new User({
+      username,
       email,
       passwordHash,
     });
@@ -97,18 +111,18 @@ loginRouter.post(
 
 /**
  * @openapi
- * /login/signin/{email}:
+ * /login/signin/{username}:
  *   get:
  *     tags:
  *       - login
  *     description: Sign in and get a token
  *     parameters:
  *       - in: path
- *         name: email
+ *         name: username
  *         required: true
  *         schema:
  *           type: string
- *           format: email
+ *           format: username
  *     security:
  *       - basicAuth: []
  *     responses:
@@ -129,14 +143,14 @@ loginRouter.post(
  *               $ref: '#/components/schemas/SigninResult'
  */
 loginRouter.get(
-  '/signin/:email',
+  '/signin/:username',
   [
-    checkParam('email').not().isEmpty().withMessage(Errors.Registration.BadEmail),
+    checkParam('username').not().isEmpty().withMessage(Errors.Registration.BadUsername),
     validateArgs,
   ],
   async (req, res) => {
-    const { params: { email } } = req;
-    const user = await User.findOne({ email });
+    const { params: { username } } = req;
+    const user = await User.findOne({ username });
 
     if (user === null) {
       return res.status(404).json({
@@ -202,18 +216,22 @@ loginRouter.get(
  *       404:
  *         description: User not found
  *       200:
- *         description: Returns the user's email and the ids of the rooms they're in
+ *         description: Returns the user's username, email and the ids of the rooms they're in
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               required:
+ *                 - username
  *                 - email
  *                 - rooms
  *               properties:
- *                 email:
+ *                 username:
  *                   type: string
  *                   format: string
+ *                 email:
+ *                   type: string
+ *                   format: format
  *                 rooms:
  *                   type: array
  *                   items:
@@ -222,6 +240,7 @@ loginRouter.get(
 loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
   res.status(200).json({
     user: {
+      username: req.state.user.username,
       email: req.state.user.email,
       rooms: req.state.user.rooms,
     },
@@ -250,18 +269,22 @@ loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
  *       404:
  *         description: User not found
  *       200:
- *         description: Returns the user's email and the ids of the rooms they're in
+ *         description: Returns the user's username, email and the ids of the rooms they're in
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               required:
+ *                 - username
  *                 - email
  *                 - rooms
  *               properties:
- *                 email:
+ *                 username:
  *                   type: string
  *                   format: string
+ *                 email:
+ *                   type: string
+ *                   format: format
  *                 rooms:
  *                   type: array
  *                   items:

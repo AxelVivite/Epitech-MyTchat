@@ -2,7 +2,7 @@
 
 import express from 'express';
 import expressWs from 'express-ws';
-import { body as checkBody } from 'express-validator';
+import { body as checkBody, query as checkQuery } from 'express-validator';
 
 import Errors from '../errors';
 import {
@@ -41,6 +41,9 @@ expressWs(roomRouter);
  *             required:
  *               - otherUsers
  *             properties:
+ *               name:
+ *                 type: string
+ *                 format: string
  *               otherUsers:
  *                 type: array
  *                 description: >-
@@ -108,7 +111,14 @@ roomRouter.post(
       });
     }
 
+    let roomName = req.body.name;
+
+    if (roomName === undefined || roomName === '') {
+      roomName = users.map(({ username }) => username).join(', ');
+    }
+
     const room = new Room({
+      name: roomName,
       users,
     });
 
@@ -125,6 +135,7 @@ roomRouter.post(
   },
 );
 
+// todo: update openapi doc with getLastPost
 /**
  * @openapi
  * /room/info/{roomId}:
@@ -138,6 +149,9 @@ roomRouter.post(
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/MongoId'
+ *       - in: query
+ *         name: getLastPost
+ *         description: If present, the last post in the room will be returned
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -158,9 +172,13 @@ roomRouter.post(
  *             schema:
  *               type: object
  *               required:
+ *                 - name
  *                 - users
  *                 - posts
  *               properties:
+ *                 name:
+ *                   type: string
+ *                   format: string
  *                 users:
  *                   type: array
  *                   items:
@@ -169,14 +187,40 @@ roomRouter.post(
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/MongoId'
+ *                 lastPost:
+ *                   $ref: '#/components/schemas/Post'
  */
-roomRouter.get('/info/:roomId', [checkToken, checkUserExists, getRoom], async (req, res) => {
-  res.status(200).json({
+roomRouter.get('/info/:roomId', [
+  checkQuery('getLastPost').customSanitizer((value) => value !== undefined),
+  checkToken,
+  checkUserExists,
+  getRoom,
+], async (req, res) => {
+  const data = {
     room: {
+      name: req.state.room.name,
       users: req.state.room.users,
       posts: req.state.room.posts,
     },
-  });
+  };
+
+  if (req.query.getLastPost) {
+    if (data.room.posts.length === 0) {
+      data.room.lastPost = null;
+    } else {
+      const post = await Post.findById(data.room.posts[data.room.posts.length - 1]);
+
+      data.room.lastPost = {
+        user: post.user,
+        room: post.room,
+        content: post.content,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+      };
+    }
+  }
+
+  res.status(200).json(data);
 });
 
 // todo: get all messages in the room
@@ -298,6 +342,8 @@ roomRouter.get('/read/:postId', [checkToken, getUser, getPost], async (req, res)
       user: req.state.post.user,
       room: req.state.post.room,
       content: req.state.post.content,
+      createdAt: req.state.post.createdAt,
+      updatedAt: req.state.post.updatedAt,
     },
   });
 });
