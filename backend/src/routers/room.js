@@ -2,7 +2,7 @@
 
 import express from 'express';
 import expressWs from 'express-ws';
-import { body as checkBody, query as checkQuery } from 'express-validator';
+import { body as checkBody } from 'express-validator';
 
 import Errors from '../errors';
 import {
