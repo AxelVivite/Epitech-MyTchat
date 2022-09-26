@@ -9,53 +9,9 @@ import chalk from 'chalk';
 import Errors from '../errors';
 import { SECRET } from './middlewares';
 import User from '../models/user';
-import Room from '../models/room';
-import Post from '../models/post';
 
 function logger(req) {
   console.log(`[${req.ws._socket.remoteAddress}] ${chalk.green('WS')} ${chalk.red('/room/websocket')} - ${(new Date()).toUTCString()}`);
-}
-
-// todo: maybe remove this and only use /login/post
-async function onMessage(ws, req, userId, data) {
-  // todo: check data
-  const { roomId, content } = JSON.parse(data);
-
-  // todo: check room exists
-  const room = await Room.findById({ _id: roomId });
-
-  const post = new Post({
-    user: userId,
-    room: roomId,
-    content,
-  });
-  room.posts.push(post._id);
-
-  await Promise.all([
-    post.save(),
-    room.save(),
-  ]);
-
-  if (!req.app.locals.roomActiveUsers.has(roomId)) {
-    return;
-  }
-
-  const activeUsers = req.app.locals.roomActiveUsers.get(roomId);
-
-  activeUsers.forEach((userId2) => {
-    if (userId2 === userId) {
-      return;
-    }
-
-    const wsUser = req.app.locals.ws.get(userId2);
-
-    wsUser.send(JSON.stringify({
-      userId,
-      roomId,
-      postId: post._id,
-      content,
-    }));
-  });
 }
 
 async function onClose(ws, req, userId) {
@@ -91,7 +47,6 @@ export default async function roomWebsocket(ws, req) {
       return;
     }
 
-    ws.on('message', (data) => onMessage(ws, req, userId, data).catch((err) => console.error(err)));
     ws.on('close', () => onClose(ws, req, userId).catch((err) => console.error(err)));
 
     // todo: check user exists

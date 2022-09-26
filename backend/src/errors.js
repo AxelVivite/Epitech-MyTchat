@@ -21,6 +21,7 @@ export default {
     BadOtherUsers: 'BadOtherUsers',
     RoomNotFound: 'RoomNotFound',
     NotInRoom: 'NotInRoom',
+    BadPostContent: 'BadPostContent',
   },
   RouteNotFound: 'RouteNotFound',
   InternalError: 'InternalError',

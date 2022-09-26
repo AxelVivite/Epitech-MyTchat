@@ -61,7 +61,7 @@ expressWs(roomRouter);
  *       401:
  *         description: Bad token (not created by this server or expired)
  *       404:
- *         description: Any of the user are not found
+ *         description: Some of the users were not found
  *         content:
  *           application/json:
  *             schema:
@@ -240,6 +240,67 @@ roomRouter.get('/read', async (req, res) => {
 // todo: add query flag to continue even if some users are invalid
 // todo: test this more throughly
 // todo: openapi jsdoc
+/**
+ * @openapi
+ * /room/invite/{roomId}:
+ *   post:
+ *     tags:
+ *       - room
+ *     description: Invite users to a room
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: roomId
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/MongoId'
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - otherUsers
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 format: string
+ *               otherUsers:
+ *                 type: array
+ *                 description: >-
+ *                   Other users (besides the one calling the route) to give access to the route
+ *                 items:
+ *                   $ref: '#/components/schemas/MongoId'
+ *     responses:
+ *       400:
+ *         description: >-
+ *           Bad request, details are returned, can be because of:
+ *           MissingToken, BadAuthType, badOtherUsers (ex: Basic instead of Bearer)
+ *       401:
+ *         description: Bad token (not created by this server or expired)
+ *       404:
+ *         description: Some of the users were not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - error
+ *                 - missingUsers
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                 missingUsers:
+ *                   type: array
+ *                   description: Users that could not be found
+ *                   items:
+ *                     $ref: '#/components/schemas/MongoId'
+ *       410:
+ *         description: User has been deleted
+ *       201:
+ *         description: The other users were added successfully
+ */
 roomRouter.post(
   '/invite/:roomId',
   [
@@ -288,7 +349,37 @@ roomRouter.post(
 );
 
 // todo: test this more throughly
-// todo: openapi jsdoc
+/**
+ * @openapi
+ * /room/leave/{roomId}:
+ *   post:
+ *     tags:
+ *       - room
+ *     description: Leave a room
+ *     parameters:
+ *       - in: path
+ *         name: roomId
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/MongoId'
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       400:
+ *         description: >-
+ *           Bad request, details are returned, can be because of:
+ *           MissingToken, BadAuthType (ex: Basic instead of Bearer)
+ *       401:
+ *         description: >-
+ *           Bad token (not created by this server or expired)
+ *           or user doesn't have access to the room
+ *       404:
+ *         description: The user or the room was not found
+ *       410:
+ *         description: User has been deleted
+ *       201:
+ *         description: User left the room successfully
+ */
 roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, res) => {
   const { state: { user, room } } = req;
 
@@ -331,31 +422,107 @@ roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, re
 // todo: openapi comment
 roomRouter.ws('/websocket', roomWebsocket);
 
-// todo: rework this route work like the ws
-// todo: openapi comment
-roomRouter.post('/post/:roomId', [checkToken, checkUserExists], async (req, res) => {
-  // todo: check roomId param
-  // todo: check room exists
-  // todo: check user is in room
-  const room = await Room.findById({ _id: req.params.roomId });
+/**
+ * @openapi
+ * /room/post/{roomId}:
+ *   post:
+ *     tags:
+ *       - room
+ *     description: Post to a room
+ *     parameters:
+ *       - in: path
+ *         name: roomId
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/MongoId'
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - content
+ *             properties:
+ *               content:
+ *                 type: string
+ *                 format: string
+ *                 example: "What are you up to ?"
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       400:
+ *         description: >-
+ *           Bad request, details are returned, can be because of:
+ *           MissingToken, BadAuthType, BadPostContent (ex: Basic instead of Bearer)
+ *       401:
+ *         description: >-
+ *           Bad token (not created by this server or expired)
+ *           or user doesn't have access to the room
+ *       404:
+ *         description: The user or the room was not found
+ *       410:
+ *         description: User has been deleted
+ *       200:
+ *         description: Returns info on the room
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - postId
+ *               properties:
+ *                 postId:
+ *                   $ref: '#/components/schemas/MongoId'
+ */
+roomRouter.post(
+  '/post/:roomId',
+  [
+    checkBody('content').notEmpty().withMessage(Errors.Room.BadPostContent),
+    checkToken,
+    getUser,
+    getRoom,
+  ],
+  async (req, res) => {
+    const { state: { user, room }, body: { content } } = req;
 
-  const post = new Post({
-    user: req.state.userId,
-    content: req.body.content,
-  });
-  room.posts.push(post._id);
+    const post = new Post({
+      user: user._id,
+      room: room._id,
+      content,
+    });
+    room.posts.push(post._id);
 
-  await Promise.all(
-    post.save(),
-    room.save(),
-  );
+    await Promise.all([
+      post.save(),
+      room.save(),
+    ]);
 
-  // todo: use websocket to notify users
+    if (!req.app.locals.roomActiveUsers.has(room._id.toString())) {
+      return res.status(200).json({
+        postId: post._id,
+      });
+    }
 
-  res.status(200).json({
-    post: post._id,
-  });
-});
+    const activeUsers = req.app.locals.roomActiveUsers.get(room._id.toString());
+    const notif = JSON.stringify({
+      userId: user._id,
+      roomId: room._id,
+      postId: post._id,
+      content,
+    });
+
+    await Promise.all(
+      [...activeUsers].filter((userId2) => userId2 !== user._id.toString()).map((userId2) => {
+        const wsUser = req.app.locals.ws.get(userId2);
+        return wsUser.send(notif);
+      }),
+    );
+
+    return res.status(200).json({
+      postId: post._id,
+    });
+  },
+);
 
 // todo: test this
 // todo: write swagger jsdoc
