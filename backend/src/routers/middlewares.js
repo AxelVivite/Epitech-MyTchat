@@ -1,3 +1,5 @@
+/* eslint no-underscore-dangle: 0 */ // --> OFF
+
 import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
 import morgan from 'morgan';
@@ -57,7 +59,7 @@ export async function getUser(req, res, next) {
     });
   }
 
-  req.state = { ...req.state, user };
+  req.state = { ...req.state, user, userId: user._id };
   return next();
 }
 

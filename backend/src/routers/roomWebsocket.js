@@ -16,6 +16,7 @@ function logger(req) {
   console.log(`[${req.ws._socket.remoteAddress}] ${chalk.green('WS')} ${chalk.red('/room/websocket')} - ${(new Date()).toUTCString()}`);
 }
 
+// todo: maybe remove this and only use /login/post
 async function onMessage(ws, req, userId, data) {
   // todo: check data
   const { roomId, content } = JSON.parse(data);

@@ -24,6 +24,7 @@ expressWs(roomRouter);
 // todo: make route(s) so you don't load all messages at once
 
 // todo: maybe don't use ids to give other users (or give other ways)
+// todo: add query flag to continue even if some users are invalid
 /**
  * @openapi
  * /room/create:
@@ -229,79 +230,81 @@ roomRouter.get('/read', async (req, res) => {
   res.status(200);
 });
 
-// todo: maybe replace with a leave route, remove when room has no more users
-// todo: remove from users
-// todo: remove associated posts
-/**
- * @openapi
- * /room/delete/{roomId}:
- *   delete:
- *     tags:
- *       - room
- *     description: Delete a room
- *     parameters:
- *       - in: path
- *         name: roomId
- *         required: true
- *         schema:
- *           $ref: '#/components/schemas/MongoId'
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       400:
- *         description: >-
- *           Bad request, details are returned, can be because of:
- *           MissingToken, BadAuthType (ex: Basic instead of Bearer)
- *       401:
- *         description: >-
- *           Bad token (not created by this server or expired)
- *           or user doesn't have access to the room
- *       404:
- *         description: The user or the room was not found
- *       200:
- *         description: Returns info on the room
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               required:
- *                 - users
- *                 - posts
- *               properties:
- *                 users:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/MongoId'
- *                 posts:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/MongoId'
- */
-roomRouter.delete('/delete/:roomId', [checkToken, getUser], async (req, res) => {
-  if (!req.state.user.rooms.includes(req.params.roomId)) {
-    return res.status(401).json({
-      error: Errors.Room.NotInRoom,
-    });
+// todo: add query flag to continue even if some users are invalid
+// todo: test this more throughly
+// todo: openapi jsdoc
+roomRouter.post(
+  '/invite/:roomId',
+  [
+    checkBody('otherUsers').isArray().withMessage(Errors.Room.BadOtherUsers),
+    checkBody('otherUsers').notEmpty().withMessage(Errors.Room.BadOtherUsers),
+    checkBody('otherUsers.*').isString().withMessage((value) => ({
+      error: Errors.Room.BadOtherUsers,
+      value,
+    })),
+    checkToken,
+    checkUserExists,
+    getRoom,
+  ],
+  async (req, res) => {
+    const userIds = [...new Set([...req.body.otherUsers])];
+    let users = await User.find({ _id: { $in: userIds } });
+
+    if (userIds.length > users.length) {
+      const missingUsers = userIds.filter((userId) => users.some(({ _id }) => userId === _id));
+
+      return res.status(404).json({
+        // todo: maybe use a more appropriate error type
+        error: Errors.Login.AccountNotFound,
+        missingUsers,
+      });
+    }
+
+    const { state: { room } } = req;
+    users = users.filter(({ rooms }) => !rooms.includes(room._id));
+
+    // todo: send ws notif ?
+
+    room.users = room.users.concat(userIds);
+
+    await Promise.all([
+      room.save(),
+      ...users.map((user) => {
+        user.rooms.push(room._id);
+        return user.save();
+      }),
+    ]);
+
+    return res.status(201).send();
+  },
+);
+
+// todo: test this more throughly
+// todo: openapi jsdoc
+roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, res) => {
+  const { state: { user, room } } = req;
+
+  let idx = user.rooms.findIndex((id) => room._id.equals(id));
+  user.rooms.splice(idx, 1);
+
+  if (room.users.length === 1) {
+    await Promise.all([
+      user.save(),
+      Room.findByIdAndRemove(room._id),
+    ]);
+
+    return res.status(201).send();
   }
 
-  const room = await Room.findByIdAndRemove(req.params.roomId);
+  idx = room.users.findIndex((id) => user._id.equals(id));
+  room.users.splice(idx, 1);
 
-  // todo: if this is true this means the User data is corrupted since it says the user is
-  // in a room that doesn't exist. Internal error ? Correct User data ?
-  if (room === null) {
-    return res.status(404).json({
-      error: Errors.Room.RoomNotFound,
-    });
-  }
+  await Promise.all([
+    user.save(),
+    room.save(),
+  ]);
 
-  await Promise.all(room.posts.map((postId) => Post.findByIdAndRemove(postId)));
-
-  return res.status(200).json({
-    room: {
-      users: room.users,
-      posts: room.posts,
-    },
-  });
+  return res.status(201).send();
 });
 
 // todo: implement ticket based auth ?

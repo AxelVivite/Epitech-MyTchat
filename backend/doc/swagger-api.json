@@ -80,6 +80,48 @@
         }
       }
     },
+    "/login/username/{userId}": {
+      "get": {
+        "tags": [
+          "login"
+        ],
+        "description": "Get a username from a user's Id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/MongoId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the username",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "username"
+                  ],
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "format": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
     "/login/register": {
       "post": {
         "tags": [
