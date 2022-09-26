@@ -20,6 +20,38 @@ const TOKEN_EXPIRES_IN = '10 days';
 
 const loginRouter = express.Router();
 
+/**
+ * @openapi
+ * /login/users:
+ *   get:
+ *     tags:
+ *       - login
+ *     description: Get all usernames
+ *     responses:
+ *       200:
+ *         description: Returns all usernames
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - users
+ *               properties:
+ *                 users:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                     format: string
+ *                     example: Tabasco
+ */
+loginRouter.get('/users', [], async (req, res) => {
+  const users = await User.find({});
+
+  res.status(200).json({
+    users: users.map(({ username }) => username),
+  });
+});
+
 // todo: body should be form
 // todo: maybe make regex for username
 /**

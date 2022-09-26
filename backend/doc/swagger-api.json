@@ -5,6 +5,39 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/login/users": {
+      "get": {
+        "tags": [
+          "login"
+        ],
+        "description": "Get all usernames",
+        "responses": {
+          "200": {
+            "description": "Returns all usernames",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "users"
+                  ],
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "string",
+                        "example": "Tabasco"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/login/register": {
       "post": {
         "tags": [
