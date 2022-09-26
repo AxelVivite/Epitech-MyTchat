@@ -38,6 +38,48 @@
         }
       }
     },
+    "/login/userId/{username}": {
+      "get": {
+        "tags": [
+          "login"
+        ],
+        "description": "Get a user's Id from a username",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "username"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the user's id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "userId"
+                  ],
+                  "properties": {
+                    "userId": {
+                      "$ref": "#/components/schemas/MongoId"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
     "/login/register": {
       "post": {
         "tags": [

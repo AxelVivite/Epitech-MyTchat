@@ -52,6 +52,50 @@ loginRouter.get('/users', [], async (req, res) => {
   });
 });
 
+/**
+ * @openapi
+ * /login/userId/{username}:
+ *   get:
+ *     tags:
+ *       - login
+ *     description: Get a user's Id from a username
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: username
+ *     responses:
+ *       404:
+ *         description: User not found
+ *       200:
+ *         description: Returns the user's id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - userId
+ *               properties:
+ *                 userId:
+ *                   $ref: '#/components/schemas/MongoId'
+ */
+loginRouter.get('/userId/:username', [], async (req, res) => {
+  const { params: { username } } = req;
+  const user = await User.findOne({ username });
+
+  if (user === null) {
+    return res.status(404).json({
+      error: Errors.Login.AccountNotFound,
+    });
+  }
+
+  return res.status(200).json({
+    userId: user._id,
+  });
+});
+
 // todo: body should be form
 // todo: maybe make regex for username
 /**
