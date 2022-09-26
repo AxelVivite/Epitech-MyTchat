@@ -9,11 +9,15 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import * as React from 'react';
 import { login } from "../../utils/userManagment";
+//import { WebsocketManager } from "../../utils/webSocket";
+
 interface State {
     email: string;
     password: string;
     showPassword: boolean;
 }
+
+const socketUrl: String = "ws://localhost:3000/room/websocket";
 
 const Login: React.FC = () => {
     let navigate = useNavigate();
@@ -23,7 +27,8 @@ const Login: React.FC = () => {
         password: '',
         showPassword: false,
       });
-    
+    const [webSocket, setWebSocket] = React.useState<any>();
+    const [token, setToken] = React.useState("");
       const handleChange =
         (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
           setValues({ ...values, [prop]: event.target.value });
@@ -39,6 +44,7 @@ const Login: React.FC = () => {
       const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
       };
+
 
     return (
 <Box sx={{ display: 'flex', flexWrap: 'wrap', paddingBottom: 200, flexDirection: "column", alignContent: "center", paddingTop: 10 }}>
@@ -81,13 +87,16 @@ const Login: React.FC = () => {
                 try {
                     const res = await login(values.email, values.password);
                     if (res?.status === 200) {
-                        navigate("/home");
-                    }
+                        setToken(res?.data.token);
+                        navigate(`/home/${res?.data.token}`);
+                      }
+                    
                 } catch (err) {
-                    alert("ntm")
+                    alert(err);
+                    console.log(err);
                 }
                 }}
-              > 
+              >
               Se connecter
           </Button>
           <Button onClick={() => {

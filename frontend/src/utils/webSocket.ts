@@ -10,28 +10,22 @@ export class WebsocketManager {
     readyState: any;
     getWebSocket: any;
 
-    constructor(token: string) {
-        this.url = socketUrl + "?token=" + token;
+    constructor(webSocket: any, token: String) {
         let {
             sendJsonMessage, 
             lastMessage, 
             lastJsonMessage,
             readyState,
+              // -1 if uninstantiated, otherwise follows WebSocket readyState mapping: 0: 'Connecting', 1 'OPEN', 2: 'CLOSING', 3: 'CLOSED'
             getWebSocket
-        } = useWebSocket(this.url, 
-            {
-                onOpen: () => console.log('opened'),
-                //Will attempt to reconnect on all close events, such as server shutting down
-                shouldReconnect: (closeEvent) => true,
-        });
+        } = webSocket;
 
-        if (readyState == 1) {
-            this.getWebSocket = getWebSocket;
-            this.lastJsonMessage = lastJsonMessage;
-            this.lastMessage = lastMessage;
-            this.readyState = readyState;
-            this.sendJsonMessage = sendJsonMessage;   
-        }
+        this.url = socketUrl + "?token=" + token;
+        this.getWebSocket = getWebSocket;
+        this.lastJsonMessage = lastJsonMessage;
+        this.lastMessage = lastMessage;
+        this.readyState = readyState;
+        this.sendJsonMessage = sendJsonMessage;  
     }
 
 

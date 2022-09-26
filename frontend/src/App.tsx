@@ -16,7 +16,8 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' element={<Login/>}/>
-          <Route path='/home' element={<Home/>}/>
+          {/* The token will be remove when we'll add the global state manager */}
+          <Route path='/home/:token' element={<Home/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path='*' element={<PageNotFound/>}/>
         </Routes>
