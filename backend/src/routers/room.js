@@ -301,11 +301,11 @@ roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, re
       Room.findByIdAndRemove(room._id),
       room.posts.map((postId) => Post.findByIdAndRemove(postId)),
       room.deletedUsers.map(async (userId) => {
-        const user = await User.findById(userId);
-        const idx = user.rooms.findIndex((id) => room._id.equals(id));
+        const otherUser = await User.findById(userId);
+        const idx2 = otherUser.rooms.findIndex((id) => room._id.equals(id));
 
-        user.rooms.splice(idx, 1);
-        return user.save();
+        otherUser.rooms.splice(idx2, 1);
+        return otherUser.save();
       }),
     ]);
 

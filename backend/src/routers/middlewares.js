@@ -61,7 +61,7 @@ export async function getUser(req, res, next) {
 
   if (user.isDeleted) {
     return res.status(410).json({
-      error: Errors.Login.UserIsDeleted
+      error: Errors.Login.UserIsDeleted,
     });
   }
 

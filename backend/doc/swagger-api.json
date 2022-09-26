@@ -217,6 +217,9 @@
           },
           "404": {
             "description": "User not found"
+          },
+          "410": {
+            "description": "User has been deleted"
           }
         }
       }
@@ -272,6 +275,9 @@
           },
           "404": {
             "description": "User not found"
+          },
+          "410": {
+            "description": "User has been deleted"
           }
         }
       }
@@ -327,6 +333,9 @@
           },
           "404": {
             "description": "User not found"
+          },
+          "410": {
+            "description": "User has been deleted"
           }
         }
       }
@@ -417,6 +426,9 @@
                 }
               }
             }
+          },
+          "410": {
+            "description": "User has been deleted"
           }
         }
       }
@@ -495,68 +507,9 @@
           },
           "404": {
             "description": "The user or the room was not found"
-          }
-        }
-      }
-    },
-    "/room/delete/{roomId}": {
-      "delete": {
-        "tags": [
-          "room"
-        ],
-        "description": "Delete a room",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "roomId",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/MongoId"
-            }
-          }
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Returns info on the room",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "users",
-                    "posts"
-                  ],
-                  "properties": {
-                    "users": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/MongoId"
-                      }
-                    },
-                    "posts": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/MongoId"
-                      }
-                    }
-                  }
-                }
-              }
-            }
           },
-          "400": {
-            "description": "Bad request, details are returned, can be because of: MissingToken, BadAuthType (ex: Basic instead of Bearer)"
-          },
-          "401": {
-            "description": "Bad token (not created by this server or expired) or user doesn't have access to the room"
-          },
-          "404": {
-            "description": "The user or the room was not found"
+          "410": {
+            "description": "User has been deleted"
           }
         }
       }

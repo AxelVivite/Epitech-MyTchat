@@ -12,6 +12,7 @@ import {
   validateArgs,
 } from './middlewares';
 import User from '../models/user';
+import Room from '../models/room';
 
 // todo: use better secret + put in .env file
 const SECRET = 'secret';
@@ -430,7 +431,6 @@ loginRouter.delete('/delete', [checkToken, getUser], async (req, res) => {
     ...user.rooms.map(async (roomId) => {
       const room = await Room.findById(roomId);
       const idx = room.users.findIndex((id) => userId.equals(id));
-
 
       room.users.splice(idx, 1);
       room.deletedUsers.push(userId);
