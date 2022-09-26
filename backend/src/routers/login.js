@@ -190,7 +190,7 @@ loginRouter.post(
       .not().isEmpty()
       .withMessage(Errors.Registration.BadUsername),
     checkBody('password')
-      .matches(/^(?=.+[A-Z])(?=.+[0-9]).{7,}$/)
+      .matches(/^(?=.*[A-Z])(?=.*[0-9]).{7,}$/)
       .withMessage(Errors.Registration.BadPassword),
     validateArgs,
   ],
