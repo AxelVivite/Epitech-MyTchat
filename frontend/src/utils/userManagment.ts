@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 const devUrl = "http://localhost:3000";
 
-export const register = async (email: String, password: String) => {
+export const register = async (email: String, password: String, username: String) => {
     try {
         const {data, status} = await axios.post<any>(
             devUrl + "/login/register",
-            {"email": email, "password": password},
+            {"email": email, "password": password, "username": username},
         );
         alert(data.token + status);
         return {data, status};

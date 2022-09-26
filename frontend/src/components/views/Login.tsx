@@ -12,7 +12,7 @@ import { login } from "../../utils/userManagment";
 //import { WebsocketManager } from "../../utils/webSocket";
 
 interface State {
-    email: string;
+    username: string;
     password: string;
     showPassword: boolean;
 }
@@ -23,7 +23,7 @@ const Login: React.FC = () => {
     let navigate = useNavigate();
 
     const [values, setValues] = React.useState<State>({
-        email: '',
+        username: '',
         password: '',
         showPassword: false,
       });
@@ -50,11 +50,11 @@ const Login: React.FC = () => {
 <Box sx={{ display: 'flex', flexWrap: 'wrap', paddingBottom: 200, flexDirection: "column", alignContent: "center", paddingTop: 10 }}>
     
         <FormControl sx={{ m: 1, width: '25ch' }} variant="filled">
-          <InputLabel htmlFor="filled-adornment-email">Email</InputLabel>
+          <InputLabel htmlFor="filled-adornment-email">Username</InputLabel>
           <FilledInput
-            id="email"
-            value={values.email}
-            onChange={handleChange('email')}
+            id="username"
+            value={values.username}
+            onChange={handleChange('username')}
             endAdornment={<InputAdornment position="end">@</InputAdornment>}
             aria-describedby="filled-weight-helper-text"
             inputProps={{
@@ -85,7 +85,7 @@ const Login: React.FC = () => {
         </FormControl>
           <Button onClick={ async () => {
                 try {
-                    const res = await login(values.email, values.password);
+                    const res = await login(values.username, values.password);
                     if (res?.status === 200) {
                         setToken(res?.data.token);
                         navigate(`/home/${res?.data.token}`);

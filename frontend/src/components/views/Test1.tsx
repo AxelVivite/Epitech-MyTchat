@@ -10,10 +10,6 @@ const Home: React.FC = () => {
     const token = useParams();
     let url = socketUrl + "?token=" + token.token;
 
-    console.log(token);
-    React.useEffect(() => {
-
-    })
     let {
         sendJsonMessage, 
         lastMessage, 

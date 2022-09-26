@@ -13,11 +13,12 @@ import { register } from "../../utils/userManagment";
 
 interface InputForm {
     email?: string;
+    username?: string;
     password?: string;
     passwordConfirmation?: string;
 }
 
- export const validPassword = new RegExp('^(?=.*?[A-Z])(?=.*?[0-9]).{7,}$');
+ export const validPassword = new RegExp('^(?=.*[A-Z])(?=.*[0-9]).{7,}$');
 
 const Register: React.ComponentType<any> = () => {
     //eslint-disable-next-line
@@ -54,6 +55,19 @@ const form = (props: any) => {
               onBlur={handleBlur}
               helperText={touched.email ? errors.email : ""}
               error={touched.email && Boolean(errors.email)}
+              margin="dense"
+              variant="outlined"
+              fullWidth
+            />
+             <TextField
+              id="username"
+              label="Username"
+              type="string"
+              value={values.username}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              helperText={touched.username ? errors.username : ""}
+              error={touched.username && Boolean(errors.username)}
               margin="dense"
               variant="outlined"
               fullWidth
@@ -104,7 +118,9 @@ const validationsForm = yup.object({
     email: yup
          .string()
          .email('Entrer un email valide')
-         .required('Email obligatoire'),    
+         .required('Email obligatoire'),
+    username: yup.string().
+      required("Username obligatoire"),  
     password: yup
         .string()
         .matches(validPassword, "Le mot de passe doit contenir au moins 7 charactére avec au minimum une majuscule et 1 chiffre")
@@ -120,6 +136,7 @@ const ERRORS_REGISTER = new Map ([
     ["BadEmail", "Mauvais format d'email. Veuillez le modifier et recommencer"],
     ["BadPassword", "Mauvais format de mot de passe. Veuillez le modifier et recommencer"],
     ["EmailTaken", "Cet adresse email est déjà utiliser. Veuillez en utiliser une autre et recommencer"],
+    ["UsernameTaken", "Ce username est déjà utiliser. Veuillez en choisir un autre"],
 ]);
 
 const registration = async (email: string, password: string) => {
@@ -130,6 +147,7 @@ const Form = withFormik<InputForm, InputForm>({
     mapPropsToValues: props => {
         return {
         email: props.email || "",
+        username: props.username || "",
         password: props.password || "",
         passwordConfirmation: props.passwordConfirmation || ""
       };
@@ -142,7 +160,7 @@ const Form = withFormik<InputForm, InputForm>({
         // submit to the server
         //alert(JSON.stringify(values, null, 2));
         try {
-        const res = await register(values.email!, values.password!);
+        const res = await register(values.email!, values.password!, values.username!);
         if (res?.status === 200) {
             const navigator = useNavigate();
             navigator('/home');
