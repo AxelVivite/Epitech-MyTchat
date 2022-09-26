@@ -25,6 +25,8 @@ expressWs(roomRouter);
 
 // todo: maybe don't use ids to give other users (or give other ways)
 // todo: add query flag to continue even if some users are invalid
+// todo: use ws to notify users
+// todo: update roomActiveUsers
 /**
  * @openapi
  * /room/create:
@@ -75,6 +77,8 @@ expressWs(roomRouter);
  *                   description: Users that could not be found
  *                   items:
  *                     $ref: '#/components/schemas/MongoId'
+ *       410:
+ *         description: User has been deleted
  *       200:
  *         description: Returns the id of the room that was created
  *         content:
@@ -91,6 +95,7 @@ roomRouter.post(
   '/create',
   [
     checkToken,
+    getUser,
     checkBody('otherUsers').default([]).isArray().withMessage(Errors.Room.BadOtherUsers),
     checkBody('otherUsers.*').isString().withMessage((value) => ({
       error: Errors.Room.BadOtherUsers,
@@ -100,7 +105,7 @@ roomRouter.post(
   ],
   async (req, res) => {
     const userIds = [...new Set([req.state.userId, ...req.body.otherUsers])];
-    const users = await User.find({ _id: { $in: userIds } });
+    const users = await User.find({ _id: { $in: userIds }, isDeleted: false });
 
     if (userIds.length > users.length) {
       const missingUsers = userIds.filter((userId) => users.some(({ _id }) => userId === _id));
@@ -168,6 +173,8 @@ roomRouter.post(
  *           or user doesn't have access to the room
  *       404:
  *         description: The user or the room was not found
+ *       410:
+ *         description: User has been deleted
  *       200:
  *         description: Returns info on the room
  *         content:
@@ -248,7 +255,7 @@ roomRouter.post(
   ],
   async (req, res) => {
     const userIds = [...new Set([...req.body.otherUsers])];
-    let users = await User.find({ _id: { $in: userIds } });
+    let users = await User.find({ _id: { $in: userIds }, isDeleted: false });
 
     if (userIds.length > users.length) {
       const missingUsers = userIds.filter((userId) => users.some(({ _id }) => userId === _id));
@@ -263,8 +270,6 @@ roomRouter.post(
     const { state: { room } } = req;
     users = users.filter(({ rooms }) => !rooms.includes(room._id));
 
-    // todo: send ws notif ?
-
     room.users = room.users.concat(userIds);
 
     await Promise.all([
@@ -274,6 +279,9 @@ roomRouter.post(
         return user.save();
       }),
     ]);
+
+    // todo: send ws notif
+    // todo: update roomActiveUsers
 
     return res.status(201).send();
   },
@@ -291,6 +299,14 @@ roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, re
     await Promise.all([
       user.save(),
       Room.findByIdAndRemove(room._id),
+      room.posts.map((postId) => Post.findByIdAndRemove(postId)),
+      room.deletedUsers.map(async (userId) => {
+        const user = await User.findById(userId);
+        const idx = user.rooms.findIndex((id) => room._id.equals(id));
+
+        user.rooms.splice(idx, 1);
+        return user.save();
+      }),
     ]);
 
     return res.status(201).send();
@@ -298,6 +314,9 @@ roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, re
 
   idx = room.users.findIndex((id) => user._id.equals(id));
   room.users.splice(idx, 1);
+
+  // todo: send ws notif ?
+  // todo: update roomActiveUsers
 
   await Promise.all([
     user.save(),

@@ -9,6 +9,11 @@ const roomSchema = new mongoose.Schema({
     type: [mongoose.ObjectId],
     required: true,
   },
+  deletedUsers: {
+    type: [mongoose.ObjectId],
+    required: true,
+    default: [],
+  },
   posts: {
     type: [mongoose.ObjectId],
     required: true,

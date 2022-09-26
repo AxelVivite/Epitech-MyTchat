@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: [],
   },
+  isDeleted: {
+    type: Boolean,
+    required: true,
+    default: false,
+  }
 });
 
 export default mongoose.model('User', userSchema);

@@ -13,6 +13,7 @@ export default {
     UsernameNotFound: 'UsernameNotFound',
     InvalidPassword: 'InvalidPassword',
     AccountNotFound: 'AccountNotFound',
+    UserIsDeleted: 'UserIsDeleted',
   },
   Room: {
     MissingRoomId: 'MissingRoomId',

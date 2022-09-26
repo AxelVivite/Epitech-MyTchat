@@ -59,13 +59,33 @@ export async function getUser(req, res, next) {
     });
   }
 
+  if (user.isDeleted) {
+    return res.status(410).json({
+      error: Errors.Login.UserIsDeleted
+    });
+  }
+
+  req.state = { ...req.state, user, userId: user._id };
+  return next();
+}
+
+// todo: check id is valid mongoose ID (https://stackoverflow.com/a/29231016/12864941)
+export async function getUserEvenIfDeleted(req, res, next) {
+  const user = await User.findById(req.state.userId);
+
+  if (user === null) {
+    return res.status(404).json({
+      error: Errors.Login.AccountNotFound,
+    });
+  }
+
   req.state = { ...req.state, user, userId: user._id };
   return next();
 }
 
 // todo: check id is valid mongoose ID (https://stackoverflow.com/a/29231016/12864941)
 export function checkUserExists(req, res, next) {
-  if (!(User.exists({ _id: req.state.userId }))) {
+  if (!(User.exists({ _id: req.state.userId, isDeleted: false }))) {
     return res.status(404).json({
       error: Errors.Login.AccountNotFound,
     });

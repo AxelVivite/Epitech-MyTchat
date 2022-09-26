@@ -45,7 +45,7 @@ const loginRouter = express.Router();
  *                     example: Tabasco
  */
 loginRouter.get('/users', [], async (req, res) => {
-  const users = await User.find({});
+  const users = await User.find({ isDeleted: false });
 
   res.status(200).json({
     users: users.map(({ username }) => username),
@@ -254,6 +254,8 @@ loginRouter.post(
  *         description: Invalid password
  *       404:
  *         description: User not found
+ *       410:
+ *         description: User has been deleted
  *       200:
  *         description: >-
  *           Returns the user id, a token, and the time it will take for the token to expire
@@ -275,6 +277,12 @@ loginRouter.get(
     if (user === null) {
       return res.status(404).json({
         error: Errors.Login.AccountNotFound,
+      });
+    }
+
+    if (user.isDeleted) {
+      return res.status(410).json({
+        error: Errors.Login.UserIsDeleted,
       });
     }
 
@@ -335,6 +343,8 @@ loginRouter.get(
  *         description: Bad token (not created by this server or expired)
  *       404:
  *         description: User not found
+ *       410:
+ *         description: User has been deleted
  *       200:
  *         description: Returns the user's username, email and the ids of the rooms they're in
  *         content:
@@ -367,9 +377,7 @@ loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
   });
 });
 
-// todo: remove user from rooms
-// todo: maybe archive account instead so there aren't posts pointing to deleted users
-// todo: update webSockets
+// todo: test this thoroughly, it can lead to a LOT of bugs
 /**
  * @openapi
  * /login/delete:
@@ -388,6 +396,8 @@ loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
  *         description: Bad token (not created by this server or expired)
  *       404:
  *         description: User not found
+ *       410:
+ *         description: User has been deleted
  *       200:
  *         description: Returns the user's username, email and the ids of the rooms they're in
  *         content:
@@ -410,14 +420,25 @@ loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
  *                   items:
  *                     $ref: '#/components/schemas/MongoId'
  */
-loginRouter.delete('/delete', [checkToken], async (req, res) => {
-  const user = await User.findByIdAndRemove(req.state.userId);
+loginRouter.delete('/delete', [checkToken, getUser], async (req, res) => {
+  const { state: { user, userId } } = req;
 
-  if (user === null) {
-    return res.status(404).json({
-      error: Errors.Login.AccountNotFound,
-    });
-  }
+  user.isDeleted = true;
+
+  await Promise.all([
+    user.save(),
+    ...user.rooms.map(async (roomId) => {
+      const room = await Room.findById(roomId);
+      const idx = room.users.findIndex((id) => userId.equals(id));
+
+
+      room.users.splice(idx, 1);
+      room.deletedUsers.push(userId);
+      // todo: notif users in room
+
+      return room.save();
+    }),
+  ]);
 
   return res.status(201).send();
 });
