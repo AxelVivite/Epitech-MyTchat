@@ -16,7 +16,7 @@ import {
 import User from '../models/user';
 import Room from '../models/room';
 import Post from '../models/post';
-import roomWebsocket from './roomWebsocket';
+import websocketEndpoint from './websocketEndpoint';
 
 const roomRouter = express.Router();
 expressWs(roomRouter);
@@ -128,12 +128,18 @@ roomRouter.post(
       users,
     });
 
-    await room.save();
-
-    await Promise.all(users.map((user) => {
-      user.rooms.push(room._id);
-      return user.save();
-    }));
+    await Promise.all([
+      room.save(),
+      ...users.map((user) => {
+        user.rooms.push(room._id);
+        return user.save();
+      }),
+      req.app.locals.wsReg.createRoom(
+        req.state.userId,
+        room._id.toString(),
+        users.map(({ _id }) => _id.toString()),
+      ),
+    ]);
 
     return res.status(200).json({
       roomId: room._id,
@@ -141,7 +147,6 @@ roomRouter.post(
   },
 );
 
-// todo: update openapi doc with getLastPost
 /**
  * @openapi
  * /room/info/{roomId}:
@@ -238,8 +243,7 @@ roomRouter.get('/read', async (req, res) => {
 });
 
 // todo: add query flag to continue even if some users are invalid
-// todo: test this more throughly
-// todo: openapi jsdoc
+// todo: test this more throughly, especially the notification part
 /**
  * @openapi
  * /room/invite/{roomId}:
@@ -328,7 +332,7 @@ roomRouter.post(
       });
     }
 
-    const { state: { room } } = req;
+    const { state: { room, roomId } } = req;
     users = users.filter(({ rooms }) => !rooms.includes(room._id));
 
     room.users = room.users.concat(userIds);
@@ -336,13 +340,15 @@ roomRouter.post(
     await Promise.all([
       room.save(),
       ...users.map((user) => {
-        user.rooms.push(room._id);
+        user.rooms.push(roomId);
         return user.save();
       }),
+      req.app.locals.wsReg.inviteRoom(
+        req.state.userId,
+        roomId,
+        users.map(({ _id }) => _id.toString()),
+      ),
     ]);
-
-    // todo: send ws notif
-    // todo: update roomActiveUsers
 
     return res.status(201).send();
   },
@@ -381,7 +387,14 @@ roomRouter.post(
  *         description: User left the room successfully
  */
 roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, res) => {
-  const { state: { user, room } } = req;
+  const {
+    state: {
+      user,
+      userId,
+      room,
+      roomId,
+    },
+  } = req;
 
   let idx = user.rooms.findIndex((id) => room._id.equals(id));
   user.rooms.splice(idx, 1);
@@ -391,8 +404,8 @@ roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, re
       user.save(),
       Room.findByIdAndRemove(room._id),
       room.posts.map((postId) => Post.findByIdAndRemove(postId)),
-      room.deletedUsers.map(async (userId) => {
-        const otherUser = await User.findById(userId);
+      room.deletedUsers.map(async (userId2) => {
+        const otherUser = await User.findById(userId2);
         const idx2 = otherUser.rooms.findIndex((id) => room._id.equals(id));
 
         otherUser.rooms.splice(idx2, 1);
@@ -406,12 +419,10 @@ roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, re
   idx = room.users.findIndex((id) => user._id.equals(id));
   room.users.splice(idx, 1);
 
-  // todo: send ws notif ?
-  // todo: update roomActiveUsers
-
   await Promise.all([
     user.save(),
     room.save(),
+    req.app.locals.wsReg.leaveRoom(userId, roomId),
   ]);
 
   return res.status(201).send();
@@ -420,7 +431,7 @@ roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, re
 // todo: implement ticket based auth ?
 // -> (https://devcenter.heroku.com/articles/websocket-security#authentication-authorization)
 // todo: openapi comment
-roomRouter.ws('/websocket', roomWebsocket);
+roomRouter.ws('/websocket', websocketEndpoint);
 
 /**
  * @openapi
@@ -483,11 +494,20 @@ roomRouter.post(
     getRoom,
   ],
   async (req, res) => {
-    const { state: { user, room }, body: { content } } = req;
+    const {
+      state: {
+        userId,
+        room,
+        roomId,
+      },
+      body: {
+        content,
+      },
+    } = req;
 
     const post = new Post({
-      user: user._id,
-      room: room._id,
+      user: userId,
+      room: roomId,
       content,
     });
     room.posts.push(post._id);
@@ -495,28 +515,8 @@ roomRouter.post(
     await Promise.all([
       post.save(),
       room.save(),
+      req.app.locals.wsReg.post(userId, roomId, post._id.toString(), content),
     ]);
-
-    if (!req.app.locals.roomActiveUsers.has(room._id.toString())) {
-      return res.status(200).json({
-        postId: post._id,
-      });
-    }
-
-    const activeUsers = req.app.locals.roomActiveUsers.get(room._id.toString());
-    const notif = JSON.stringify({
-      userId: user._id,
-      roomId: room._id,
-      postId: post._id,
-      content,
-    });
-
-    await Promise.all(
-      [...activeUsers].filter((userId2) => userId2 !== user._id.toString()).map((userId2) => {
-        const wsUser = req.app.locals.ws.get(userId2);
-        return wsUser.send(notif);
-      }),
-    );
 
     return res.status(200).json({
       postId: post._id,

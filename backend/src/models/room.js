@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-// todo: maybe deletedUser field is not necessary
+// todo: maybe deletedUsers field is not necessary
 const roomSchema = new mongoose.Schema({
   name: {
     type: String,

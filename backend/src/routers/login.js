@@ -442,10 +442,10 @@ loginRouter.delete('/delete', [checkToken, getUser], async (req, res) => {
 
       room.users.splice(idx, 1);
       room.deletedUsers.push(userId);
-      // todo: notif users in room
 
       return room.save();
     }),
+    req.app.locals.wsReg.deleteUser(userId, user.rooms.map(String)),
   ]);
 
   return res.status(201).send();

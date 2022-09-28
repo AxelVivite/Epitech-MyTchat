@@ -11,6 +11,7 @@ import 'express-async-errors';
 import Errors from './src/errors';
 import routers from './src/routers/routers';
 import { logger, internalError } from './src/routers/middlewares';
+import { WsRegistry } from './src/WsRegistry';
 
 const app = express();
 const port = 3000;
@@ -23,8 +24,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 
 app.locals = {
-  ws: new Map(),
-  roomActiveUsers: new Map(),
+  wsReg: new WsRegistry(),
 };
 
 routers.forEach(({ path, router }) => app.use(`/${path}`, router));

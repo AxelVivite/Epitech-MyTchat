@@ -116,13 +116,14 @@ export async function getRoom(req, res, next) {
     });
   }
 
-  if (!Types.ObjectId.isValid(req.state.roomId)) {
+  if (!Types.ObjectId.isValid(req.params.roomId)) {
     return res.status(400).json({
       error: Errors.BadId,
     });
   }
 
-  const room = await Room.findById(req.params.roomId);
+  const { params: { roomId } } = req;
+  const room = await Room.findById(roomId);
 
   if (room === null) {
     return res.status(404).json({
@@ -136,7 +137,7 @@ export async function getRoom(req, res, next) {
     });
   }
 
-  req.state = { ...req.state, room };
+  req.state = { ...req.state, room, roomId };
   return next();
 }
 
@@ -147,13 +148,14 @@ export async function getPost(req, res, next) {
     });
   }
 
-  if (!Types.ObjectId.isValid(req.state.postId)) {
+  if (!Types.ObjectId.isValid(req.params.postId)) {
     return res.status(400).json({
       error: Errors.BadId,
     });
   }
 
-  const post = await Post.findById({ _id: req.params.postId });
+  const { params: { postId } } = req;
+  const post = await Post.findById(postId);
 
   if (post === null) {
     return res.status(404).json({
@@ -167,7 +169,7 @@ export async function getPost(req, res, next) {
     });
   }
 
-  req.state = { ...req.state, post };
+  req.state = { ...req.state, post, postId };
   return next();
 }
 

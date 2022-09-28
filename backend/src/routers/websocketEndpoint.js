@@ -15,22 +15,12 @@ function logger(req) {
 }
 
 async function onClose(ws, req, userId) {
-  req.app.locals.ws.delete(userId);
+  const user = await User.findById(userId);
 
-  // todo: check user still exists
-  const user = await User.findById({ _id: userId });
-
-  user.rooms.forEach((roomId) => {
-    const activeUsers = req.app.locals.roomActiveUsers.get(roomId.toString());
-    activeUsers.delete(userId);
-
-    if (activeUsers.size === 0) {
-      req.app.locals.roomActiveUsers.delete(roomId.toString());
-    }
-  });
+  req.app.locals.wsReg.disconnectUser(userId, user.rooms);
 }
 
-export default async function roomWebsocket(ws, req) {
+export default async function websocketEndpoint(ws, req) {
   try {
     logger(req);
 
@@ -50,19 +40,9 @@ export default async function roomWebsocket(ws, req) {
     ws.on('close', () => onClose(ws, req, userId).catch((err) => console.error(err)));
 
     // todo: check user exists
-    const user = await User.findById({ _id: userId });
+    const user = await User.findById(userId);
 
-    // todo: handle multiple ws for same user
-    req.app.locals.ws.set(userId, ws);
-
-    user.rooms.forEach((roomId) => {
-      if (!req.app.locals.roomActiveUsers.has(roomId.toString())) {
-        req.app.locals.roomActiveUsers.set(roomId.toString(), new Set());
-      }
-
-      const roomActiveUsers = req.app.locals.roomActiveUsers.get(roomId.toString());
-      roomActiveUsers.add(userId);
-    });
+    req.app.locals.wsReg.connectUser(userId, ws, user.rooms.map(String));
 
     // todo
     // ws.on('error', (err) => {});
