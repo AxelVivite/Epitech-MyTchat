@@ -157,7 +157,7 @@ export class WsRegistry {
   }
 
   async deleteUser(userId, roomIds) {
-    this.ws.delete(userId)
+    this.ws.delete(userId);
 
     return Promise.all(
       roomIds.map((roomId) => {
