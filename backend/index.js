@@ -35,6 +35,7 @@ app.get('*', (req, res) => {
   });
 });
 
+// todo: this doesn't seem to be working
 app.use(internalError);
 
 // todo: use env variables for db url

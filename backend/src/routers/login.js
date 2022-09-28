@@ -1,6 +1,7 @@
 /* eslint no-underscore-dangle: 0 */ // --> OFF
 
 import express from 'express';
+import { Types } from 'mongoose';
 import { body as checkBody, param as checkParam } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -128,6 +129,13 @@ loginRouter.get('/userId/:username', [], async (req, res) => {
  */
 loginRouter.get('/username/:userId', [], async (req, res) => {
   const { params: { userId } } = req;
+
+  if (!Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({
+      error: Errors.BadId,
+    });
+  }
+
   const user = await User.findById(userId);
 
   if (user === null) {

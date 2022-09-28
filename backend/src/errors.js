@@ -23,6 +23,7 @@ export default {
     NotInRoom: 'NotInRoom',
     BadPostContent: 'BadPostContent',
   },
+  BadId: 'BadId',
   RouteNotFound: 'RouteNotFound',
   InternalError: 'InternalError',
 };

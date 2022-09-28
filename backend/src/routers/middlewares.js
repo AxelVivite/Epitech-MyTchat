@@ -1,6 +1,7 @@
 /* eslint no-underscore-dangle: 0 */ // --> OFF
 
 import jwt from 'jsonwebtoken';
+import { Types } from 'mongoose';
 import { validationResult } from 'express-validator';
 import morgan from 'morgan';
 import chalk from 'chalk';
@@ -15,7 +16,6 @@ export const SECRET = 'secret';
 
 export const logger = morgan(`[:user-agent] ${chalk.green(':method')} ${chalk.red(':url')} ${chalk.blue(':status')} - :date`);
 
-// todo: check id is valid mongoose ID (https://stackoverflow.com/a/29231016/12864941)
 // todo: handle token versionning
 export function checkToken(req, res, next) {
   const auth = req.headers.Authorization || req.headers.authorization;
@@ -49,8 +49,13 @@ export function checkToken(req, res, next) {
   return next();
 }
 
-// todo: check id is valid mongoose ID (https://stackoverflow.com/a/29231016/12864941)
 export async function getUser(req, res, next) {
+  if (!Types.ObjectId.isValid(req.state.userId)) {
+    return res.status(400).json({
+      error: Errors.BadId,
+    });
+  }
+
   const user = await User.findById(req.state.userId);
 
   if (user === null) {
@@ -69,8 +74,13 @@ export async function getUser(req, res, next) {
   return next();
 }
 
-// todo: check id is valid mongoose ID (https://stackoverflow.com/a/29231016/12864941)
 export async function getUserEvenIfDeleted(req, res, next) {
+  if (!Types.ObjectId.isValid(req.state.userId)) {
+    return res.status(400).json({
+      error: Errors.BadId,
+    });
+  }
+
   const user = await User.findById(req.state.userId);
 
   if (user === null) {
@@ -83,8 +93,13 @@ export async function getUserEvenIfDeleted(req, res, next) {
   return next();
 }
 
-// todo: check id is valid mongoose ID (https://stackoverflow.com/a/29231016/12864941)
 export function checkUserExists(req, res, next) {
+  if (!Types.ObjectId.isValid(req.state.userId)) {
+    return res.status(400).json({
+      error: Errors.BadId,
+    });
+  }
+
   if (!(User.exists({ _id: req.state.userId, isDeleted: false }))) {
     return res.status(404).json({
       error: Errors.Login.AccountNotFound,
@@ -94,11 +109,16 @@ export function checkUserExists(req, res, next) {
   return next();
 }
 
-// todo: check id is valid mongoose ID (https://stackoverflow.com/a/29231016/12864941)
 export async function getRoom(req, res, next) {
   if (req.params.roomId === undefined) {
     return res.status(400).json({
       error: Errors.Room.MissingRoomId,
+    });
+  }
+
+  if (!Types.ObjectId.isValid(req.state.roomId)) {
+    return res.status(400).json({
+      error: Errors.BadId,
     });
   }
 
@@ -120,11 +140,16 @@ export async function getRoom(req, res, next) {
   return next();
 }
 
-// todo: check id is valid mongoose ID (https://stackoverflow.com/a/29231016/12864941)
 export async function getPost(req, res, next) {
   if (req.params.postId === undefined) {
     return res.status(400).json({
       error: Errors.Room.MissingPostId,
+    });
+  }
+
+  if (!Types.ObjectId.isValid(req.state.postId)) {
+    return res.status(400).json({
+      error: Errors.BadId,
     });
   }
 
