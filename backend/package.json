@@ -7,7 +7,10 @@
     "start": "node --es-module-specifier-resolution=node .",
     "watch": "nodemon --es-module-specifier-resolution=node .",
     "lint": "eslint .",
-    "gen-swagger": "node ./scripts/gen-swagger"
+    "gen-swagger": "node ./scripts/gen-swagger",
+    "migration:create": "migrate-mongo create",
+    "migration:up": "migrate-mongo up",
+    "migration:down": "migrate-mongo down"
   },
   "repository": {
     "type": "git",
@@ -32,6 +35,7 @@
     "express-ws": "^5.0.2",
     "helmet": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
+    "migrate-mongo": "^9.0.0",
     "mongoose": "^6.6.1",
     "morgan": "^1.10.0"
   },
