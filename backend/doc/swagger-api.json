@@ -210,10 +210,10 @@
             }
           },
           "400": {
-            "description": "Bad request, details are returned, can be because of: MissingToken, BadAuthType (ex: Bearer instead of Basic)"
+            "description": "Bad request, details are returned, can be because of: BadAuthType (ex: Bearer instead of Basic)"
           },
           "401": {
-            "description": "Invalid password"
+            "description": "No auth, Invalid password"
           },
           "404": {
             "description": "User not found"

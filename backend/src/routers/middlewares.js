@@ -21,8 +21,8 @@ export function checkToken(req, res, next) {
   const auth = req.headers.Authorization || req.headers.authorization;
 
   if (auth === undefined) {
-    return res.status(400).json({
-      error: Errors.Login.MissingToken,
+    return res.status(401).json({
+      error: Errors.Login.MissingAuth,
     });
   }
 

@@ -8,6 +8,7 @@ export default {
   },
   Login: {
     MissingToken: 'MissingToken',
+    MissingAuth: 'MissingAuth',
     BadAuthType: 'BadAuthType',
     BadToken: 'BadToken',
     UsernameNotFound: 'UsernameNotFound',

@@ -258,9 +258,9 @@ loginRouter.post(
  *       400:
  *         description: >-
  *           Bad request, details are returned, can be because of:
- *           MissingToken, BadAuthType (ex: Bearer instead of Basic)
+ *           BadAuthType (ex: Bearer instead of Basic)
  *       401:
- *         description: Invalid password
+ *         description: No auth, Invalid password
  *       404:
  *         description: User not found
  *       410:
@@ -298,8 +298,8 @@ loginRouter.get(
     const auth = req.headers.Authorization || req.headers.authorization;
 
     if (auth === undefined) {
-      return res.status(400).json({
-        error: Errors.Login.MissingToken,
+      return res.status(401).json({
+        error: Errors.Login.MissingAuth,
       });
     }
 
