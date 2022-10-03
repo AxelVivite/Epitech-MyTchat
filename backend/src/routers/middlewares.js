@@ -93,16 +93,24 @@ export async function getUserEvenIfDeleted(req, res, next) {
   return next();
 }
 
-export function checkUserExists(req, res, next) {
+export async function checkUserExists(req, res, next) {
   if (!Types.ObjectId.isValid(req.state.userId)) {
     return res.status(400).json({
       error: Errors.BadId,
     });
   }
 
-  if (!(User.exists({ _id: req.state.userId, isDeleted: false }))) {
+  const user = await User.findById(req.state.userId);
+
+  if (user === null) {
     return res.status(404).json({
       error: Errors.Login.AccountNotFound,
+    });
+  }
+
+  if (user.isDeleted) {
+    return res.status(410).json({
+      error: Errors.Login.UserIsDeleted,
     });
   }
 

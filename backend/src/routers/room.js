@@ -94,17 +94,17 @@ expressWs(roomRouter);
 roomRouter.post(
   '/create',
   [
-    checkToken,
-    getUser,
     checkBody('otherUsers').default([]).isArray().withMessage(Errors.Room.BadOtherUsers),
     checkBody('otherUsers.*').isString().withMessage((value) => ({
       error: Errors.Room.BadOtherUsers,
       value,
     })),
     validateArgs,
+    checkToken,
+    getUser,
   ],
   async (req, res) => {
-    const userIds = [...new Set([req.state.userId, ...req.body.otherUsers])];
+    const userIds = [...new Set([req.state.userId.toString(), ...req.body.otherUsers])];
     const users = await User.find({ _id: { $in: userIds }, isDeleted: false });
 
     if (userIds.length > users.length) {
@@ -314,6 +314,7 @@ roomRouter.post(
       error: Errors.Room.BadOtherUsers,
       value,
     })),
+    validateArgs,
     checkToken,
     checkUserExists,
     getRoom,
@@ -396,7 +397,7 @@ roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, re
     },
   } = req;
 
-  let idx = user.rooms.findIndex((id) => room._id.equals(id));
+  const idx = user.rooms.findIndex((id) => room._id.equals(id));
   user.rooms.splice(idx, 1);
 
   if (room.users.length === 1) {
@@ -416,12 +417,9 @@ roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, re
     return res.status(201).send();
   }
 
-  idx = room.users.findIndex((id) => user._id.equals(id));
-  room.users.splice(idx, 1);
-
   await Promise.all([
     user.save(),
-    room.save(),
+    Room.findByIdAndUpdate(room._id, { $pull: { users: user._id } }),
     req.app.locals.wsReg.leaveRoom(userId, roomId),
   ]);
 
@@ -489,6 +487,7 @@ roomRouter.post(
   '/post/:roomId',
   [
     checkBody('content').notEmpty().withMessage(Errors.Room.BadPostContent),
+    validateArgs,
     checkToken,
     getUser,
     getRoom,
@@ -526,6 +525,7 @@ roomRouter.post(
 
 // todo: test this
 // todo: write swagger jsdoc
+// todo: move this to a post router
 roomRouter.get('/read/:postId', [checkToken, getUser, getPost], async (req, res) => {
   res.status(200).json({
     post: {
