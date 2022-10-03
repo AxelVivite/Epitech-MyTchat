@@ -176,7 +176,7 @@ loginRouter.get('/username/:userId', [], async (req, res) => {
  *                 format: email
  *               password:
  *                 type: string
- *                 pattern: /^(?=.+[A-Z])(?=.+[0-9]).{7,}$/
+ *                 pattern: /^(?=.*[A-Z])(?=.*[0-9]).{7,}$/
  *     responses:
  *       400:
  *         description: Email or password is missing or has bad format
@@ -206,14 +206,24 @@ loginRouter.post(
     const { body: { username, email, password } } = req;
 
     // todo: check username is unique
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({
+      $or: [
+        { username },
+        { email },
+      ],
+    });
 
     if (userExists !== null) {
+      const error = userExists.username === username
+        ? Errors.Registration.UsernameTaken
+        : Errors.Registration.EmailTaken;
+
       return res.status(409).json({
-        error: Errors.Registration.EmailTaken,
+        error,
       });
     }
 
+    // todo: use less salt in dev/test env
     const passwordHash = await bcrypt.hash(password, 10);
 
     const user = new User({

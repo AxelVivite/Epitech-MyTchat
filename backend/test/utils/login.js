@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-import { url } from './utils';
+import {
+  url,
+  makeId,
+  makeEmail,
+  makePwd,
+} from './utils';
 
 export async function register(username, email, password) {
   return axios({
@@ -12,6 +17,20 @@ export async function register(username, email, password) {
       password,
     },
   });
+}
+
+export async function rndRegister() {
+  const username = makeId();
+  const email = makeEmail();
+  const pwd = makePwd();
+  const res = await register(username, email, pwd);
+
+  return {
+    username,
+    email,
+    pwd,
+    res,
+  };
 }
 
 export async function signin(username, password) {

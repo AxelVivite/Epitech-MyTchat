@@ -30,7 +30,7 @@ export function checkToken(req, res, next) {
 
   if (authMatch === null) {
     return res.status(400).json({
-      errors: Errors.Login.BadAuthType,
+      error: Errors.Login.BadAuthType,
     });
   }
 
@@ -178,7 +178,7 @@ export function validateArgs(req, res, next) {
 
   if (!errors.isEmpty()) {
     return res.status(400).json({
-      errors: errors.array().map(({ msg }) => msg),
+      error: errors.array()[0].msg,
     });
   }
 

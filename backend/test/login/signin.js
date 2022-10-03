@@ -1,15 +1,24 @@
 import assert from 'assert';
+import axios from 'axios';
 
-import { makeId, makeEmail, makePwd } from '../utils/utils';
-import { register, signin, getUserInfo } from '../utils/login';
+import Errors from '../../src/errors';
+
+import { url, makePwd } from '../utils/utils';
+import {
+  rndRegister,
+  signin,
+  getUserInfo,
+  deleteUser,
+} from '../utils/login';
 
 export default () => {
   it('Should get a token for the user', async () => {
-    const username1 = makeId();
-    const email1 = makeEmail();
-    const pwd = makePwd();
+    const {
+      username: username1,
+      email: email1,
+      pwd,
+    } = await rndRegister();
 
-    await register(username1, email1, pwd);
     const { data: { token } } = await signin(username1, pwd);
 
     const {
@@ -27,11 +36,87 @@ export default () => {
     assert(rooms.length === 0);
   });
 
+  it('User was deleted', async () => {
+    const {
+      username,
+      pwd,
+      res: { data: { token } },
+    } = await rndRegister();
+
+    await deleteUser(token);
+
+    try {
+      await signin(username, pwd);
+    } catch (e) {
+      assert.equal(e.response.status, 410);
+      assert.equal(e.response.data.error, Errors.Login.UserIsDeleted);
+      return;
+    }
+
+    throw new Error('Call should have failed');
+  });
+
+  it('Missing auth', async () => {
+    const { username } = await rndRegister();
+
+    try {
+      await axios({
+        method: 'get',
+        url: `${url}/login/signin/${username}`,
+      });
+    } catch (e) {
+      assert.equal(e.response.status, 401);
+      assert.equal(e.response.data.error, Errors.Login.MissingAuth);
+      return;
+    }
+
+    throw new Error('Call should have failed');
+  });
+
+  it('Bad auth type', async () => {
+    const {
+      username,
+      res: { data: { token } },
+    } = await rndRegister();
+
+    try {
+      await axios({
+        method: 'get',
+        url: `${url}/login/signin/${username}`,
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (e) {
+      assert.equal(e.response.status, 400);
+      assert.equal(e.response.data.error, Errors.Login.BadAuthType);
+      return;
+    }
+
+    throw new Error('Call should have failed');
+  });
+
+  it('Invalid password', async () => {
+    const { username } = await rndRegister();
+
+    try {
+      await axios({
+        method: 'get',
+        url: `${url}/login/signin/${username}`,
+        headers: {
+          authorization: `Basic ${makePwd()}`,
+        },
+      });
+    } catch (e) {
+      assert.equal(e.response.status, 401);
+      assert.equal(e.response.data.error, Errors.Login.InvalidPassword);
+      return;
+    }
+
+    throw new Error('Call should have failed');
+  });
+
   // todo
   // it('User not found', async () => {})
-  // it('User was deleted', async () => {})
   // it('Bad user Id', async () => {})
-  // it('Missing auth', async () => {})
-  // it('Bad auth type', async () => {})
-  // it('Invalid password', async () => {})
 };

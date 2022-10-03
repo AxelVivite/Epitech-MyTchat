@@ -1,20 +1,43 @@
 import assert from 'assert';
+import * as mongoose from 'mongoose';
 
-import { makeId, makeEmail, makePwd } from '../utils/utils';
-import { register, getUsername } from '../utils/login';
+import Errors from '../../src/errors';
+
+import { rndRegister, getUsername } from '../utils/login';
 
 export default () => {
   it('Should get a username from a userId', async () => {
-    const username1 = makeId();
-    const { data: { userId } } = await register(username1, makeEmail(), makePwd());
-
+    const { username: username1, res: { data: { userId } } } = await rndRegister();
     const { data: { username: username2 } } = await getUsername(userId);
 
     assert.equal(username1, username2);
   });
 
-  // todo
-  // it('User not found', async () => {})
-  // it('User was deleted', async () => {})
-  // it('Bad user Id', async () => {})
+  it('User not found', async () => {
+    const fakeId = new mongoose.Types.ObjectId();
+
+    try {
+      await getUsername(fakeId);
+    } catch (e) {
+      assert.equal(e.response.status, 404);
+      assert.equal(e.response.data.error, Errors.Login.AccountNotFound);
+      return;
+    }
+
+    throw new Error('Call should have failed');
+  });
+
+  it('Bad user Id', async () => {
+    const fakeId = 'a';
+
+    try {
+      await getUsername(fakeId);
+    } catch (e) {
+      assert.equal(e.response.status, 400);
+      assert.equal(e.response.data.error, Errors.BadId);
+      return;
+    }
+
+    throw new Error('Call should have failed');
+  });
 };
