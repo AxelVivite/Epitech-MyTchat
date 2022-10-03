@@ -1,5 +1,5 @@
 import Login from "../../components/views/Login";
-import Home from "../../components/views/Test1";
+import Home from "../../components/views/Home";
 import { View } from "../../shared/interfaces";
 
 const Views: View[] = [

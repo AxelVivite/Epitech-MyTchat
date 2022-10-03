@@ -17,6 +17,12 @@ interface State {
     showPassword: boolean;
 }
 
+const ERRORS_REGISTER = new Map ([
+  ["BadEmail", "Mauvais format d'email. Veuillez le modifier et recommencer"],
+  ["BadPassword", "Mauvais format de mot de passe. Veuillez le modifier et recommencer"],
+  ["EmailTaken", "Cet adresse email est déjà utiliser. Veuillez en utiliser une autre et recommencer"],
+]);
+
 const socketUrl: String = "ws://localhost:3000/room/websocket";
 
 const Login: React.FC = () => {
