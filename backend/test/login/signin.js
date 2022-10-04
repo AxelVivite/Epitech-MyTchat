@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import Errors from '../../src/errors';
 
-import { url, makePwd } from '../utils/utils';
+import { url, makeId, makePwd } from '../utils/utils';
 import {
   rndRegister,
   signin,
@@ -34,6 +34,18 @@ export default () => {
     assert.equal(username1, username2);
     assert.equal(email1, email2);
     assert(rooms.length === 0);
+  });
+
+  it('User not found', async () => {
+    try {
+      await signin(makeId(), makePwd());
+    } catch (e) {
+      assert.equal(e.response.status, 404);
+      assert.equal(e.response.data.error, Errors.Login.AccountNotFound);
+      return;
+    }
+
+    throw new Error('Call should have failed');
   });
 
   it('User was deleted', async () => {
@@ -115,8 +127,4 @@ export default () => {
 
     throw new Error('Call should have failed');
   });
-
-  // todo
-  // it('User not found', async () => {})
-  // it('Bad user Id', async () => {})
 };

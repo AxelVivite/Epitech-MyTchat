@@ -3,6 +3,7 @@
 import express from 'express';
 import expressWs from 'express-ws';
 import { body as checkBody } from 'express-validator';
+import { Types } from 'mongoose';
 
 import Errors from '../errors';
 import {
@@ -95,20 +96,25 @@ roomRouter.post(
   '/create',
   [
     checkBody('otherUsers').default([]).isArray().withMessage(Errors.Room.BadOtherUsers),
-    checkBody('otherUsers.*').isString().withMessage((value) => ({
-      error: Errors.Room.BadOtherUsers,
-      value,
-    })),
+    checkBody('otherUsers.*').isString().withMessage(Errors.BadId),
+    checkBody('otherUsers.*').custom((value) => Types.ObjectId.isValid(value)).withMessage(Errors.BadId),
     validateArgs,
     checkToken,
     getUser,
   ],
   async (req, res) => {
+    // todo: try to do this with expressValidators
+    if (req.body.name !== undefined && typeof req.body.name !== 'string') {
+      return res.status(400).json({
+        error: Errors.Room.BadRoomName,
+      });
+    }
+
     const userIds = [...new Set([req.state.userId.toString(), ...req.body.otherUsers])];
     const users = await User.find({ _id: { $in: userIds }, isDeleted: false });
 
     if (userIds.length > users.length) {
-      const missingUsers = userIds.filter((userId) => users.some(({ _id }) => userId === _id));
+      const missingUsers = userIds.filter((userId) => !users.some(({ _id }) => _id.equals(userId)));
 
       return res.status(404).json({
         // todo: maybe use a more appropriate error type
@@ -225,6 +231,7 @@ roomRouter.get('/info/:roomId', [
       const post = await Post.findById(data.room.posts[data.room.posts.length - 1]);
 
       data.room.lastPost = {
+        id: post._id,
         user: post.user,
         room: post.room,
         content: post.content,
@@ -310,10 +317,8 @@ roomRouter.post(
   [
     checkBody('otherUsers').isArray().withMessage(Errors.Room.BadOtherUsers),
     checkBody('otherUsers').notEmpty().withMessage(Errors.Room.BadOtherUsers),
-    checkBody('otherUsers.*').isString().withMessage((value) => ({
-      error: Errors.Room.BadOtherUsers,
-      value,
-    })),
+    checkBody('otherUsers.*').isString().withMessage(Errors.BadId),
+    checkBody('otherUsers.*').custom((value) => Types.ObjectId.isValid(value)).withMessage(Errors.BadId),
     validateArgs,
     checkToken,
     checkUserExists,
@@ -324,7 +329,7 @@ roomRouter.post(
     let users = await User.find({ _id: { $in: userIds }, isDeleted: false });
 
     if (userIds.length > users.length) {
-      const missingUsers = userIds.filter((userId) => users.some(({ _id }) => userId === _id));
+      const missingUsers = userIds.filter((userId) => !users.some(({ _id }) => _id.equals(userId)));
 
       return res.status(404).json({
         // todo: maybe use a more appropriate error type
@@ -486,6 +491,7 @@ roomRouter.ws('/websocket', websocketEndpoint);
 roomRouter.post(
   '/post/:roomId',
   [
+    checkBody('content').isString().withMessage(Errors.Room.BadPostContent),
     checkBody('content').notEmpty().withMessage(Errors.Room.BadPostContent),
     validateArgs,
     checkToken,

@@ -7,7 +7,7 @@ import {
   arrayCmp,
 } from '../utils/utils';
 import { rndRegister } from '../utils/login';
-import { createRoom, getRoom } from '../utils/room';
+import { createRoom, getRoom, postMsg } from '../utils/room';
 import tokenAuth from '../auth/tokenAuth';
 import roomAuth from '../auth/roomAuth';
 
@@ -41,5 +41,26 @@ export default () => {
 
     assert(arrayCmp(users.map(({ userId }) => userId), room.users));
     assert.equal(name, room.name);
+  });
+
+  it('Should optionally return the last post', async () => {
+    const { res: { data: { token: token1 } } } = await rndRegister();
+    const { res: { data: { token: token2, userId: userId2 } } } = await rndRegister();
+
+    const { data: { roomId } } = await createRoom(token1, [userId2]);
+
+    const content = makeId();
+
+    await postMsg(token1, roomId, makeId());
+    const { data: { postId } } = await postMsg(token2, roomId, content);
+
+    const { data: { room } } = await getRoom(token1, roomId, true);
+
+    assert.equal(room.lastPost.id, postId);
+    assert.equal(room.lastPost.user, userId2);
+    assert.equal(room.lastPost.room, roomId);
+    assert.equal(room.lastPost.content, content);
+    assert.notEqual(Date.parse(room.lastPost.createdAt), NaN);
+    assert.notEqual(Date.parse(room.lastPost.updatedAt), NaN);
   });
 };

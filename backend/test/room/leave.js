@@ -1,6 +1,8 @@
 import assert from 'assert';
 import * as mongoose from 'mongoose';
 
+import Errors from '../../src/errors';
+
 import { url, arrayCmp } from '../utils/utils';
 import { rndRegister } from '../utils/login';
 import { createRoom, getRoom, leave } from '../utils/room';
@@ -20,7 +22,7 @@ export default () => {
   describe('auth', tokenAuthTests);
   describe('room auth', roomAuthTests);
 
-  it('Leaves a room', async () => {
+  it('Should leave a room', async () => {
     const users = await Promise.all([...new Array(5)].map(async () => {
       const { res: { data: { token, userId } } } = await rndRegister();
       return { token, userId };
@@ -36,10 +38,41 @@ export default () => {
       leave(users[1].token, roomId),
     ]);
 
-    const { data: { room } } = await getRoom(users[2].token, roomId, true);
+    const { data: { room } } = await getRoom(users[2].token, roomId);
     assert(arrayCmp(users.slice(2).map(({ userId }) => userId), room.users));
+
+    try {
+      await getRoom(users[0].token, roomId);
+    } catch (e) {
+      assert.equal(e.response.status, 401);
+      assert.equal(e.response.data.error, Errors.Room.NotInRoom);
+      return;
+    }
+
+    throw new Error('Call should have failed');
   });
 
-  // todo
-  // it('All user leave the room', async () => {})
+  it('Should leave a room empty', async () => {
+    const users = await Promise.all([...new Array(3)].map(async () => {
+      const { res: { data: { token, userId } } } = await rndRegister();
+      return { token, userId };
+    }));
+
+    const { data: { roomId } } = await createRoom(
+      users[0].token,
+      users.map(({ userId }) => userId),
+    );
+
+    await Promise.all(users.map(({ token }) => leave(token, roomId)));
+
+    try {
+      await getRoom(users[0].token, roomId);
+    } catch (e) {
+      assert.equal(e.response.status, 401);
+      assert.equal(e.response.data.error, Errors.Room.NotInRoom);
+      return;
+    }
+
+    throw new Error('Call should have failed');
+  });
 };

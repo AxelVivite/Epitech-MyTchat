@@ -1,5 +1,8 @@
 import assert from 'assert';
+import axios from 'axios';
 import * as mongoose from 'mongoose';
+
+import Errors from '../../src/errors';
 
 import { url, makeId } from '../utils/utils';
 import { rndRegister } from '../utils/login';
@@ -31,8 +34,7 @@ export default () => {
   describe('auth', tokenAuthTests);
   describe('room auth', roomAuthTests);
 
-  // todo: test createdAt and updatedAt
-  it('Posts a message to a room', async () => {
+  it('Should post a message to a room', async () => {
     const { res: { data: { token, userId } } } = await rndRegister();
 
     const { data: { roomId } } = await createRoom(token);
@@ -53,7 +55,70 @@ export default () => {
     assert.equal(post.content, content1);
   });
 
-  // todo
-  // it('missing content', async () => {})
-  // it('invalid content', async () => {})
+  it('Should create a timestamp', async () => {
+    const t1 = new Date();
+
+    const { res: { data: { token } } } = await rndRegister();
+    const { data: { roomId } } = await createRoom(token);
+
+    const { data: { postId } } = await postMsg(token, roomId, makeId());
+    const { data: { post } } = await readMsg(token, postId);
+
+    const t2 = new Date();
+    const createdAt = new Date(post.createdAt);
+
+    assert(createdAt >= t1);
+    assert(createdAt <= t2);
+  });
+
+  it('Content missing', async () => {
+    try {
+      await axios({
+        method: 'post',
+        url: `${url}/room/post/${new mongoose.Types.ObjectId()}`,
+      });
+    } catch (e) {
+      assert.equal(e.response.status, 400);
+      assert.equal(e.response.data.error, Errors.Room.BadPostContent);
+      return;
+    }
+
+    throw new Error('Call should have failed');
+  });
+
+  it('Invalid content (wrong type)', async () => {
+    try {
+      await axios({
+        method: 'post',
+        url: `${url}/room/post/${new mongoose.Types.ObjectId()}`,
+        data: {
+          content: 10,
+        },
+      });
+    } catch (e) {
+      assert.equal(e.response.status, 400);
+      assert.equal(e.response.data.error, Errors.Room.BadPostContent);
+      return;
+    }
+
+    throw new Error('Call should have failed');
+  });
+
+  it('Invalid content (empty)', async () => {
+    try {
+      await axios({
+        method: 'post',
+        url: `${url}/room/post/${new mongoose.Types.ObjectId()}`,
+        data: {
+          content: '',
+        },
+      });
+    } catch (e) {
+      assert.equal(e.response.status, 400);
+      assert.equal(e.response.data.error, Errors.Room.BadPostContent);
+      return;
+    }
+
+    throw new Error('Call should have failed');
+  });
 };
