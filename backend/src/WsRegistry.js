@@ -6,13 +6,14 @@ export const Notif = {
   UserLeftRoom: 'UserLeftRoom',
 };
 
-export function makePostNotif(userId, roomId, postId, content) {
+export function makePostNotif(userId, roomId, postId, content, createdAt) {
   return JSON.stringify({
     type: Notif.NewPost,
     userId,
     roomId,
     postId,
     content,
+    createdAt,
   });
 }
 
@@ -145,9 +146,9 @@ export class WsRegistry {
     );
   }
 
-  async post(userId, roomId, postId, content) {
+  async post(userId, roomId, postId, content, createdAt) {
     const room = this.getRoom(roomId);
-    const notif = makePostNotif(userId, roomId, postId, content);
+    const notif = makePostNotif(userId, roomId, postId, content, createdAt);
 
     return Promise.all(
       [...room]
@@ -157,6 +158,11 @@ export class WsRegistry {
   }
 
   async deleteUser(userId, roomIds) {
+    if (!this.ws.has(userId)) {
+      return
+    }
+
+    this.ws.get(userId).close();
     this.ws.delete(userId);
 
     return Promise.all(

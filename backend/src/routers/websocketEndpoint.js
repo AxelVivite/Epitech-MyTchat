@@ -24,9 +24,16 @@ export default async function websocketEndpoint(ws, req) {
   try {
     logger(req);
 
-    // todo: check token is there
     const { query: { token } } = url.parse(req.url, true);
+
     let userId;
+
+    if (token === undefined) {
+      ws.send(Errors.Login.MissingToken, () => {
+        ws.close();
+      });
+      return;
+    }
 
     try {
       userId = jwt.verify(token, SECRET).userId;
@@ -37,11 +44,22 @@ export default async function websocketEndpoint(ws, req) {
       return;
     }
 
-    ws.on('close', () => onClose(ws, req, userId).catch((err) => console.error(err)));
-
-    // todo: check user exists
     const user = await User.findById(userId);
 
+    console.log(user)
+    if (user === null) {
+      ws.send(Errors.Login.AccountNotFound, () => {
+        ws.close();
+      });
+      return;
+    } else if (user.isDeleted) {
+      ws.send(Errors.Login.UserIsDeleted, () => {
+        ws.close();
+      });
+      return;
+    }
+
+    ws.on('close', () => onClose(ws, req, userId).catch((err) => console.error(err)));
     req.app.locals.wsReg.connectUser(userId, ws, user.rooms.map(String));
 
     // todo

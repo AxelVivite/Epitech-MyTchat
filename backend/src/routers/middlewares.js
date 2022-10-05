@@ -70,7 +70,7 @@ export async function getUser(req, res, next) {
     });
   }
 
-  req.state = { ...req.state, user, userId: user._id };
+  req.state = { ...req.state, user};
   return next();
 }
 

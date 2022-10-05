@@ -520,8 +520,9 @@ roomRouter.post(
     await Promise.all([
       post.save(),
       room.save(),
-      req.app.locals.wsReg.post(userId, roomId, post._id.toString(), content),
     ]);
+
+    await req.app.locals.wsReg.post(userId, roomId, post._id.toString(), content, post.createdAt);
 
     return res.status(200).json({
       postId: post._id,
@@ -529,7 +530,6 @@ roomRouter.post(
   },
 );
 
-// todo: test this
 // todo: write swagger jsdoc
 // todo: move this to a post router
 roomRouter.get('/read/:postId', [checkToken, getUser, getPost], async (req, res) => {

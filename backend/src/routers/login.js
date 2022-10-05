@@ -448,7 +448,7 @@ loginRouter.delete('/delete', [checkToken, getUser], async (req, res) => {
     user.save(),
     ...user.rooms.map(async (roomId) => {
       const room = await Room.findById(roomId);
-      const idx = room.users.findIndex((id) => userId.equals(id));
+      const idx = room.users.findIndex((id) => id.equals(userId));
 
       room.users.splice(idx, 1);
       room.deletedUsers.push(userId);

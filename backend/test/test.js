@@ -13,6 +13,13 @@ import leave from './room/leave';
 import postMsg from './room/postMsg';
 import readMsg from './room/readMsg';
 
+import connectWs from './websocket/connectWs';
+import wsPostMsg from './websocket/postMsg';
+import wsCreateRoom from './websocket/createRoom';
+import wsInvite from './websocket/invite';
+import wsLeave from './websocket/leave';
+import wsDeleteUser from './websocket/deleteUser';
+
 describe('backend', () => {
   describe('login', () => {
     describe('GET /login/users', getUsernames);
@@ -33,9 +40,14 @@ describe('backend', () => {
     describe('POST /room/read/{postId}', readMsg);
   });
 
-  // todo
-  // describe('websocket', () => {
-  // });
+  describe('websocket', () => {
+    describe('WS /room/websocket', connectWs);
+    describe('POST /room/create', wsCreateRoom);
+    describe('POST /room/invite/{roomId}', wsInvite);
+    describe('POST /room/leave/{roomId}', wsLeave);
+    describe('POST /room/post/{roomId}', wsPostMsg);
+    describe('POST /login/delete', wsDeleteUser);
+  });
 
   // todo
   // describe('other', () => {
