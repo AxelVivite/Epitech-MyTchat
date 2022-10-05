@@ -17,7 +17,7 @@ export default (baseReq) => {
 
   return () => {
     it('User was deleted', async () => {
-      const { res: { data: { token } } } = await rndRegister();
+      const { token } = await rndRegister();
 
       await deleteUser(token);
 
@@ -66,7 +66,7 @@ export default (baseReq) => {
 
     // todo: test token expired
     it('Invalid token', async () => {
-      const { res: { data: { userId } } } = await rndRegister();
+      const { userId } = await rndRegister();
 
       const token = jwt.sign(
         { userId },

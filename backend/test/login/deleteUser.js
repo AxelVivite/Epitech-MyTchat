@@ -15,7 +15,7 @@ export default () => {
   describe('auth', tokenAuthTests);
 
   it('Should delete a user', async () => {
-    const { res: { data: { token } } } = await rndRegister();
+    const { token } = await rndRegister();
 
     await deleteUser(token);
 

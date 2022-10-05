@@ -49,11 +49,7 @@ export default () => {
   });
 
   it('User was deleted', async () => {
-    const {
-      username,
-      pwd,
-      res: { data: { token } },
-    } = await rndRegister();
+    const { username, pwd, token } = await rndRegister();
 
     await deleteUser(token);
 
@@ -86,10 +82,7 @@ export default () => {
   });
 
   it('Bad auth type', async () => {
-    const {
-      username,
-      res: { data: { token } },
-    } = await rndRegister();
+    const { username, token } = await rndRegister();
 
     try {
       await axios({

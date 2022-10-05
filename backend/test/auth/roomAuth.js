@@ -17,7 +17,7 @@ export default (baseReq) => {
 
   // eslint-disable-next-line mocha/no-top-level-hooks
   before(async () => {
-    const { res: { data: { token } } } = await rndRegister();
+    const { token } = await rndRegister();
 
     req.headers = { ...req.headers, authorization: `Bearer ${token}` };
   });
@@ -52,7 +52,7 @@ export default (baseReq) => {
     });
 
     it('User not in room', async () => {
-      const { res: { data: { token } } } = await rndRegister();
+      const { token } = await rndRegister();
       const { data: { roomId } } = await createRoom(token);
 
       req.url = `${baseReq.url}/${roomId}`;

@@ -46,13 +46,14 @@ export default async function websocketEndpoint(ws, req) {
 
     const user = await User.findById(userId);
 
-    console.log(user)
     if (user === null) {
       ws.send(Errors.Login.AccountNotFound, () => {
         ws.close();
       });
       return;
-    } else if (user.isDeleted) {
+    }
+
+    if (user.isDeleted) {
       ws.send(Errors.Login.UserIsDeleted, () => {
         ws.close();
       });

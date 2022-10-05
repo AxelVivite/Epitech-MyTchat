@@ -4,7 +4,7 @@ import * as mongoose from 'mongoose';
 import Errors from '../../src/errors';
 
 import { url, arrayCmp } from '../utils/utils';
-import { rndRegister } from '../utils/login';
+import { rndRegisters } from '../utils/login';
 import { createRoom, getRoom, leave } from '../utils/room';
 import tokenAuth from '../auth/tokenAuth';
 import roomAuth from '../auth/roomAuth';
@@ -23,10 +23,7 @@ export default () => {
   describe('room auth', roomAuthTests);
 
   it('Should leave a room', async () => {
-    const users = await Promise.all([...new Array(5)].map(async () => {
-      const { res: { data: { token, userId } } } = await rndRegister();
-      return { token, userId };
-    }));
+    const users = await rndRegisters(5);
 
     const { data: { roomId } } = await createRoom(
       users[0].token,
@@ -53,10 +50,7 @@ export default () => {
   });
 
   it('Should leave a room empty', async () => {
-    const users = await Promise.all([...new Array(3)].map(async () => {
-      const { res: { data: { token, userId } } } = await rndRegister();
-      return { token, userId };
-    }));
+    const users = await rndRegisters(3);
 
     const { data: { roomId } } = await createRoom(
       users[0].token,

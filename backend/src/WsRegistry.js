@@ -159,13 +159,13 @@ export class WsRegistry {
 
   async deleteUser(userId, roomIds) {
     if (!this.ws.has(userId)) {
-      return
+      return;
     }
 
     this.ws.get(userId).close();
     this.ws.delete(userId);
 
-    return Promise.all(
+    await Promise.all(
       roomIds.map((roomId) => {
         const room = this.getRoom(roomId);
 

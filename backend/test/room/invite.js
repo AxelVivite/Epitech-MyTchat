@@ -5,7 +5,7 @@ import * as mongoose from 'mongoose';
 import Errors from '../../src/errors';
 
 import { url, arrayCmp } from '../utils/utils';
-import { rndRegister } from '../utils/login';
+import { rndRegisters } from '../utils/login';
 import { createRoom, getRoom, invite } from '../utils/room';
 import tokenAuth from '../auth/tokenAuth';
 import roomAuth from '../auth/roomAuth';
@@ -30,10 +30,7 @@ export default () => {
   describe('room auth', roomAuthTests);
 
   it('Should add user(s) to an existing room', async () => {
-    const users = await Promise.all([...new Array(5)].map(async () => {
-      const { res: { data: { token, userId } } } = await rndRegister();
-      return { token, userId };
-    }));
+    const users = await rndRegisters(5);
 
     const { data: { roomId } } = await createRoom(users[0].token, [users[1].userId]);
     await invite(users[0].token, roomId, users.slice(2).map(({ userId }) => userId));
@@ -112,11 +109,7 @@ export default () => {
   });
 
   it('Missing users', async () => {
-    const users = await Promise.all([...new Array(5)].map(async () => {
-      const { res: { data: { token, userId } } } = await rndRegister();
-      return { token, userId };
-    }));
-
+    const users = await rndRegisters(5);
     const { data: { roomId } } = await createRoom(users[0].token, [users[1].userId]);
 
     const fakeUsers = [

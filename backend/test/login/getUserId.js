@@ -7,7 +7,7 @@ import { rndRegister, getUserId } from '../utils/login';
 
 export default () => {
   it('Should get a userId from a username', async () => {
-    const { username, res: { data: { userId: userId1 } } } = await rndRegister();
+    const { username, userId: userId1 } = await rndRegister();
     const { data: { userId: userId2 } } = await getUserId(username);
 
     assert.equal(userId1, userId2);

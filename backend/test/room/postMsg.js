@@ -35,8 +35,7 @@ export default () => {
   describe('room auth', roomAuthTests);
 
   it('Should post a message to a room', async () => {
-    const { res: { data: { token, userId } } } = await rndRegister();
-
+    const { token, userId } = await rndRegister();
     const { data: { roomId } } = await createRoom(token);
 
     const content1 = makeId();
@@ -58,7 +57,7 @@ export default () => {
   it('Should create a timestamp', async () => {
     const t1 = new Date();
 
-    const { res: { data: { token } } } = await rndRegister();
+    const { token } = await rndRegister();
     const { data: { roomId } } = await createRoom(token);
 
     const { data: { postId } } = await postMsg(token, roomId, makeId());

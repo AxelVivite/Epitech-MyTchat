@@ -9,7 +9,7 @@ import {
   makeId,
   arrayCmp,
 } from '../utils/utils';
-import { rndRegister } from '../utils/login';
+import { rndRegister, rndRegisters } from '../utils/login';
 import { createRoom, getRoom } from '../utils/room';
 import tokenAuth from '../auth/tokenAuth';
 
@@ -22,10 +22,7 @@ export default () => {
   describe('auth', tokenAuthTests);
 
   it('Should create a new room', async () => {
-    const users = await Promise.all([...new Array(5)].map(async () => {
-      const { res: { data: { token, userId } } } = await rndRegister();
-      return { token, userId };
-    }));
+    const users = await rndRegisters(5);
 
     const name = makeId();
 
@@ -41,10 +38,7 @@ export default () => {
   });
 
   it('Should create a room with a default name', async () => {
-    const users = await Promise.all([...new Array(5)].map(async () => {
-      const { res: { data: { token, userId } } } = await rndRegister();
-      return { token, userId };
-    }));
+    const users = await rndRegisters(5);
 
     const { data: { roomId } } = await createRoom(
       users[0].token,
@@ -57,7 +51,7 @@ export default () => {
   });
 
   it('Invalid name (wrong type)', async () => {
-    const { res: { data: { token } } } = await rndRegister();
+    const { token } = await rndRegister();
 
     try {
       await axios({
@@ -80,7 +74,7 @@ export default () => {
   });
 
   it('Other users should default to []', async () => {
-    const { res: { data: { token, userId } } } = await rndRegister();
+    const { token, userId } = await rndRegister();
 
     const { data: { roomId } } = await createRoom(token);
     const { data: { room } } = await getRoom(token, roomId, true);
@@ -144,10 +138,7 @@ export default () => {
   });
 
   it('Missing users', async () => {
-    const users = await Promise.all([...new Array(3)].map(async () => {
-      const { res: { data: { token, userId } } } = await rndRegister();
-      return { token, userId };
-    }));
+    const users = await rndRegisters(3);
 
     const fakeUsers = [
       new mongoose.Types.ObjectId(),

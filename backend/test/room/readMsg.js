@@ -21,7 +21,7 @@ export default () => {
   describe('post auth', postAuthTests);
 
   it('Should get a post', async () => {
-    const { res: { data: { token, userId } } } = await rndRegister();
+    const { token, userId } = await rndRegister();
     const { data: { roomId } } = await createRoom(token);
 
     const content = makeId();

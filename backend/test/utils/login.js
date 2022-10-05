@@ -23,14 +23,19 @@ export async function rndRegister() {
   const username = makeId();
   const email = makeEmail();
   const pwd = makePwd();
-  const res = await register(username, email, pwd);
+  const { data: { token, userId } } = await register(username, email, pwd);
 
   return {
     username,
     email,
     pwd,
-    res,
+    token,
+    userId,
   };
+}
+
+export async function rndRegisters(n) {
+  return Promise.all([...new Array(n)].map(rndRegister));
 }
 
 export async function signin(username, password) {

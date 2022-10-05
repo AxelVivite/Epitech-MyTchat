@@ -6,7 +6,7 @@ import {
   makeId,
   arrayCmp,
 } from '../utils/utils';
-import { rndRegister } from '../utils/login';
+import { rndRegister, rndRegisters } from '../utils/login';
 import { createRoom, getRoom, postMsg } from '../utils/room';
 import tokenAuth from '../auth/tokenAuth';
 import roomAuth from '../auth/roomAuth';
@@ -25,10 +25,7 @@ export default () => {
   describe('room auth', roomAuthTests);
 
   it('Should get info on a room', async () => {
-    const users = await Promise.all([...new Array(5)].map(async () => {
-      const { res: { data: { token, userId } } } = await rndRegister();
-      return { token, userId };
-    }));
+    const users = await rndRegisters(5);
 
     const name = makeId();
 
@@ -44,8 +41,8 @@ export default () => {
   });
 
   it('Should optionally return the last post', async () => {
-    const { res: { data: { token: token1 } } } = await rndRegister();
-    const { res: { data: { token: token2, userId: userId2 } } } = await rndRegister();
+    const { token: token1 } = await rndRegister();
+    const { token: token2, userId: userId2 } = await rndRegister();
 
     const { data: { roomId } } = await createRoom(token1, [userId2]);
 

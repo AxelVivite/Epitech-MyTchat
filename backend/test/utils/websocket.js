@@ -1,13 +1,14 @@
-import axios from 'axios'
-import WebSocket from 'ws'
+import WebSocket from 'ws';
+
+import { rndRegister } from './login';
 
 export const wsUrl = 'ws://localhost:3000/room/websocket';
 
 export async function connectWs(token, closeCallback = () => {}, errorCallback = () => {}) {
-  return new Promise((resolve, reject) => {
-    const ws = new WebSocket(`ws://localhost:3000/room/websocket?token=${token}`)
+  return new Promise((resolve) => {
+    const ws = new WebSocket(`ws://localhost:3000/room/websocket?token=${token}`);
 
-    ws.on('open', (e) => {
+    ws.on('open', () => {
       resolve(ws);
     });
 
@@ -17,13 +18,14 @@ export async function connectWs(token, closeCallback = () => {}, errorCallback =
 }
 
 export async function wsNextNotif(ws, timeout = 300) {
-  return new Promise(async (resolve, reject) => {
-    ws.on('message', data => {
+  return new Promise((resolve, reject) => {
+    ws.on('message', (data) => {
       resolve(JSON.parse(data));
-    })
+    });
 
-    await setTimeout(timeout);
-    reject(new Error(`Timeout while waiting for websocket notification (${timeout}ms)`))
+    setTimeout(() => {
+      reject(new Error(`Timeout while waiting for websocket notification (${timeout}ms)`));
+    }, timeout);
   });
 }
 
@@ -32,24 +34,38 @@ export function wsMakeQueue(ws) {
     data: [],
     shift() {
       if (this.size() === 0) {
-        throw new Error('Queue is empty')
+        throw new Error('Queue is empty');
       }
 
       const x = this.data[0];
-      this.data = this.data.slice(1)
-      return x
+      this.data = this.data.slice(1);
+      return x;
     },
     size() {
-      return this.data.length
+      return this.data.length;
     },
     empty() {
-      this.data = []
-    }
-  }
+      this.data = [];
+    },
+  };
 
-  ws.on('message', data => {
+  ws.on('message', (data) => {
     queue.data.push(JSON.parse(data));
-  })
+  });
 
   return queue;
+}
+
+export async function rndRegistersWithWs(n) {
+  return Promise.all([...new Array(n)].map(async () => {
+    const user = await rndRegister();
+    const ws = await connectWs(user.token);
+    const msgQueue = wsMakeQueue(ws);
+
+    return {
+      ...user,
+      ws,
+      msgQueue,
+    };
+  }));
 }
