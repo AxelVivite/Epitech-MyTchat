@@ -20,6 +20,8 @@ import wsInvite from './websocket/invite';
 import wsLeave from './websocket/leave';
 import wsDeleteUser from './websocket/deleteUser';
 
+import routeNotFound from './other/routeNotFound';
+
 describe('backend', () => {
   describe('login', () => {
     describe('GET /login/users', getUsernames);
@@ -49,9 +51,9 @@ describe('backend', () => {
     describe('POST /login/delete', wsDeleteUser);
   });
 
+  describe('other', () => {
+    describe('404 route not found', routeNotFound);
   // todo
-  // describe('other', () => {
-  //   describe('404 route not found', () => {});
   //   describe('500 internal error', () => {});
-  // });
+  });
 });

@@ -29,7 +29,7 @@ app.locals = {
 
 routers.forEach(({ path, router }) => app.use(`/${path}`, router));
 
-app.get('*', (req, res) => {
+app.use('*', (req, res) => {
   res.status(404).json({
     error: Errors.RouteNotFound,
   });
