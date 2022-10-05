@@ -205,7 +205,6 @@ loginRouter.post(
   async (req, res) => {
     const { body: { username, email, password } } = req;
 
-    // todo: check username is unique
     const userExists = await User.findOne({
       $or: [
         { username },
@@ -396,7 +395,6 @@ loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
   });
 });
 
-// todo: test this thoroughly, it can lead to a LOT of bugs
 /**
  * @openapi
  * /login/delete:

@@ -13,7 +13,7 @@ const routes = [
   },
 ];
 
-// todo: only push in test mode
+// todo: only enables these routes in test mode
 routes.push({
   path: 'test',
   router: testRouter,

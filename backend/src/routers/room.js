@@ -24,10 +24,7 @@ expressWs(roomRouter);
 
 // todo: make route(s) so you don't load all messages at once
 
-// todo: maybe don't use ids to give other users (or give other ways)
 // todo: add query flag to continue even if some users are invalid
-// todo: use ws to notify users
-// todo: update roomActiveUsers
 /**
  * @openapi
  * /room/create:
@@ -244,11 +241,6 @@ roomRouter.get('/info/:roomId', [
   res.status(200).json(data);
 });
 
-// todo: get all messages in the room
-roomRouter.get('/read', async (req, res) => {
-  res.status(200);
-});
-
 // todo: add query flag to continue even if some users are invalid
 // todo: test this more throughly, especially the notification part
 /**
@@ -360,7 +352,6 @@ roomRouter.post(
   },
 );
 
-// todo: test this more throughly
 /**
  * @openapi
  * /room/leave/{roomId}:
