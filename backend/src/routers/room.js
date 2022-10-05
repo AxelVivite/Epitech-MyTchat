@@ -530,8 +530,47 @@ roomRouter.post(
   },
 );
 
-// todo: write swagger jsdoc
 // todo: move this to a post router
+/**
+ * @openapi
+ * /room/read/{postId}:
+ *   get:
+ *     tags:
+ *       - room
+ *     description: Get information on a post
+ *     parameters:
+ *       - in: path
+ *         name: postId
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/MongoId'
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       400:
+ *         description: >-
+ *           Bad request, details are returned, can be because of:
+ *           MissingToken, BadAuthType (ex: Basic instead of Bearer)
+ *       401:
+ *         description: >-
+ *           Bad token (not created by this server or expired)
+ *           or user doesn't have access to the room the post is in
+ *       404:
+ *         description: The user or the post was not found
+ *       410:
+ *         description: User has been deleted
+ *       200:
+ *         description: Returns info on the room
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - post
+ *               properties:
+ *                 post:
+ *                   $ref: '#/components/schemas/Post'
+ */
 roomRouter.get('/read/:postId', [checkToken, getUser, getPost], async (req, res) => {
   res.status(200).json({
     post: {
