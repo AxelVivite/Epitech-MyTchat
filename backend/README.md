@@ -8,7 +8,7 @@ Our project is a simple chat web app. The backend is made with [ExpressJS](https
 
 ## API routes
 
-Details about the routes can be found in doc/swagger.json, this is file generated from jsdoc using [swagger-jsdoc](https://www.npmjs.com/package/swagger-jsdoc). Not all routes are listed (at the moment), you may need to go look at the code itself.
+Details about the routes can be found in doc/swagger.json, this is file generated from jsdoc using [swagger-jsdoc](https://www.npmjs.com/package/swagger-jsdoc).
 
 ## Usage
 
@@ -37,3 +37,21 @@ npm i
 
 Then you can run the script (from the root of the project):\
 ```npm run gen-swagger```
+
+### Unit Tests
+
+To run tests:\
+```npm run test```
+
+### Migrations
+
+To create a migration:\
+```npm run migration:create {MIGRATION_NAME}```
+
+Then go to the ```migrations``` folder to edit your migration file.
+
+To apply a migration run:\
+```npm run migration:up```
+
+To unapply a migration run:\
+```npm run migration:down```
