@@ -176,7 +176,7 @@ loginRouter.get('/username/:userId', [], async (req, res) => {
  *                 format: email
  *               password:
  *                 type: string
- *                 pattern: /^(?=.*[A-Z])(?=.*[0-9]).{7,}$/
+ *                 pattern: ^(?=.*[A-Z])(?=.*[0-9]).{7,}$
  *     responses:
  *       400:
  *         description: Email or password is missing or has bad format

@@ -8,7 +8,9 @@ Our project is a simple chat web app. The backend is made with [ExpressJS](https
 
 ## API routes
 
-Details about the routes can be found in doc/swagger.json, this is file generated from jsdoc using [swagger-jsdoc](https://www.npmjs.com/package/swagger-jsdoc).
+Details about the routes can be found in doc/swagger.json or online [here](https://app.swaggerhub.com/apis/ALEXISAURIAC_1/JS-Full-Stack/1.0.0).
+
+This documentation was generated from jsdoc using [swagger-jsdoc](https://www.npmjs.com/package/swagger-jsdoc).
 
 ## Websocket
 
