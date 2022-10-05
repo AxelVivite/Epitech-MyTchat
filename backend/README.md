@@ -10,6 +10,11 @@ Our project is a simple chat web app. The backend is made with [ExpressJS](https
 
 Details about the routes can be found in doc/swagger.json, this is file generated from jsdoc using [swagger-jsdoc](https://www.npmjs.com/package/swagger-jsdoc).
 
+## Websocket
+
+This API uses websockets to send notifications to a client about a variety of things.\
+You can find more details in ```/doc/Websocket.md```.
+
 ## Usage
 
 ### Start the server
