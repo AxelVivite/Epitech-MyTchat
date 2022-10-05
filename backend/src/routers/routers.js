@@ -1,7 +1,8 @@
 import loginRouter from './login';
 import roomRouter from './room';
+import testRouter from './test';
 
-export default [
+const routes = [
   {
     path: 'login',
     router: loginRouter,
@@ -11,3 +12,11 @@ export default [
     router: roomRouter,
   },
 ];
+
+// todo: only push in test mode
+routes.push({
+  path: 'test',
+  router: testRouter,
+});
+
+export default routes;

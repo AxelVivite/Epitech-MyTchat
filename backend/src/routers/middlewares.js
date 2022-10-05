@@ -193,7 +193,7 @@ export function validateArgs(req, res, next) {
   return next();
 }
 
-export function internalError(err, req, res) {
+export function internalError(err, req, res, next) {
   // eslint-disable-next-line no-console
   console.error(err);
 
