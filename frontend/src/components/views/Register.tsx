@@ -119,8 +119,8 @@ const validationsForm = yup.object({
          .string()
          .email('Entrer un email valide')
          .required('Email obligatoire'),
-    username: yup.string().
-      required("Username obligatoire"),  
+    username: yup.string()
+    .required("Username obligatoire"),  
     password: yup
         .string()
         .matches(validPassword, "Le mot de passe doit contenir au moins 7 charactére avec au minimum une majuscule et 1 chiffre")
