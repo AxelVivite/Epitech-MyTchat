@@ -1,3 +1,4 @@
+import config from '../config';
 import loginRouter from './login';
 import roomRouter from './room';
 import testRouter from './test';
@@ -13,10 +14,11 @@ const routes = [
   },
 ];
 
-// todo: only enables these routes in test mode
-routes.push({
-  path: 'test',
-  router: testRouter,
-});
+if (config.env === 'dev' || config.env === 'test') {
+  routes.push({
+    path: 'test',
+    router: testRouter,
+  });
+}
 
 export default routes;

@@ -52,7 +52,6 @@ export function makeLeaveNotif(userId, roomId, userDeleted = false) {
 }
 
 // todo: handle multiple ws for the same user
-// todo: make some stuff private
 export class WsRegistry {
   constructor() {
     this.ws = new Map();

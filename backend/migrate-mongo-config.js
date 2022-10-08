@@ -1,6 +1,6 @@
 export default {
   mongodb: {
-    // todo: change db url
+    // todo: figure out how to do it with multi env
     url: 'mongodb://localhost:27017',
     options: {
       useNewUrlParser: true,

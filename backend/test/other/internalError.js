@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import Errors from '../../src/errors';
 
-import { url, makeId } from '../utils/utils';
+import { url } from '../utils/utils';
 
 export default () => {
   it('GET on a synchronous route that will crash', async () => {

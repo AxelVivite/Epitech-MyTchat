@@ -6,6 +6,7 @@ import { body as checkBody, param as checkParam } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
+import config from '../config';
 import Errors from '../errors';
 import {
   checkToken,
@@ -14,11 +15,6 @@ import {
 } from './middlewares';
 import User from '../models/user';
 import Room from '../models/room';
-
-// todo: use better secret + put in .env file
-const SECRET = 'secret';
-// Format for describing time: https://github.com/vercel/ms#examples
-const TOKEN_EXPIRES_IN = '10 days';
 
 const loginRouter = express.Router();
 
@@ -222,8 +218,7 @@ loginRouter.post(
       });
     }
 
-    // todo: use less salt in dev/test env
-    const passwordHash = await bcrypt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(password, config.pwdHashSalt);
 
     const user = new User({
       username,
@@ -235,14 +230,14 @@ loginRouter.post(
 
     const token = jwt.sign(
       { userId: user._id.toString() },
-      SECRET,
-      { expiresIn: TOKEN_EXPIRES_IN },
+      config.jwtSecret,
+      { expiresIn: config.jwtExpires },
     );
 
     return res.status(200).json({
       userId: user._id.toString(),
       token,
-      expiresIn: TOKEN_EXPIRES_IN,
+      expiresIn: config.jwtExpires,
     });
   },
 );
@@ -331,14 +326,14 @@ loginRouter.get(
 
     const token = jwt.sign(
       { userId: user._id.toString() },
-      SECRET,
-      { expiresIn: TOKEN_EXPIRES_IN },
+      config.jwtSecret,
+      { expiresIn: config.jwtExpires },
     );
 
     return res.status(200).json({
       userId: user._id.toString(),
       token,
-      expiresIn: TOKEN_EXPIRES_IN,
+      expiresIn: config.jwtExpires,
     });
   },
 );

@@ -7,6 +7,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import * as mongoose from 'mongoose';
 import 'express-async-errors';
+import config from './src/config';
 
 import Errors from './src/errors';
 import routers from './src/routers/routers';
@@ -14,11 +15,12 @@ import { logger, internalError } from './src/routers/middlewares';
 import { WsRegistry } from './src/WsRegistry';
 
 const app = express();
-const port = 3000;
+const port = config.serverPort;
 
-// todo: only enable logger in dev env
 expressWs(app);
-app.use(logger);
+if (config.env === 'dev' || config.env === 'test') {
+  app.use(logger);
+}
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
@@ -37,8 +39,7 @@ app.use('*', (req, res) => {
 
 app.use(internalError);
 
-// todo: use env variables for db url
-mongoose.connect('mongodb://localhost:27017/vueexpress').then(() => {
+mongoose.connect(config.mongodbUrl).then(() => {
   console.log('Database is connected');
 
   app.listen(port, () => {

@@ -242,7 +242,6 @@ roomRouter.get('/info/:roomId', [
 });
 
 // todo: add query flag to continue even if some users are invalid
-// todo: test this more throughly, especially the notification part
 /**
  * @openapi
  * /room/invite/{roomId}:
@@ -424,7 +423,6 @@ roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, re
 
 // todo: implement ticket based auth ?
 // -> (https://devcenter.heroku.com/articles/websocket-security#authentication-authorization)
-// todo: openapi comment
 roomRouter.ws('/websocket', websocketEndpoint);
 
 /**

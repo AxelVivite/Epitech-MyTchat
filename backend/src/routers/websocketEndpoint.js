@@ -6,8 +6,8 @@ import url from 'url';
 import jwt from 'jsonwebtoken';
 import chalk from 'chalk';
 
+import config from '../config';
 import Errors from '../errors';
-import { SECRET } from './middlewares';
 import User from '../models/user';
 
 function logger(req) {
@@ -36,7 +36,7 @@ export default async function websocketEndpoint(ws, req) {
     }
 
     try {
-      userId = jwt.verify(token, SECRET).userId;
+      userId = jwt.verify(token, config.jwtSecret).userId;
     } catch (e) {
       ws.send(Errors.Login.BadToken, () => {
         ws.close();

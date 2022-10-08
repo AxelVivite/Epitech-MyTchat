@@ -6,13 +6,11 @@ import { validationResult } from 'express-validator';
 import morgan from 'morgan';
 import chalk from 'chalk';
 
+import config from '../config';
 import Errors from '../errors';
 import User from '../models/user';
 import Room from '../models/room';
 import Post from '../models/post';
-
-// todo: use better secret + put in .env file
-export const SECRET = 'secret';
 
 export const logger = morgan(`[:user-agent] ${chalk.green(':method')} ${chalk.red(':url')} ${chalk.blue(':status')} - :date`);
 
@@ -38,7 +36,7 @@ export function checkToken(req, res, next) {
   let userId;
 
   try {
-    userId = jwt.verify(token, SECRET).userId;
+    userId = jwt.verify(token, config.jwtSecret).userId;
   } catch (e) {
     return res.status(401).json({
       error: Errors.Login.BadToken,
@@ -193,6 +191,8 @@ export function validateArgs(req, res, next) {
   return next();
 }
 
+// This middleware WILL NOT WORK if next is not a parameter
+// eslint-disable-next-line no-unused-vars
 export function internalError(err, req, res, next) {
   // eslint-disable-next-line no-console
   console.error(err);
