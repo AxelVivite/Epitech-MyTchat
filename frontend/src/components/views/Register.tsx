@@ -22,7 +22,6 @@ interface InputForm {
 
 const Register: React.ComponentType<any> = () => {
     //eslint-disable-next-line
-    let navigate = useNavigate();
     
     return (
         <Form/>
@@ -138,10 +137,6 @@ const ERRORS_REGISTER = new Map ([
     ["EmailTaken", "Cet adresse email est déjà utiliser. Veuillez en utiliser une autre et recommencer"],
     ["UsernameTaken", "Ce username est déjà utiliser. Veuillez en choisir un autre"],
 ]);
-
-const registration = async (email: string, password: string) => {
-
-}
 
 const Form = withFormik<InputForm, InputForm>({
     mapPropsToValues: props => {

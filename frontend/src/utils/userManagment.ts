@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const devUrl = "http://localhost:3000";
 
@@ -24,7 +23,6 @@ const ERRORS_REGISTER = new Map ([
 
 
 export const login = async (email: String, password: String) => {
-    console.log("fait moi un bisou");
     try {
         const {data, status} = await axios.get<any>(
             devUrl + "/login/signin/" + email,

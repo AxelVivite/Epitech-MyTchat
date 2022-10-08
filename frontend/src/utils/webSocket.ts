@@ -1,5 +1,3 @@
-import useWebSocket from "react-use-websocket";
-
 const socketUrl: String = "ws://localhost:3000/room/websocket";
 
 export class WebsocketManager {

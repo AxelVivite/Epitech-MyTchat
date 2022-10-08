@@ -9,7 +9,9 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import * as React from 'react';
 import { login } from "../../utils/userManagment";
-//import { WebsocketManager } from "../../utils/webSocket";
+//eslint-disable-next-line
+import { setGlobalState, useGlobalState } from "../../utils/globalStateManager/globalStateInit";
+import { User } from "../../utils/globalStateManager/globalStateObjects";
 
 interface State {
     username: string;
@@ -17,13 +19,12 @@ interface State {
     showPassword: boolean;
 }
 
+//eslint-disable-next-line
 const ERRORS_REGISTER = new Map ([
   ["BadEmail", "Mauvais format d'email. Veuillez le modifier et recommencer"],
   ["BadPassword", "Mauvais format de mot de passe. Veuillez le modifier et recommencer"],
   ["EmailTaken", "Cet adresse email est déjà utiliser. Veuillez en utiliser une autre et recommencer"],
 ]);
-
-const socketUrl: String = "ws://localhost:3000/room/websocket";
 
 const Login: React.FC = () => {
     let navigate = useNavigate();
@@ -33,7 +34,8 @@ const Login: React.FC = () => {
         password: '',
         showPassword: false,
       });
-    const [webSocket, setWebSocket] = React.useState<any>();
+
+    //eslint-disable-next-line
     const [token, setToken] = React.useState("");
       const handleChange =
         (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,7 +96,13 @@ const Login: React.FC = () => {
                     const res = await login(values.username, values.password);
                     if (res?.status === 200) {
                         setToken(res?.data.token);
-                        navigate(`/home/${res?.data.token}`);
+                        setGlobalState("token", res?.data.token)
+                        let user: User = {
+                          userId: res?.data.userId,
+                          username: values.username
+                        }
+                        setGlobalState("user", user)
+                        navigate(`/home`);
                       }
                     
                 } catch (err) {
@@ -106,7 +114,6 @@ const Login: React.FC = () => {
               Se connecter
           </Button>
           <Button onClick={() => {
-            //   console.log(values.email + " et " + values.password);
               navigate("/register");
             }} 
               variant="outlined"
