@@ -411,7 +411,7 @@ loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
  *       410:
  *         description: User has already been deleted
  *       204:
- *         description: User was successfullt deleted
+ *         description: User was successfully deleted
  */
 loginRouter.delete('/delete', [checkToken, getUser], async (req, res) => {
   const { state: { user, userId } } = req;

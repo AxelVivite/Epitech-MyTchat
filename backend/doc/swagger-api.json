@@ -295,7 +295,7 @@
         ],
         "responses": {
           "204": {
-            "description": "User was successfullt deleted"
+            "description": "User was successfully deleted"
           },
           "400": {
             "description": "Bad request, details are returned, can be because of: MissingToken, BadAuthType (ex: Basic instead of Bearer)"
