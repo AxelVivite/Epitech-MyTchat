@@ -5,7 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 // Global State Manager
 import { Provider } from 'react-redux';
-import store from './store';
 import "./services/translation/i18l";
 
 const root = ReactDOM.createRoot(
