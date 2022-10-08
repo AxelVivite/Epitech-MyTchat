@@ -10,7 +10,6 @@ const Test: React.FC = () => {
         <div className="Test">
             <p>{t("nav-test")}</p>
             <button onClick={() => navigate("/test")}>Navigue içi</button>
-        
         </div>
     );
 };

@@ -8,6 +8,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
   box-sizing: border-box;
+  background-color: rgb(237, 237, 237);
 }
 
 code {
