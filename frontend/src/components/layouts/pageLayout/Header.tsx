@@ -2,7 +2,6 @@ import React from "react";
 
 import {
     AppBar,
-    Avatar,
     Box,
     IconButton,
     Toolbar,
@@ -10,7 +9,7 @@ import {
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 
-import getInitials from "../../../utils/getInitials";
+import Avatar from "../../atoms/Avatar";
 import logo from "../../../assets/logo.png";
 
 interface HeaderProps {
@@ -19,23 +18,22 @@ interface HeaderProps {
 
 const Header = (props: HeaderProps): JSX.Element => {
     return (
-        <AppBar position="sticky">
+        <AppBar position="sticky" className="mb--16">
             <Toolbar sx={{ justifyContent: "space-between" }}>
                 <IconButton onClick={props.handleClickDrawerButton}
+                    color="secondary"
                     sx={{
                         display: { xs: "block", md: "none" }
                     }}>
                     <MenuIcon />
                 </IconButton>
-                <Box sx={{ display: "flex", flexWrap: "nowrap", flexDirection: "row" }}>
-                    <img src={logo} alt="logo" style={{ width: "40px" }}/>
-                    <Typography variant="h6" component="div" >
+                <Box className="row">
+                    <img src={logo} alt="logo" style={{ width: "40px", marginRight: "16px" }}/>
+                    <Typography className="title" >
                         MyChat
                     </Typography>
                 </Box>
-                <Avatar>
-                    {getInitials("Axel Virot")}
-                </Avatar>
+                <Avatar name="Axel" />
             </Toolbar>
         </AppBar >
     );

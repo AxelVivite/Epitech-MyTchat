@@ -1,13 +1,14 @@
+import { useTranslation } from "react-i18next";
+
 import {
     Box,
-    Divider,
     Drawer as MuiDrawer,
-    IconButton,
     Typography
 } from "@mui/material/";
 import AddIcon from '@mui/icons-material/Add';
 
-import Rooms from "./Rooms";
+import Modal from "../../molecules/Modal";
+import Rooms from "../../molecules/Rooms";
 
 interface DrawerProps {
     handleClickDrawerButton: () => void;
@@ -15,21 +16,19 @@ interface DrawerProps {
 }
 
 const Drawer = (props: DrawerProps): JSX.Element => {
+    const { t } = useTranslation();
+
     const drawer = (
         <>
-            <Box sx={{
-                display: "flex",
-                flexWrap: "nowrap",
-                flexDirection: "row",
-                height: "64px"
-            }}>
-                <Typography>Conversations</Typography>
-
-                <IconButton onClick={props.handleClickDrawerButton}>
-                    <AddIcon />
-                </IconButton>
+            <Box className="row border--bottom p--16 height--32 flex--space-between">
+                <Typography className="rooms">{t("rooms")}</Typography>
+                <Modal
+                    buttonLabel={<AddIcon />}
+                    clickableVariant="iconButton"
+                >
+                    <p>Hello</p>
+                </Modal>
             </Box>
-            <Divider />
             <Rooms />
         </>
     );

@@ -2,8 +2,10 @@ import React from "react";
 
 import { Box } from "@mui/material";
 
-import Drawer from "./drawer/Drawer";
+import Drawer from "./Drawer";
 import Header from "./Header";
+
+import "./PageLayout.styles.scss";
 
 interface PageLayoutProps {
     children: React.ReactNode;
@@ -22,20 +24,14 @@ const PageLayout = (props: PageLayoutProps): JSX.Element => {
             <Drawer handleClickDrawerButton={handleClickDrawerButton} isDrawerOpen={isDrawerOpen} />
             <Box id="main"
                 sx={{
-                    width: { md: `calc(100% - 280px})` },
-                    ml: { md: "280px" }
+                    maxWidth: "1400px",
+                    paddingLeft: { md: "296px" },
+                    padding: "0 16px",
+                    margin: "auto"
                 }}
             >
-
                 <Header handleClickDrawerButton={handleClickDrawerButton} />
-                <Box
-                    sx={{
-                        margin: "64 auto 0 auto",
-                        minHeight: "calc(100vh - 64px)"
-                    }}
-                >
-                    {props.children}
-                </Box>
+                {props.children}
             </Box>
         </>
     );
