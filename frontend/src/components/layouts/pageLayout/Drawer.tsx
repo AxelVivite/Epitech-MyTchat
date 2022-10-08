@@ -3,11 +3,11 @@ import { useTranslation } from "react-i18next";
 import {
     Box,
     Drawer as MuiDrawer,
-    Fab,
     Typography
 } from "@mui/material/";
 import AddIcon from '@mui/icons-material/Add';
 
+import Modal from "../../molecules/Modal";
 import Rooms from "../../molecules/Rooms";
 
 interface DrawerProps {
@@ -20,16 +20,14 @@ const Drawer = (props: DrawerProps): JSX.Element => {
 
     const drawer = (
         <>
-            <Box className="row border--bottom pl--16 pr--16 flex--space-between" sx={{ height: "64px" }}>
+            <Box className="row border--bottom p--16 height--32 flex--space-between">
                 <Typography className="rooms">{t("rooms")}</Typography>
-                <Fab
-                    className="btn--circle"
-                    onClick={props.handleClickDrawerButton}
-                    size="small"
-                    sx={{margin: "auto 0"}}
+                <Modal
+                    buttonLabel={<AddIcon />}
+                    clickableVariant="iconButton"
                 >
-                    <AddIcon />
-                </Fab>
+                    <p>Hello</p>
+                </Modal>
             </Box>
             <Rooms />
         </>

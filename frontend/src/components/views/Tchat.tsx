@@ -1,7 +1,7 @@
 import PageLayout from "../layouts/pageLayout/PageLayout";
 
 import Message from "../molecules/Message";
-import InputMessage from "../atoms/InputMessage";
+import InputMessage from "../atoms/InputBarMessage";
 import Box from "@mui/material/Box";
 
 const Tchat = (): JSX.Element => {

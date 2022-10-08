@@ -21,17 +21,35 @@
     &--auto { width: auto; }
 }
 
+.height {
+    &--16 { height: 16px; }
+    &--32 { height: 32px; }
+    &--64 { height: 64px; }
+    &--128 { height: 128px; }
+    &--full { height: 100%; }
+    &--auto { height: auto; }
+}
+
+.line-height {
+    &--16 { line-height: 16px; }
+    &--32 { line-height: 32px; }
+    &--64 { line-height: 64px; }
+    &--128 { line-height: 128px; }
+}
+
 .m {
     &--0 { margin: 0px; }
     &--8 { margin: 8px; }
     &--16 { margin: 16px; }
     &--24 { margin: 24px; }
+    &--auto { margin: auto; }
 
     &t {
         &--0 { margin-top: 0px; }
         &--8 { margin-top: 8px; }
         &--16 { margin-top: 16px; }
         &--24 { margin-top: 24px; }
+        &--auto { margin-top: auto; }
     }
 
     &b {
@@ -39,6 +57,7 @@
         &--8 { margin-bottom: 8px; }
         &--16 { margin-bottom: 16px; }
         &--24 { margin-bottom: 24px; }
+        &--auto { margin-bottom: auto; }
     }
 
     &l {
@@ -46,6 +65,7 @@
         &--8 { margin-left: 8px; }
         &--16 { margin-left: 16px; }
         &--24 { margin-left: 24px; }
+        &--auto { margin-left: auto; }
     }
 
     &r {
@@ -53,6 +73,17 @@
         &--8 { margin-right: 8px; }
         &--16 { margin-right: 16px; }
         &--24 { margin-right: 24px; }
+        &--auto { margin-right: auto; }
+    }
+    
+    &x--auto {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    &y--auto {
+        margin-top: auto;
+        margin-bottom: auto;
     }
 }
 
@@ -116,9 +147,9 @@ p.title {
 }
 
 p.rooms {
-    margin: auto 0;
     font-size: 18px;
     font-weight: bold;
+    line-height: 32px;
 }
 
 p.name {
