@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 // Global State Manager
-import { Provider } from 'react-redux';
 import "./services/translation/i18l";
 
 const root = ReactDOM.createRoot(
@@ -12,9 +11,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
       <App />
-    </Provider>
   </React.StrictMode>
 );
 
