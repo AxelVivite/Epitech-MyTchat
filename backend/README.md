@@ -23,11 +23,17 @@ You can find more details in ```/doc/Websocket.md```.
 
 You will need to have mongodb running on **mongodb://localhost:27017/vueexpress**. It is a temporary url that we use for tests.
 
-To start the server run:\
-```npm run start```
+To start the server run (with each environment):\
+**dev** ```npm run start```\
+**test** ```npm run start:test```\
+**prod** ```npm run start:prod```
 
-To start the server and restart on file change:\
-```npm run watch```
+
+To start the server and restart on file change (not available in prod):\
+**dev** ```npm run watch```\
+**test** ```npm run watch:test```
+
+In prod mode you will need a ```.env.prod``` file, you can look at ```.env.dev``` and ```.env.test``` for examples.
 
 ### ESlint
 
