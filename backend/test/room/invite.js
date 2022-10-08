@@ -33,7 +33,9 @@ export default () => {
     const users = await rndRegisters(5);
 
     const { data: { roomId } } = await createRoom(users[0].token, [users[1].userId]);
-    await invite(users[0].token, roomId, users.slice(2).map(({ userId }) => userId));
+    const res = await invite(users[0].token, roomId, users.slice(2).map(({ userId }) => userId));
+
+    assert.equal(res.status, 204);
 
     const { data: { room } } = await getRoom(users[0].token, roomId, true);
     assert(arrayCmp(users.map(({ userId }) => userId), room.users));

@@ -409,28 +409,9 @@ loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
  *       404:
  *         description: User not found
  *       410:
- *         description: User has been deleted
- *       200:
- *         description: Returns the user's username, email and the ids of the rooms they're in
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               required:
- *                 - username
- *                 - email
- *                 - rooms
- *               properties:
- *                 username:
- *                   type: string
- *                   format: string
- *                 email:
- *                   type: string
- *                   format: format
- *                 rooms:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/MongoId'
+ *         description: User has already been deleted
+ *       204:
+ *         description: User was successfullt deleted
  */
 loginRouter.delete('/delete', [checkToken, getUser], async (req, res) => {
   const { state: { user, userId } } = req;
@@ -451,7 +432,7 @@ loginRouter.delete('/delete', [checkToken, getUser], async (req, res) => {
     req.app.locals.wsReg.deleteUser(userId, user.rooms.map(String)),
   ]);
 
-  return res.status(201).send();
+  return res.status(204).send();
 });
 
 export default loginRouter;

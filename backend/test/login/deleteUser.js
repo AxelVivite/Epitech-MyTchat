@@ -17,7 +17,9 @@ export default () => {
   it('Should delete a user', async () => {
     const { token } = await rndRegister();
 
-    await deleteUser(token);
+    const res = await deleteUser(token);
+
+    assert.equal(res.status, 204);
 
     try {
       await getUserInfo(token);

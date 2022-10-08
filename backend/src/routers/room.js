@@ -300,7 +300,7 @@ roomRouter.get('/info/:roomId', [
  *                     $ref: '#/components/schemas/MongoId'
  *       410:
  *         description: User has been deleted
- *       201:
+ *       204:
  *         description: The other users were added successfully
  */
 roomRouter.post(
@@ -347,7 +347,7 @@ roomRouter.post(
       ),
     ]);
 
-    return res.status(201).send();
+    return res.status(204).send();
   },
 );
 
@@ -379,7 +379,7 @@ roomRouter.post(
  *         description: The user or the room was not found
  *       410:
  *         description: User has been deleted
- *       201:
+ *       204:
  *         description: User left the room successfully
  */
 roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, res) => {
@@ -409,7 +409,7 @@ roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, re
       }),
     ]);
 
-    return res.status(201).send();
+    return res.status(204).send();
   }
 
   await Promise.all([
@@ -418,7 +418,7 @@ roomRouter.post('/leave/:roomId', [checkToken, getUser, getRoom], async (req, re
     req.app.locals.wsReg.leaveRoom(userId, roomId),
   ]);
 
-  return res.status(201).send();
+  return res.status(204).send();
 });
 
 // todo: implement ticket based auth ?

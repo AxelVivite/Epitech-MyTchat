@@ -30,10 +30,13 @@ export default () => {
       users.map(({ userId }) => userId),
     );
 
-    await Promise.all([
+    const res = await Promise.all([
       leave(users[0].token, roomId),
       leave(users[1].token, roomId),
     ]);
+
+    assert.equal(res[0].status, 204);
+    assert.equal(res[1].status, 204);
 
     const { data: { room } } = await getRoom(users[2].token, roomId);
     assert(arrayCmp(users.slice(2).map(({ userId }) => userId), room.users));

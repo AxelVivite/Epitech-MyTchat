@@ -294,36 +294,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Returns the user's username, email and the ids of the rooms they're in",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "username",
-                    "email",
-                    "rooms"
-                  ],
-                  "properties": {
-                    "username": {
-                      "type": "string",
-                      "format": "string"
-                    },
-                    "email": {
-                      "type": "string",
-                      "format": "format"
-                    },
-                    "rooms": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/MongoId"
-                      }
-                    }
-                  }
-                }
-              }
-            }
+          "204": {
+            "description": "User was successfullt deleted"
           },
           "400": {
             "description": "Bad request, details are returned, can be because of: MissingToken, BadAuthType (ex: Basic instead of Bearer)"
@@ -335,7 +307,7 @@
             "description": "User not found"
           },
           "410": {
-            "description": "User has been deleted"
+            "description": "User has already been deleted"
           }
         }
       }
@@ -561,7 +533,7 @@
           }
         },
         "responses": {
-          "201": {
+          "204": {
             "description": "The other users were added successfully"
           },
           "400": {
@@ -624,7 +596,7 @@
           }
         ],
         "responses": {
-          "201": {
+          "204": {
             "description": "User left the room successfully"
           },
           "400": {
