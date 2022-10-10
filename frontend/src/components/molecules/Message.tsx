@@ -1,10 +1,11 @@
 import {
     Box,
-    Card,
-    Typography
+    Card
 } from "@mui/material";
 
 import Avatar from "../atoms/Avatar";
+import Text from "../atoms/typography/Text";
+import TextDateTime from "../atoms/typography/TextDateTime";
 
 interface MessageProps {
     username: string;
@@ -17,11 +18,11 @@ const Message = (props: MessageProps): JSX.Element => {
         <Card className="row p--16 mb--16">
             <Avatar name={props.username} className="mr--16" />
             <Box className="col flex-grow--1">
-                <Box className="row">
-                    <Typography className="name">{props.username}</Typography>
-                    <Typography className="datetime">{props.datetime}</Typography>
+                <Box className="row mb--8">
+                    <Text variant="name">{props.username}</Text>
+                    <TextDateTime className="ml--8 my--auto width--96">{props.datetime}</TextDateTime>
                 </Box>
-                <Typography className="message">{props.message}</Typography>
+                <Text>{props.message}</Text>
             </Box>
         </Card>
     );

@@ -1,3 +1,7 @@
+@import "./styles/button.styles.scss";
+@import "./styles/page-layout.styles.scss";
+@import "./styles/typography.styles.scss";
+
 .row {
     display: flex;
     flex-wrap: nowrap;
@@ -17,15 +21,29 @@
 }
 
 .width {
+    &--16 { width: 16px; }
+    &--24 { width: 24px; }
+    &--32 { width: 32px; }
+    &--40 { width: 40px; }
+    &--48 { width: 48px; }
+    &--64 { width: 64px; }
+    &--96 { width: 96px; }
+    &--128 { width: 128px; }
+    &--150 { width: 150px; }
     &--full { width: 100%; }
     &--auto { width: auto; }
 }
 
 .height {
     &--16 { height: 16px; }
+    &--24 { height: 24px; }
     &--32 { height: 32px; }
+    &--40 { height: 40px; }
+    &--48 { height: 48px; }
     &--64 { height: 64px; }
+    &--96 { height: 96px; }
     &--128 { height: 128px; }
+    &--150 { height: 150px; }
     &--full { height: 100%; }
     &--auto { height: auto; }
 }
@@ -39,6 +57,7 @@
 
 .m {
     &--0 { margin: 0px; }
+    &--4 { margin: 4px; }
     &--8 { margin: 8px; }
     &--16 { margin: 16px; }
     &--24 { margin: 24px; }
@@ -46,6 +65,7 @@
 
     &t {
         &--0 { margin-top: 0px; }
+        &--4 { margin-top: 4px; }
         &--8 { margin-top: 8px; }
         &--16 { margin-top: 16px; }
         &--24 { margin-top: 24px; }
@@ -53,7 +73,8 @@
     }
 
     &b {
-        &--0 { padding: 0px; }
+        &--0 { margin-bottom: 0px; }
+        &--4 { margin-bottom: 4px; }
         &--8 { margin-bottom: 8px; }
         &--16 { margin-bottom: 16px; }
         &--24 { margin-bottom: 24px; }
@@ -62,6 +83,7 @@
 
     &l {
         &--0 { margin-left: 0px; }
+        &--4 { margin-left: 4px; }
         &--8 { margin-left: 8px; }
         &--16 { margin-left: 16px; }
         &--24 { margin-left: 24px; }
@@ -70,6 +92,7 @@
 
     &r {
         &--0 { margin-right: 0px; }
+        &--4 { margin-right: 4px; }
         &--8 { margin-right: 8px; }
         &--16 { margin-right: 16px; }
         &--24 { margin-right: 24px; }
@@ -133,67 +156,4 @@
 
     &--grey { border-color: grey; }
     &--lightgrey { border-color: lightgrey; }
-}
-
-p {
-    overflow: hidden;
-}
-
-p.title {
-    color: #F0F0F0;
-    margin: auto 0;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-p.rooms {
-    font-size: 18px;
-    font-weight: bold;
-    line-height: 32px;
-}
-
-p.name {
-    max-width: 150px;
-    font-size: 15px;
-    font-weight: bold;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-p.date {
-    width: 65px;
-    font-size: 11px;
-    margin: auto 0;
-    text-align: end;
-}
-
-p.datetime {
-    width: 100px;
-    font-size: 11px;
-    margin: auto 0;
-    text-align: end;
-}
-
-p.message {
-    font-size: 12px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.btn {
-    &--circle {
-        border-radius: 50%;
-    }
-
-    &--primary-color { background-color: #333 }
-
-    &--md {
-        width: 40px;
-        height: 40px;
-    }
-
-    &--sm {
-        width: 24px;
-        height: 24px;
-    }
 }

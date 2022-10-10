@@ -1,0 +1,33 @@
+.btn {
+    &--circle {
+        border-radius: 50%;
+    }
+
+    &--primary-color { background-color: #333 }
+
+    &--md {
+        width: 40px;
+        height: 40px;
+    }
+
+    &--sm {
+        width: 24px;
+        height: 24px;
+    }
+
+    &--hidden {
+        display: none;
+    }
+}
+
+.icon-btn {
+    &--primary {
+        background-color: #333;
+        color: #FFF;
+    }
+
+    &--outlined {
+        border: 1px solid #333;
+        color: #333;
+    }
+}

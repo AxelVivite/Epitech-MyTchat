@@ -1,10 +1,15 @@
 import PageLayout from "../layouts/pageLayout/PageLayout";
 
 import Message from "../molecules/Message";
-import InputMessage from "../atoms/InputBarMessage";
+import InputMessage from "../molecules/InputBarMessage";
 import Box from "@mui/material/Box";
 
 const Tchat = (): JSX.Element => {
+    
+    const onSubmit = () => {
+        console.log("ICH");
+    };
+
     return (
         <div className="Test">
             <PageLayout>
@@ -19,7 +24,7 @@ const Tchat = (): JSX.Element => {
                         <Message username="Axel" datetime="16/09/2022 18h32" message="Salut!" />
                         <Message username="Axel" datetime="16/09/2022 18h32" message="Salut!" />
                     </Box>
-                    <InputMessage />
+                    <InputMessage onSubmit={onSubmit} />
                 </Box>
             </PageLayout>
         </div>

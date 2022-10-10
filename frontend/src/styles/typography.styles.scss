@@ -1,0 +1,40 @@
+p {
+    overflow: hidden;
+    margin: 0;
+}
+
+p.title {
+    &--header {
+        color: #f0f0f0;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    &--room {
+        font-size: 18px;
+        font-weight: bold;
+    }
+}
+
+p.date {
+    width: 65px;
+    font-size: 11px;
+    margin: auto 0;
+    text-align: end;
+}
+
+p.datetime {
+    font-size: 11px;
+    text-align: end;
+}
+
+p.text {
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &--name {
+        font-size: 15px;
+        font-weight: bold;
+    }
+}
