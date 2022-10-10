@@ -4,12 +4,13 @@ import {
     AppBar,
     Box,
     IconButton,
-    Toolbar,
-    Typography
+    Toolbar
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 
 import Avatar from "../../atoms/Avatar";
+import Title from "../../atoms/typography/Title";
+
 import logo from "../../../assets/logo.png";
 
 interface HeaderProps {
@@ -21,17 +22,17 @@ const Header = (props: HeaderProps): JSX.Element => {
         <AppBar position="sticky" className="mb--16">
             <Toolbar sx={{ justifyContent: "space-between" }}>
                 <IconButton onClick={props.handleClickDrawerButton}
-                    color="secondary"
                     sx={{
+                        color: "#F0F0F0",
                         display: { xs: "block", md: "none" }
                     }}>
                     <MenuIcon />
                 </IconButton>
                 <Box className="row">
-                    <img src={logo} alt="logo" style={{ width: "40px", marginRight: "16px" }}/>
-                    <Typography className="title" >
-                        MyChat
-                    </Typography>
+                    <img src={logo} alt="logo" className="width--40 mr--16" />
+                    <Title className="my--auto" variant="header">
+                        RoomName
+                    </Title>
                 </Box>
                 <Avatar name="Axel" />
             </Toolbar>
