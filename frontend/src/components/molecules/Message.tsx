@@ -15,7 +15,7 @@ interface MessageProps {
 
 const Message = (props: MessageProps): JSX.Element => {
     return (
-        <Card className={`row p--16 mb--16 width--70 ${props.username === "Axel" && "ml--auto"}`}>
+        <Card className={`row p--16 mb--16 mr--16 tchat--message ${props.username === "Axel" && "ml--auto"}`}>
             <Avatar name={props.username} className="mr--16" />
             <Box className="col flex-grow--1">
                 <Box className="row mb--8">
