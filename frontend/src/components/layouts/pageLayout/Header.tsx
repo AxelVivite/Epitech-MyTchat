@@ -22,8 +22,8 @@ const Header = (props: HeaderProps): JSX.Element => {
         <AppBar position="sticky" className="mb--16">
             <Toolbar sx={{ justifyContent: "space-between" }}>
                 <IconButton onClick={props.handleClickDrawerButton}
-                    color="secondary"
                     sx={{
+                        color: "#F0F0F0",
                         display: { xs: "block", md: "none" }
                     }}>
                     <MenuIcon />
@@ -31,7 +31,7 @@ const Header = (props: HeaderProps): JSX.Element => {
                 <Box className="row">
                     <img src={logo} alt="logo" className="width--40 mr--16" />
                     <Title className="my--auto" variant="header">
-                        MyChat
+                        RoomName
                     </Title>
                 </Box>
                 <Avatar name="Axel" />

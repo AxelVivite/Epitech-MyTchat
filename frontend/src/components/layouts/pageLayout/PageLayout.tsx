@@ -14,7 +14,6 @@ const PageLayout = (props: PageLayoutProps): JSX.Element => {
 
     const handleClickDrawerButton = () => {
         setIsDrawerOpen(!isDrawerOpen);
-        console.log(isDrawerOpen)
     }
 
     return (
