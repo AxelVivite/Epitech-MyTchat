@@ -12,12 +12,21 @@ const Tchat = (): JSX.Element => {
                     sx={{ minHeight: "calc(100vh - 96px)" }}
                     className="col flex--space-between"
                 >
-                    <Box>
+                    <Box
+                        sx={{ maxHeight: "calc(100vh - 96px - 72px)" }}
+                        className="overflow_y--auto message--scrollbar"
+                    >
+                        <Message username="Axel" datetime="16/09/2022 18h32" message="! SaluuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuutSaluuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuutSaluuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuutSaluuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuut BISOUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUS" />
+                        <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
+                        <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
                         <Message username="Axel" datetime="16/09/2022 18h32" message="Salut!" />
-                        <Message username="Axel" datetime="16/09/2022 18h32" message="Salut!" />
-                        <Message username="Axel" datetime="16/09/2022 18h32" message="Salut!" />
-                        <Message username="Axel" datetime="16/09/2022 18h32" message="Salut!" />
-                        <Message username="Axel" datetime="16/09/2022 18h32" message="Salut!" />
+                        <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
+                        <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
+                        <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
+                        <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
+                        <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
+                        <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
+                        <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
                     </Box>
                     <InputMessage />
                 </Box>
