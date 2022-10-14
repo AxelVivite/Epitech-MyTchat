@@ -6,6 +6,8 @@ import {
 
 import Avatar from "../atoms/Avatar";
 
+// getMessagesHere from gsm
+
 interface MessageProps {
     username: string;
     datetime: string;

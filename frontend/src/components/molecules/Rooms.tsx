@@ -9,6 +9,8 @@ import {
 
 import Avatar from "../atoms/Avatar";
 
+// here add gsm for the rooms
+
 interface RoomProps {
     "name": string;
     "date": string;

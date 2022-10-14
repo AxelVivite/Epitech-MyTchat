@@ -11,7 +11,8 @@ import * as React from 'react';
 import { login } from "../../utils/userManagment";
 //eslint-disable-next-line
 import { setGlobalState, useGlobalState } from "../../utils/globalStateManager/globalStateInit";
-import { User } from "../../utils/globalStateManager/globalStateObjects";
+import { User, Room } from "../../utils/globalStateManager/globalStateObjects";
+import { getRooms } from "../../utils/roomsManagment";
 
 interface State {
     username: string;
@@ -52,7 +53,19 @@ const Login: React.FC = () => {
       const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
       };
+    
+    const setupGsm = async (res: any) => {
+      setGlobalState("token", res?.data.token)
+      let user: User = {
+        userId: res?.data.userId,
+        username: values.username
+      }
+      setGlobalState("user", user)
 
+      let rooms: any = await getRooms(res?.data.token);
+      setGlobalState("rooms",rooms)
+
+    }
 
     return (
 <Box sx={{ display: 'flex', flexWrap: 'wrap', paddingBottom: 200, flexDirection: "column", alignContent: "center", paddingTop: 10 }}>
@@ -96,12 +109,7 @@ const Login: React.FC = () => {
                     const res = await login(values.username, values.password);
                     if (res?.status === 200) {
                         setToken(res?.data.token);
-                        setGlobalState("token", res?.data.token)
-                        let user: User = {
-                          userId: res?.data.userId,
-                          username: values.username
-                        }
-                        setGlobalState("user", user)
+                        await setupGsm(res);
                         navigate(`/home`);
                       }
                     

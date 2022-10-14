@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Friend } from "./globalStateManager/globalStateObjects";
 
 const devUrl = "http://localhost:3000";
 
@@ -48,4 +49,40 @@ export const login = async (email: String, password: String) => {
     } catch (err) {
         console.log(err);
     }
+}
+
+const getUsername = async (userId: string, token: string) => {
+    try {
+        const { data, status} = await axios.get<any>(
+            devUrl + "/login/username/" + userId,
+            {
+                headers: {
+                    "token": "Bearer " + token,
+                }
+            }
+        );
+
+        if (status === 200) {
+            return data.username;
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const getFriendsList = async (token: string, friendsId: [string]) => {
+    
+    let friends: [Friend | null] = [null];
+
+    for (const friendId in friendsId) {
+        let friendName = await getUsername(token, friendId);
+
+        let friend = {
+            "userId": friendId,
+            "username": friendName
+        } 
+        friends.push(friend);
+    }
+
+    return friends;
 }
