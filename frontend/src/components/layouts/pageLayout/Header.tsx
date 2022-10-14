@@ -23,7 +23,6 @@ const Header = (props: HeaderProps): JSX.Element => {
             <Toolbar sx={{ justifyContent: "space-between" }}>
                 <IconButton onClick={props.handleClickDrawerButton}
                     sx={{
-                        color: "#F0F0F0",
                         display: { xs: "block", md: "none" }
                     }}>
                     <MenuIcon />

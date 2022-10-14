@@ -62,7 +62,7 @@ const Rooms = (): JSX.Element => {
             {example.map(item => (
                 <ListItem
                     disablePadding
-                    className="border--bottom border--lightgrey p--8"
+                    className="border--bottom border--contrast p--8"
                     key={`room-${item.name}`}
                 >
                     <Room name={item.name} date={item.date} message={item.message} />

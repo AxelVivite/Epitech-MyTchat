@@ -6,10 +6,12 @@ import {
 } from "@mui/material/";
 import AddIcon from '@mui/icons-material/Add';
 
-import Title from "../../atoms/typography/Title";
+import Title from "components/atoms/typography/Title";
 
-import Modal from "../../molecules/Modal";
-import Rooms from "../../molecules/Rooms";
+import Modal from "components/molecules/Modal";
+import Rooms from "components/molecules/Rooms";
+
+import AddRoom from "components/layouts/pageLayout/AddRoom";
 
 interface DrawerProps {
     handleClickDrawerButton: () => void;
@@ -29,7 +31,7 @@ const Drawer = (props: DrawerProps): JSX.Element => {
                     buttonLabel={<AddIcon />}
                     clickableVariant="iconButton"
                 >
-                    <p>Hello</p>
+                    <AddRoom />
                 </Modal>
             </Box>
             <Rooms />

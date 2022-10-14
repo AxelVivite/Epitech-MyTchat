@@ -16,11 +16,14 @@ interface MessageProps {
 const Message = (props: MessageProps): JSX.Element => {
     return (
         <Card className={`row p--16 mb--16 mr--16 tchat--message ${props.username === "Axel" && "ml--auto"}`}>
-            <Avatar name={props.username} className="mr--16" />
+            <Avatar 
+                name={props.username}
+                className="mr--16 tchat--message__avatar"
+            />
             <Box className="col flex-grow--1">
-                <Box className="row mb--8">
-                    <Text variant="name">{props.username}</Text>
-                    <TextDateTime className="ml--8 my--auto width--96">{props.datetime}</TextDateTime>
+                <Box className="row flex--space-between mb--8">
+                    <Text variant="name" className="flex-shrink--1">{props.username}</Text>
+                    <TextDateTime className="ml--8 my--auto">{props.datetime}</TextDateTime>
                 </Box>
                 <Text>{props.message}</Text>
             </Box>

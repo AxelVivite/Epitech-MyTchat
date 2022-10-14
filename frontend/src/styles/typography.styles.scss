@@ -1,11 +1,11 @@
 p {
+    color: $color-font;
     overflow: hidden;
     margin: 0;
 }
 
 p.title {
     &--header {
-        color: #f0f0f0;
         font-size: 20px;
         font-weight: bold;
     }
@@ -26,15 +26,18 @@ p.date {
 p.datetime {
     font-size: 11px;
     text-align: end;
+    min-width: 65px;
+    max-width: 96px;
 }
 
 p.text {
     font-size: 12px;
-    text-overflow: ellipsis;
     white-space: nowrap;
 
     &--name {
         font-size: 15px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         font-weight: bold;
     }
 }

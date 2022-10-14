@@ -3,7 +3,7 @@
         border-radius: 50%;
     }
 
-    &--primary-color { background-color: #333 }
+    &--primary-color { background-color: $color-secondary }
 
     &--md {
         width: 40px;
@@ -22,12 +22,12 @@
 
 .icon-btn {
     &--primary {
-        background-color: #333;
-        color: #FFF;
+        background-color: $color-secondary;
+        color: $color-primary;
     }
 
     &--outlined {
-        border: 1px solid #333;
-        color: #333;
+        border: 1px solid $color-secondary;
+        color: $color-primary;
     }
 }

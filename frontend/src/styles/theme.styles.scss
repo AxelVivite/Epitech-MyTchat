@@ -1,0 +1,31 @@
+$dark-theme: false !default;
+
+$color-primary: #FFFFFF !default;
+$color-light-primary: #f5f5f5 !default;
+$color-secondary: #333333 !default;
+$color-contrast: #BBBBBB !default;
+$color-light-contrast: #CCCCCC !default;
+$color-background: #F0F0F0 !default;
+$color-font: $color-secondary  !default;
+$color-card: $color-primary  !default;
+$color-input: $color-contrast  !default;
+$color-scrollbar: $color-light-contrast  !default;
+$color-scrollbar-hover: $color-contrast  !default;
+
+$box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3) !default;
+
+@if $dark-theme {
+    $color-primary: #202225;
+    $color-light-primary: #2a2c30;
+    $color-secondary: #FFFFFF;
+    $color-contrast: #96989D;
+    $color-light-contrast: #2F3136;
+    $color-background: #36393F;
+    $color-font: #FFFFFF;
+    $color-card: $color-light-contrast;
+    $color-input: $color-primary;
+    $color-scrollbar: $color-light-contrast;
+    $color-scrollbar-hover: $color-primary;
+
+    $box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+}

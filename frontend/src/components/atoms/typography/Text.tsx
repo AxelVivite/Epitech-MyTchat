@@ -10,7 +10,7 @@ interface TextProps {
 
 const Text = (props: TextProps) => {
     return (
-        <p className={`text ${props.variant && `text--${props.variant}`} ${props.className}`}>
+        <p className={`${(props.variant && `text--${props.variant}`) || "text"} ${props.className}`}>
             {props.children}
         </p>
     );

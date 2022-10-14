@@ -34,7 +34,9 @@ const Modal = (props: ModalProps) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
+                <div className="width--75p height--75p">
                 {props.children}
+                </div>
             </MuiModal>
         </>
     );
