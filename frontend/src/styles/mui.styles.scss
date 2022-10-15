@@ -1,0 +1,37 @@
+body {
+    .MuiSvgIcon-root {
+        color: var(--color-font);
+    }
+
+    .MuiCard-root {
+        background-color: var(--color-card);
+        box-shadow: var(--box-shadow);
+
+    }
+
+    .Mui-focused fieldset {
+        border-color: var(--color-input)  !important;
+    }
+
+    .MuiOutlinedInput-root {
+        &:hover fieldset {
+            border-color: var(--color-input)  !important;
+        }
+    }
+
+    .MuiInputBase-input {
+        color: var(--color-font);
+    }
+
+    .MuiAppBar-colorPrimary {
+        border-radius: 0 0 20px 20px;
+        background-color: var(--color-primary);
+        box-shadow: var(--box-shadow);
+    }
+
+    .MuiDrawer-paper {
+        background-color: var(--color-primary);
+        border: none;
+        box-shadow: var(--box-shadow);
+    }
+}

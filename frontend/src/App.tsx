@@ -12,7 +12,6 @@ import PageNotFound from './components/views/PageNotFound';
 import Register from './components/views/Register';
 
 import './App.scss';
-import './MuiOverride.scss';
 
 function App() {
   return (

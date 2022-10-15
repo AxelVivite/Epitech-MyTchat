@@ -5,8 +5,6 @@ import { Box } from "@mui/material";
 import Drawer from "./Drawer";
 import Header from "./Header";
 
-import "./PageLayout.styles.scss";
-
 interface PageLayoutProps {
     children: React.ReactNode;
 }
@@ -16,7 +14,6 @@ const PageLayout = (props: PageLayoutProps): JSX.Element => {
 
     const handleClickDrawerButton = () => {
         setIsDrawerOpen(!isDrawerOpen);
-        console.log(isDrawerOpen)
     }
 
     return (

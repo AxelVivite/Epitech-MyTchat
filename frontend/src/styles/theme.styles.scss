@@ -1,0 +1,31 @@
+html {
+    --color-primary: #FFFFFF;
+    --color-light-primary: #f5f5f5;
+    --color-secondary: #333333;
+    --color-contrast: #BBBBBB;
+    --color-light-contrast: #CCCCCC;
+    --color-background: #F0F0F0;
+    --color-font: var(--color-secondary);
+    --color-card: var(--color-primary);
+    --color-input: var(--color-contrast);
+    --color-scrollbar: var(--color-light-contrast);
+    --color-scrollbar-hover: var(--color-contrast);
+
+    --box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+html .dark-theme {
+    --color-primary: #202225;
+    --color-light-primary: #2a2c30;
+    --color-secondary: #FFFFFF;
+    --color-contrast: #96989D;
+    --color-light-contrast: #2F3136;
+    --color-background: #36393F;
+    --color-font: #FFFFFF;
+    --color-card: var(--color-light-contrast);
+    --color-input: var(--color-primary);
+    --color-scrollbar: var(--color-light-contrast);
+    --color-scrollbar-hover: var(--color-primary);
+
+    --box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+}
