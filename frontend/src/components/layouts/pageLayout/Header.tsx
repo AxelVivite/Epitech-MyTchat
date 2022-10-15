@@ -22,11 +22,10 @@ const Header = (props: HeaderProps): JSX.Element => {
     const [darkTheme, setDarkTheme] = React.useState<boolean>(false);
 
     const handleChangeTheme = () => {
-        const root = document.getElementById("root");
-        if (root && !darkTheme)
-            root.classList.add("dark-theme");
-        else if (root)
-            root.classList.remove("dark-theme");
+        if (!darkTheme)
+            document.body.classList.add("dark-theme");
+        else 
+            document.body.classList.remove("dark-theme");
         setDarkTheme(!darkTheme);
     }
 
