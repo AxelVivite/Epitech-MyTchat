@@ -17,8 +17,9 @@ export default () => {
     const username = makeId();
     const email = makeEmail();
     const pwd = makePwd();
-    const { data: { userId, token, expiresIn } } = await register(username, email, pwd);
+    const { data: { userId, token, expiresIn }, status } = await register(username, email, pwd);
 
+    assert.equal(status, 201);
     assert(Types.ObjectId.isValid(userId));
     assert(typeof expiresIn === 'string');
 

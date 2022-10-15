@@ -157,7 +157,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Returns the new user id, a token, and the time it will take for the token to expire",
             "content": {
               "application/json": {

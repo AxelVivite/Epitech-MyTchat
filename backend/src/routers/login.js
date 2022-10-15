@@ -178,7 +178,7 @@ loginRouter.get('/username/:userId', [], async (req, res) => {
  *         description: Email or password is missing or has bad format
  *       409:
  *         description: Email is already taken
- *       200:
+ *       201:
  *         description: >-
  *           Returns the new user id, a token, and the time it will take for the token to expire
  *         content:
@@ -234,7 +234,7 @@ loginRouter.post(
       { expiresIn: config.jwtExpires },
     );
 
-    return res.status(200).json({
+    return res.status(201).json({
       userId: user._id.toString(),
       token,
       expiresIn: config.jwtExpires,

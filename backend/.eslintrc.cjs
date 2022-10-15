@@ -4,8 +4,8 @@ module.exports = {
     node: true,
   },
   extends: [
-    'airbnb-base',
     'plugin:mocha/recommended',
+    'airbnb-base',
   ],
   parserOptions: {
     ecmaVersion: 12,
