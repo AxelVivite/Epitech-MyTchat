@@ -13,6 +13,7 @@ import Button from "components/atoms/buttons/Button";
 import Title from "components/atoms/typography/Title";
 
 import logo from "assets/logo.png";
+import logoDark from "assets/logo-dark.png";
 
 interface HeaderProps {
     handleClickDrawerButton: () => void;
@@ -39,7 +40,7 @@ const Header = (props: HeaderProps): JSX.Element => {
                     <MenuIcon />
                 </IconButton>
                 <Box className="row">
-                    <img src={logo} alt="logo" className="width--40 mr--16" />
+                    <img src={darkTheme ? logo : logoDark} alt="logo" className="width--40 mr--16" />
                     <Title className="my--auto" variant="header">
                         RoomName
                     </Title>
