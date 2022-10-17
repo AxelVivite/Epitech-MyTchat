@@ -2,6 +2,15 @@ import { promises as fs } from 'fs';
 
 import swaggerJsdoc from 'swagger-jsdoc';
 
+import {
+  MongoId,
+  Timestamp,
+  Post,
+  Room,
+  User,
+  SigninResult,
+} from './src/schemas.js';
+
 const options = {
   definition: {
     openapi: '3.0.3',
@@ -21,66 +30,14 @@ const options = {
   ],
 };
 
-const MongoId = {
-  type: 'string',
-  format: 'uuid',
-  example: '632999f5bb5e77c72e9bf905',
-};
-
-const Timestamp = {
-  type: 'string',
-  format: 'date-time',
-  example: '2017-07-21T17:32:28Z',
-};
-
-const Post = {
-  type: 'object',
-  required: [
-    'user',
-    'room',
-    'content',
-    'createdAt',
-    'updatedAt',
-  ],
-  properties: {
-    user: MongoId,
-    room: MongoId,
-    content: {
-      type: 'string',
-      format: 'string',
-      description: 'Content of the post',
-    },
-    createdAt: Timestamp,
-    updatedAt: Timestamp,
-  },
-};
-
 const components = {
   schemas: {
     MongoId,
     Timestamp,
     Post,
-    SigninResult: {
-      type: 'object',
-      required: [
-        'userId',
-        'token',
-        'expiresIn',
-      ],
-      properties: {
-        userId: MongoId,
-        token: {
-          type: 'string',
-          description: 'JSON Web Token',
-          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzI5OWEzNTI1ODUzMzY1NTBjYjI2NDkiLCJpYXQiOjE2NjM2NzA4MzcsImV4cCI6MTY2NDUzNDgzN30.J6AOP4OP6ftFA0ahF8_Up29y23qD-gZF_OqKIYwNj7s',
-        },
-        expiresIn: {
-          type: 'string',
-          description: 'TTL of the token, format explained at https://github.com/vercel/ms#examples',
-          example: '10 days',
-        },
-      },
-    },
+    Room,
+    User,
+    SigninResult,
   },
   securitySchemes: {
     basicAuth: {

@@ -365,30 +365,10 @@ loginRouter.get(
  *             schema:
  *               type: object
  *               required:
- *                 - username
- *                 - email
- *                 - rooms
- *                 - createdAt
- *                 - updatedAt
+ *                 - post
  *               properties:
- *                 username:
- *                   type: string
- *                   format: string
- *                 email:
- *                   type: string
- *                   format: format
- *                 rooms:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/MongoId'
- *                 createdAt:
- *                   type: string
- *                   format: date-time
- *                   example: 2017-07-21T17:32:28Z
- *                 updatedAt:
- *                   type: string
- *                   format: date-time
- *                   example: 2017-07-21T17:32:28Z
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
  */
 loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
   res.status(200).json({

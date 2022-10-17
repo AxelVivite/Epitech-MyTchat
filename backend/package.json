@@ -10,7 +10,7 @@
     "watch:test": "NODE_ENV=test nodemon --es-module-specifier-resolution=node .",
     "start:prod": "NODE_ENV=prod node --es-module-specifier-resolution=node .",
     "lint": "eslint .",
-    "gen-swagger": "node ./scripts/gen-swagger",
+    "gen-swagger": "node --es-module-specifier-resolution=node ./scripts/gen-swagger",
     "migration:create": "migrate-mongo create",
     "migration:up": "migrate-mongo up",
     "migration:down": "migrate-mongo down",

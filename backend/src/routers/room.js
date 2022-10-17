@@ -190,33 +190,10 @@ roomRouter.post(
  *             schema:
  *               type: object
  *               required:
- *                 - name
- *                 - users
- *                 - posts
- *                 - createdAt
- *                 - updatedAt
+ *                 - room
  *               properties:
- *                 name:
- *                   type: string
- *                   format: string
- *                 users:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/MongoId'
- *                 posts:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/MongoId'
- *                 createdAt:
- *                   type: string
- *                   format: date-time
- *                   example: 2017-07-21T17:32:28Z
- *                 updatedAt:
- *                   type: string
- *                   format: date-time
- *                   example: 2017-07-21T17:32:28Z
- *                 lastPost:
- *                   $ref: '#/components/schemas/Post'
+ *                 room:
+ *                   $ref: '#/components/schemas/Room'
  */
 roomRouter.get('/info/:roomId', [
   checkToken,
@@ -294,7 +271,7 @@ roomRouter.get('/info/:roomId', [
  *       401:
  *         description: Bad token (not created by this server or expired)
  *       404:
- *         description: Some of the users were not found
+ *         description: The room or some of the users were not found
  *         content:
  *           application/json:
  *             schema:
@@ -478,7 +455,7 @@ roomRouter.ws('/websocket', websocketEndpoint);
  *       410:
  *         description: User has been deleted
  *       200:
- *         description: Returns info on the room
+ *         description: Returns the id of the post
  *         content:
  *           application/json:
  *             schema:
