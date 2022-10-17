@@ -9,7 +9,7 @@ import {
   Room,
   User,
   SigninResult,
-} from './src/schemas.js';
+} from './src/schemas';
 
 const options = {
   definition: {

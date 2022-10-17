@@ -57,7 +57,7 @@ export const Room = {
     createdAt: Timestamp,
     updatedAt: Timestamp,
     lastPost: Post,
-  }
+  },
 };
 
 export const User = {

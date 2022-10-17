@@ -455,6 +455,94 @@
         }
       }
     },
+    "/room/invite/{roomId}": {
+      "post": {
+        "tags": [
+          "room"
+        ],
+        "description": "Invite users to a room",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "roomId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/MongoId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "otherUsers"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "format": "string"
+                  },
+                  "otherUsers": {
+                    "type": "array",
+                    "description": "Other users (besides the one calling the route) to give access to the route",
+                    "items": {
+                      "$ref": "#/components/schemas/MongoId"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "The other users were added successfully"
+          },
+          "400": {
+            "description": "Bad request, details are returned, can be because of: MissingToken, BadAuthType, badOtherUsers (ex: Basic instead of Bearer)"
+          },
+          "401": {
+            "description": "Bad token (not created by this server or expired)"
+          },
+          "404": {
+            "description": "The room or some of the users were not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "error",
+                    "missingUsers"
+                  ],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "missingUsers": {
+                      "type": "array",
+                      "description": "Users that could not be found",
+                      "items": {
+                        "$ref": "#/components/schemas/MongoId"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "User has been deleted"
+          }
+        }
+      }
+    },
     "/room/leave/{roomId}": {
       "post": {
         "tags": [
@@ -537,7 +625,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns info on the room",
+            "description": "Returns the id of the post",
             "content": {
               "application/json": {
                 "schema": {
