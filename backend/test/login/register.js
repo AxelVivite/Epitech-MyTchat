@@ -38,6 +38,20 @@ export default () => {
     assert(rooms.length === 0);
   });
 
+  it('Should create a timestamp', async () => {
+    const t1 = new Date();
+
+    const { token } = await rndRegister();
+    const { data: { user } } = await getUserInfo(token);
+
+    const t2 = new Date();
+    const createdAt = new Date(user.createdAt);
+
+    assert.equal(user.createdAt, user.updatedAt);
+    assert(createdAt >= t1);
+    assert(createdAt <= t2);
+  });
+
   it('Username missing', async () => {
     try {
       await axios({

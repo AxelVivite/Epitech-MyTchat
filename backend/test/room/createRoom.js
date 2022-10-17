@@ -37,6 +37,21 @@ export default () => {
     assert.equal(name, room.name);
   });
 
+  it('Should create a timestamp', async () => {
+    const t1 = new Date();
+
+    const { token } = await rndRegister();
+    const { data: { roomId } } = await createRoom(token);
+    const { data: { room } } = await getRoom(token, roomId);
+
+    const t2 = new Date();
+    const createdAt = new Date(room.createdAt);
+
+    assert.equal(room.createdAt, room.updatedAt);
+    assert(createdAt >= t1);
+    assert(createdAt <= t2);
+  });
+
   it('Should create a room with a default name', async () => {
     const users = await rndRegisters(5);
 

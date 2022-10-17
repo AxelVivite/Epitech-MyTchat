@@ -21,13 +21,45 @@ const options = {
   ],
 };
 
+const MongoId = {
+  type: 'string',
+  format: 'uuid',
+  example: '632999f5bb5e77c72e9bf905',
+};
+
+const Timestamp = {
+  type: 'string',
+  format: 'date-time',
+  example: '2017-07-21T17:32:28Z',
+};
+
+const Post = {
+  type: 'object',
+  required: [
+    'user',
+    'room',
+    'content',
+    'createdAt',
+    'updatedAt',
+  ],
+  properties: {
+    user: MongoId,
+    room: MongoId,
+    content: {
+      type: 'string',
+      format: 'string',
+      description: 'Content of the post',
+    },
+    createdAt: Timestamp,
+    updatedAt: Timestamp,
+  },
+};
+
 const components = {
   schemas: {
-    MongoId: {
-      type: 'string',
-      format: 'uuid',
-      example: '632999f5bb5e77c72e9bf905',
-    },
+    MongoId,
+    Timestamp,
+    Post,
     SigninResult: {
       type: 'object',
       required: [
@@ -36,11 +68,7 @@ const components = {
         'expiresIn',
       ],
       properties: {
-        userId: {
-          type: 'string',
-          format: 'uuid',
-          example: '632999f5bb5e77c72e9bf905',
-        },
+        userId: MongoId,
         token: {
           type: 'string',
           description: 'JSON Web Token',
@@ -53,44 +81,6 @@ const components = {
         },
       },
     },
-    Post: {
-      type: 'object',
-      required: [
-        'user',
-        'room',
-        'content',
-        'createdAt',
-        'updatedAt',
-      ],
-      properties: {
-        user: {
-          type: 'string',
-          format: 'uuid',
-          example: '632999f5bb5e77c72e9bf905',
-        },
-        room: {
-          type: 'string',
-          format: 'uuid',
-          example: '632999f5bb5e77c72e9bf905',
-        },
-        content: {
-          type: 'string',
-          format: 'string',
-          description: 'Content of the post',
-        },
-        createdAt: {
-          type: 'string',
-          format: 'date-time',
-          example: '2017-07-21T17:32:28Z',
-        },
-        updatedAt: {
-          type: 'string',
-          format: 'date-time',
-          example: '2017-07-21T17:32:28Z',
-        },
-      },
-    },
-
   },
   securitySchemes: {
     basicAuth: {

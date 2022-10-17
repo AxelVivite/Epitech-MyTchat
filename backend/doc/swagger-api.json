@@ -245,7 +245,9 @@
                   "required": [
                     "username",
                     "email",
-                    "rooms"
+                    "rooms",
+                    "createdAt",
+                    "updatedAt"
                   ],
                   "properties": {
                     "username": {
@@ -261,6 +263,16 @@
                       "items": {
                         "$ref": "#/components/schemas/MongoId"
                       }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2017-07-21T17:32:28Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2017-07-21T17:32:28Z"
                     }
                   }
                 }
@@ -444,7 +456,9 @@
                   "required": [
                     "name",
                     "users",
-                    "posts"
+                    "posts",
+                    "createdAt",
+                    "updatedAt"
                   ],
                   "properties": {
                     "name": {
@@ -462,6 +476,16 @@
                       "items": {
                         "$ref": "#/components/schemas/MongoId"
                       }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2017-07-21T17:32:28Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2017-07-21T17:32:28Z"
                     },
                     "lastPost": {
                       "$ref": "#/components/schemas/Post"
@@ -751,30 +775,10 @@
         "format": "uuid",
         "example": "632999f5bb5e77c72e9bf905"
       },
-      "SigninResult": {
-        "type": "object",
-        "required": [
-          "userId",
-          "token",
-          "expiresIn"
-        ],
-        "properties": {
-          "userId": {
-            "type": "string",
-            "format": "uuid",
-            "example": "632999f5bb5e77c72e9bf905"
-          },
-          "token": {
-            "type": "string",
-            "description": "JSON Web Token",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzI5OWEzNTI1ODUzMzY1NTBjYjI2NDkiLCJpYXQiOjE2NjM2NzA4MzcsImV4cCI6MTY2NDUzNDgzN30.J6AOP4OP6ftFA0ahF8_Up29y23qD-gZF_OqKIYwNj7s"
-          },
-          "expiresIn": {
-            "type": "string",
-            "description": "TTL of the token, format explained at https://github.com/vercel/ms#examples",
-            "example": "10 days"
-          }
-        }
+      "Timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2017-07-21T17:32:28Z"
       },
       "Post": {
         "type": "object",
@@ -810,6 +814,31 @@
             "type": "string",
             "format": "date-time",
             "example": "2017-07-21T17:32:28Z"
+          }
+        }
+      },
+      "SigninResult": {
+        "type": "object",
+        "required": [
+          "userId",
+          "token",
+          "expiresIn"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "632999f5bb5e77c72e9bf905"
+          },
+          "token": {
+            "type": "string",
+            "description": "JSON Web Token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzI5OWEzNTI1ODUzMzY1NTBjYjI2NDkiLCJpYXQiOjE2NjM2NzA4MzcsImV4cCI6MTY2NDUzNDgzN30.J6AOP4OP6ftFA0ahF8_Up29y23qD-gZF_OqKIYwNj7s"
+          },
+          "expiresIn": {
+            "type": "string",
+            "description": "TTL of the token, format explained at https://github.com/vercel/ms#examples",
+            "example": "10 days"
           }
         }
       }

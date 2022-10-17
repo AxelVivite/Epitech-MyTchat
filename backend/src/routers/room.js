@@ -193,6 +193,8 @@ roomRouter.post(
  *                 - name
  *                 - users
  *                 - posts
+ *                 - createdAt
+ *                 - updatedAt
  *               properties:
  *                 name:
  *                   type: string
@@ -205,6 +207,14 @@ roomRouter.post(
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/MongoId'
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: 2017-07-21T17:32:28Z
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: 2017-07-21T17:32:28Z
  *                 lastPost:
  *                   $ref: '#/components/schemas/Post'
  */
@@ -218,6 +228,8 @@ roomRouter.get('/info/:roomId', [
       name: req.state.room.name,
       users: req.state.room.users,
       posts: req.state.room.posts,
+      createdAt: req.state.room.createdAt,
+      updatedAt: req.state.room.updatedAt,
     },
   };
 

@@ -368,6 +368,8 @@ loginRouter.get(
  *                 - username
  *                 - email
  *                 - rooms
+ *                 - createdAt
+ *                 - updatedAt
  *               properties:
  *                 username:
  *                   type: string
@@ -379,6 +381,14 @@ loginRouter.get(
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/MongoId'
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: 2017-07-21T17:32:28Z
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: 2017-07-21T17:32:28Z
  */
 loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
   res.status(200).json({
@@ -386,6 +396,8 @@ loginRouter.get('/info', [checkToken, getUser], async (req, res) => {
       username: req.state.user.username,
       email: req.state.user.email,
       rooms: req.state.user.rooms,
+      createdAt: req.state.user.createdAt,
+      updatedAt: req.state.user.updatedAt,
     },
   });
 });

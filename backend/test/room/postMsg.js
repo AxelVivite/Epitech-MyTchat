@@ -66,6 +66,7 @@ export default () => {
     const t2 = new Date();
     const createdAt = new Date(post.createdAt);
 
+    assert.equal(post.createdAt, post.updatedAt);
     assert(createdAt >= t1);
     assert(createdAt <= t2);
   });
