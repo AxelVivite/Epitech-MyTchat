@@ -1,7 +1,9 @@
+// eslint-disable-next-line import/extensions
+import config from './src/config.js';
+
 export default {
   mongodb: {
-    // todo: figure out how to do it with multi env
-    url: 'mongodb://localhost:27017',
+    url: config.mongodbUrl,
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
