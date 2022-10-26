@@ -1,0 +1,28 @@
+# NodeJs
+node_modules/
+
+# Documentation
+README.md
+doc/
+
+# Scripts
+scripts/
+
+# Tests
+test/
+.mocharc.cjs
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Other envs
+.env.dev
+.env.test
+
+# Eslint
+.eslintrc.cjs
