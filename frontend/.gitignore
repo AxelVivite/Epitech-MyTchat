@@ -1,4 +1,9 @@
 # dependencies
 node_modules
 *.lock
+
+# VS Code
 .vscode
+
+# Build
+build/
