@@ -12,8 +12,6 @@ interface InputBarMessageProps {
 const InputBarMessage = (props: InputBarMessageProps): JSX.Element => {
     const handleSendMessage = (event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        console.log(event);
-        console.log("SENDED B*TCH");
     }
 
     return (

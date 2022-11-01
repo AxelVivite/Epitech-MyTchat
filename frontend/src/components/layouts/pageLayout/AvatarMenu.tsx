@@ -15,11 +15,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import TranslateIcon from '@mui/icons-material/Translate';
 
+import i18n from "services/translation/i18n";
+
 import Avatar from "components/atoms/Avatar";
 
 const AvatarMenu = () => {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);;
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [darkTheme, setDarkTheme] = React.useState<boolean>(false);
+    const [lng, setLng] = React.useState<string>(i18n.language);
     const open = Boolean(anchorEl);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -40,6 +43,16 @@ const AvatarMenu = () => {
         }
         setDarkTheme(!darkTheme);
     }
+
+    const changeLanguage = () => {
+        if (lng === "fr") {
+            i18n.changeLanguage("en");
+            setLng("en");
+        } else {
+            i18n.changeLanguage("fr");
+            setLng("fr");
+        }
+    };
 
     return (
         <>
@@ -101,13 +114,13 @@ const AvatarMenu = () => {
                     Leave the room
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleChangeTheme}>
+                <MenuItem onClick={changeLanguage}>
                     <ListItemIcon>
                         <TranslateIcon fontSize="small" />
                     </ListItemIcon>
-                    {darkTheme ?
-                        "Français" :
-                        "Anglais"
+                    {lng === "fr" ?
+                        "English" :
+                        "Français"
                     }
                 </MenuItem>
                 <MenuItem onClick={handleChangeTheme}>
