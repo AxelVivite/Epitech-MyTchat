@@ -3,6 +3,7 @@ import React from "react";
 import Button from "../atoms/buttons/Button";
 import IconButton from "../atoms/buttons/IconButton";
 import { default as MuiModal } from "@mui/material/Modal";
+import { Card } from "@mui/material";
 
 type clickableVariantType = "button" | "iconButton";
 
@@ -22,21 +23,21 @@ const Modal = (props: ModalProps) => {
             {(
                 props.clickableVariant === "button" &&
                 <Button onClick={handleOpen} type="button">{props.buttonLabel}</Button>
-                ) || (
-                props.clickableVariant === "iconButton" &&
-                <IconButton onClick={handleOpen} variant="transparent" type="button">
-                    {props.buttonLabel}
-                </IconButton>
-            )}
+            ) || (
+                    props.clickableVariant === "iconButton" &&
+                    <IconButton onClick={handleOpen} variant="transparent" type="button">
+                        {props.buttonLabel}
+                    </IconButton>
+                )}
             <MuiModal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <div className="width--75p height--75p">
-                {props.children}
-                </div>
+                <Card className="modal--content width--70p height--70p p--24">
+                    {props.children}
+                </Card>
             </MuiModal>
         </>
     );

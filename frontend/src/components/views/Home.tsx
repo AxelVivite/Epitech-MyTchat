@@ -13,20 +13,20 @@ const Home: React.FC = (props: any) => {
     let url = socketUrl + "?token=" + token;
 
     //eslint-disable-next-line
-    let websocketInstance = useWebSocket(url, 
+    let websocketInstance = useWebSocket(url,
         {
             onOpen: () => console.log('Websocket open with effectice authentication'),
             onClose: () => console.log("Websocket close"),
             //Will attempt to reconnect on all close events, such as server shutting down
             //shouldReconnect: (closeEvent) => true,
-    });
+        });
 
     //const [user]: any = useGlobalState("user");
 
     return (
         <div className="Home">
             <PageLayout>
-            <text>Test de navigation réussi !!!</text>
+                <text>Test de navigation réussi !!!</text>
 
             </PageLayout>
         </div>

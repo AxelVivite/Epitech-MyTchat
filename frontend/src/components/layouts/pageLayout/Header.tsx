@@ -8,9 +8,9 @@ import {
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 
-import Avatar from "components/atoms/Avatar";
 import Button from "components/atoms/buttons/Button";
 import Title from "components/atoms/typography/Title";
+import AvatarMenu from "components/layouts/pageLayout/AvatarMenu";
 
 import logo from "assets/logo.png";
 import logoDark from "assets/logo-dark.png";
@@ -20,15 +20,7 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps): JSX.Element => {
-    const [darkTheme, setDarkTheme] = React.useState<boolean>(false);
-
-    const handleChangeTheme = () => {
-        if (!darkTheme)
-            document.body.classList.add("dark-theme");
-        else 
-            document.body.classList.remove("dark-theme");
-        setDarkTheme(!darkTheme);
-    }
+    const darkTheme = localStorage.getItem("darkTheme") === "false";
 
     return (
         <AppBar position="sticky" className="mb--16">
@@ -45,8 +37,7 @@ const Header = (props: HeaderProps): JSX.Element => {
                         RoomName
                     </Title>
                 </Box>
-                <Button type="button" onClick={handleChangeTheme}>{darkTheme ? "Light" : "Dark"}</Button>
-                <Avatar name="Axel" />
+                <AvatarMenu />
             </Toolbar>
         </AppBar >
     );

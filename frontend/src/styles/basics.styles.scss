@@ -17,10 +17,12 @@
     &--space-between { justify-content: space-between; }
     &--start { justify-content: flex-start; }
     &--end { justify-content: flex-end; }
+    &--center { justify-content: center; }
     &-grow--1 { flex-grow: 1; }
     &-shrink--1 { flex-shrink: 1; }
     &--col-reverse { flex-direction: column-reverse; }
     &--row-reverse { flex-direction: row-reverse; }
+    &--center-align { align-items: center; }
 }
 
 .width {
