@@ -11,7 +11,8 @@ const Home: React.FC = (props: any) => {
     let { setState, state} = useGlobalState();
     let url = socketUrl + "?token=" + state.token;
 
-    let websocketInstance = useWebSocket(url, 
+    //eslint-disable-next-line
+    let websocketInstance = useWebSocket(url,
         {
             onOpen: () => console.log('Websocket open with effectice authentication'),
             onClose: () => console.log("Websocket close"),
@@ -25,7 +26,7 @@ const Home: React.FC = (props: any) => {
     return (
         <div className="Home">
             <PageLayout>
-            <text>Test de navigation réussi !!!</text>
+                <text>Test de navigation réussi !!!</text>
 
             </PageLayout>
         </div>

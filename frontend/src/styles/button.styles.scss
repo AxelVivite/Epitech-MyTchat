@@ -1,0 +1,33 @@
+.btn {
+    &--circle {
+        border-radius: 50%;
+    }
+
+    &--primary-color { background-color: var(--color-secondary) }
+
+    &--md {
+        width: 40px;
+        height: 40px;
+    }
+
+    &--sm {
+        width: 24px;
+        height: 24px;
+    }
+
+    &--hidden {
+        display: none;
+    }
+}
+
+.icon-btn {
+    &--primary {
+        background-color: var(--color-secondary);
+        color: var(--color-primary);
+    }
+
+    &--outlined {
+        border: 1px solid var(--color-secondary);
+        color: var(--color-primary);
+    }
+}

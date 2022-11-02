@@ -1,0 +1,16 @@
+# NodeJs
+node_modules/
+
+# Documentation
+README.md
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Build
+build/

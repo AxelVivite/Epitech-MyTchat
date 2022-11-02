@@ -3,11 +3,12 @@ import React from "react";
 import {
     Box,
     List,
-    ListItem,
-    Typography,
+    ListItem
 } from "@mui/material";
 
 import Avatar from "../atoms/Avatar";
+import Text from "../atoms/typography/Text";
+import TextDate from '../atoms/typography/TextDate';
 
 // here add gsm for the rooms
 
@@ -22,12 +23,12 @@ export const Room = (props: RoomProps): JSX.Element => {
         <>
             <Box className="row width--full">
                 <Avatar name={props.name} />
-                <Box className="col pl--8" sx={{width: "calc(100% - 48px)"}}>
-                    <Box className="row">
-                        <Typography className="name flex-grow--1">{props.name}</Typography>
-                        <Typography className="date">{props.date}</Typography>
+                <Box className="col pl--8" sx={{ width: "calc(100% - 48px)" }}>
+                    <Box className="row mb--4">
+                        <Text variant="name" className="flex-grow--1 width--150">{props.name}</Text>
+                        <TextDate className="date">{props.date}</TextDate>
                     </Box>
-                    <Typography className="message">{props.message}</Typography>
+                    <Text>{props.message}</Text>
                 </Box>
             </Box>
         </>
@@ -61,7 +62,11 @@ const Rooms = (): JSX.Element => {
     return (
         <List disablePadding>
             {example.map(item => (
-                <ListItem disablePadding className="border--bottom border--lightgrey p--8">
+                <ListItem
+                    disablePadding
+                    className="border--bottom border--contrast p--8"
+                    key={`room-${item.name}`}
+                >
                     <Room name={item.name} date={item.date} message={item.message} />
                 </ListItem>
             ))}

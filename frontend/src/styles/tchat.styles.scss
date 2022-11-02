@@ -1,0 +1,57 @@
+.tchat {
+    overflow: auto;
+
+    &--message {
+        width: 70%;
+
+        .text {
+            word-break: normal;
+            overflow-wrap: anywhere;
+            white-space: normal;
+            text-overflow: unset;
+        }
+
+        @media (min-width: 768px) {
+            width: 80%;
+        }
+
+        @media (min-width: 1440px) {
+            width: 90%;
+        }
+
+        &__avatar.MuiAvatar-root {
+            display: none;
+
+            @media (min-width: 600px) {
+                display: flex;
+            }
+        }
+    }
+
+    &:first-child > div {
+        margin-top: 5px !important;
+    }
+
+    &:last-child > div {
+        margin-bottom: 5px !important;
+    }
+
+    &__scrollbar::-webkit-scrollbar {
+        background: var(--color-background);
+        width: 5px;
+    }
+
+    &__scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+  
+    &__scrollbar::-webkit-scrollbar-thumb {
+        background: var(--color-scrollbar);
+        background-clip: padding-box;
+        border-radius: 9999px;
+    }
+  
+    &__scrollbar::-webkit-scrollbar-thumb:hover {
+        background: var(--color-scrollbar-hover);
+    }
+}
