@@ -20,7 +20,7 @@ const Home: React.FC = (props: any) => {
             //shouldReconnect: (closeEvent) => true,
     });
     let newState = state;
-    newState.websocket = websocketInstance
+    newState.websocket = websocketInstance;
     setState((prev) => ({ ...prev, ...newState}));
 
     return (

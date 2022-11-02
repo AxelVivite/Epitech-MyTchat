@@ -9,7 +9,6 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 
 import Avatar from "../../atoms/Avatar";
-import logo from "../../../assets/logo.png";
 import { useGlobalState } from "../../../utils/globalStateManager/globalStateInit";
 import Button from "components/atoms/buttons/Button";
 import Title from "components/atoms/typography/Title";
