@@ -1,15 +1,15 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import * as React from 'react';
 import * as yup from 'yup';
-import { withFormik } from "formik";
+import { withFormik } from 'formik';
 import {
-    Card,
-    CardContent,
-    CardActions,
-    TextField,
-    Button
-  } from "@mui/material";
-import { register } from "../../utils/userManagment";
+  Card,
+  CardContent,
+  CardActions,
+  TextField,
+  Button,
+} from '@mui/material';
+import { register } from '../../utils/userManagment';
 
 interface InputForm {
     email?: string;
@@ -18,31 +18,29 @@ interface InputForm {
     passwordConfirmation?: string;
 }
 
- export const validPassword = new RegExp('^(?=.*[A-Z])(?=.*[0-9]).{7,}$');
+export const validPassword = new RegExp('^(?=.*[A-Z])(?=.*[0-9]).{7,}$');
 
-const Register: React.ComponentType<any> = () => {
-    //eslint-disable-next-line
+const Register: React.ComponentType<any> = () =>
+// eslint-disable-next-line
     
-    return (
-        <Form/>
-    );
-}
+  (
+    <Form />
+  );
 const form = (props: any) => {
-        const {
-          values,
-          touched,
-          errors,
-          isSubmitting,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          handleReset
-        } = props;
-      
+  const {
+    values,
+    touched,
+    errors,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    handleReset,
+  } = props;
 
-    return (
+  return (
     <div>
-      <form onSubmit={handleSubmit} style={{marginLeft: 300, marginRight: 300, marginTop: 200}}>
+      <form onSubmit={handleSubmit} style={{ marginLeft: 300, marginRight: 300, marginTop: 200 }}>
         <Card>
           <CardContent>
             <TextField
@@ -52,20 +50,20 @@ const form = (props: any) => {
               value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.email ? errors.email : ""}
+              helperText={touched.email ? errors.email : ''}
               error={touched.email && Boolean(errors.email)}
               margin="dense"
               variant="outlined"
               fullWidth
             />
-             <TextField
+            <TextField
               id="username"
               label="Username"
               type="string"
               value={values.username}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.username ? errors.username : ""}
+              helperText={touched.username ? errors.username : ''}
               error={touched.username && Boolean(errors.username)}
               margin="dense"
               variant="outlined"
@@ -78,7 +76,7 @@ const form = (props: any) => {
               value={values.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.password ? errors.password : ""}
+              helperText={touched.password ? errors.password : ''}
               error={touched.password && Boolean(errors.password)}
               margin="dense"
               variant="outlined"
@@ -91,7 +89,7 @@ const form = (props: any) => {
               value={values.passwordConfirmation}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.passwordConfirmation ? errors.passwordConfirmation : ""}
+              helperText={touched.passwordConfirmation ? errors.passwordConfirmation : ''}
               error={touched.passwordConfirmation && Boolean(errors.passwordConfirmation)}
               margin="dense"
               variant="outlined"
@@ -109,71 +107,66 @@ const form = (props: any) => {
         </Card>
       </form>
     </div>
-    );
+  );
 };
 
-
 const validationsForm = yup.object({
-    email: yup
-         .string()
-         .email('Entrer un email valide')
-         .required('Email obligatoire'),
-    username: yup.string()
-    .required("Username obligatoire"),  
-    password: yup
-        .string()
-        .matches(validPassword, "Le mot de passe doit contenir au moins 7 charactére avec au minimum une majuscule et 1 chiffre")
-        .required("Mot de passe obligatoire"),
-    passwordConfirmation: yup
-        .string()
-        .oneOf([yup.ref('password')], "Les mots de passe ne correspondent pas")
-        .required("La validation de mot de passe et obligatoire")
-   });
+  email: yup
+    .string()
+    .email('Entrer un email valide')
+    .required('Email obligatoire'),
+  username: yup.string()
+    .required('Username obligatoire'),
+  password: yup
+    .string()
+    .matches(validPassword, 'Le mot de passe doit contenir au moins 7 charactére avec au minimum une majuscule et 1 chiffre')
+    .required('Mot de passe obligatoire'),
+  passwordConfirmation: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Les mots de passe ne correspondent pas')
+    .required('La validation de mot de passe et obligatoire'),
+});
 
-
-const ERRORS_REGISTER = new Map ([
-    ["BadEmail", "Mauvais format d'email. Veuillez le modifier et recommencer"],
-    ["BadPassword", "Mauvais format de mot de passe. Veuillez le modifier et recommencer"],
-    ["EmailTaken", "Cet adresse email est déjà utiliser. Veuillez en utiliser une autre et recommencer"],
-    ["UsernameTaken", "Ce username est déjà utiliser. Veuillez en choisir un autre"],
+const ERRORS_REGISTER = new Map([
+  ['BadEmail', "Mauvais format d'email. Veuillez le modifier et recommencer"],
+  ['BadPassword', 'Mauvais format de mot de passe. Veuillez le modifier et recommencer'],
+  ['EmailTaken', 'Cet adresse email est déjà utiliser. Veuillez en utiliser une autre et recommencer'],
+  ['UsernameTaken', 'Ce username est déjà utiliser. Veuillez en choisir un autre'],
 ]);
 
 const Form = withFormik<InputForm, InputForm>({
-    mapPropsToValues: props => {
-        return {
-        email: props.email || "",
-        username: props.username || "",
-        password: props.password || "",
-        passwordConfirmation: props.passwordConfirmation || ""
-      };
-    },
-    
-    validationSchema: validationsForm,
+  mapPropsToValues: (props) => ({
+    email: props.email || '',
+    username: props.username || '',
+    password: props.password || '',
+    passwordConfirmation: props.passwordConfirmation || '',
+  }),
 
-    handleSubmit: (values, { setSubmitting }) => {
-      setTimeout(async () => {
-        // submit to the server
-        //alert(JSON.stringify(values, null, 2));
-        try {
+  validationSchema: validationsForm,
+
+  handleSubmit: (values, { setSubmitting }) => {
+    setTimeout(async () => {
+      // submit to the server
+      // alert(JSON.stringify(values, null, 2));
+      try {
         const res = await register(values.email!, values.password!, values.username!);
         if (res?.status === 200) {
-            const navigator = useNavigate();
-            navigator('/home');
-            //TODO: Here change it with the home page screen when implemented
+          const navigator = useNavigate();
+          navigator('/home');
+          // TODO: Here change it with the home page screen when implemented
         } else {
-            console.log(res?.status);
-            console.log(res?.data);
-            let error = res?.data.error;
-            alert(ERRORS_REGISTER.get(error));
+          console.log(res?.status);
+          console.log(res?.data);
+          const error = res?.data.error;
+          alert(ERRORS_REGISTER.get(error));
         }
-        } catch (err) {
-            console.log(err);
-        }
-        
-        setSubmitting(false);
-      }, 100);
-    }
-  })(form);
-  
+      } catch (err) {
+        console.log(err);
+      }
+
+      setSubmitting(false);
+    }, 100);
+  },
+})(form);
 
 export default Register;

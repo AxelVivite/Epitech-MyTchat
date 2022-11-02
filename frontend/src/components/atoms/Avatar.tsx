@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
 import {
-    Avatar as MuiAvatar
-} from "@mui/material";
+  Avatar as MuiAvatar,
+} from '@mui/material';
 
-import getRandomInt from "../../utils/getRandomInt";
-import intToChar from "../../utils/intToChar";
+import getRandomInt from '../../utils/getRandomInt';
+import intToChar from '../../utils/intToChar';
 import stringToColor from '../../utils/stringToColor';
 
 interface AvatarProps {
@@ -13,23 +13,21 @@ interface AvatarProps {
     name: string;
 }
 
-const Avatar = (props: AvatarProps): JSX.Element => {
-    const getInitial = (str: string): string => {
-        if (str.length === 0)
-            return (intToChar(getRandomInt(26)));
-        if (str.indexOf(' ') >= 0)
-            return(`${str[0]}${str.split(" ")[1][0]}`)
-        return (str[0]);
-    };
+function Avatar(props: AvatarProps): JSX.Element {
+  const getInitial = (str: string): string => {
+    if (str.length === 0) return (intToChar(getRandomInt(26)));
+    if (str.indexOf(' ') >= 0) return (`${str[0]}${str.split(' ')[1][0]}`);
+    return (str[0]);
+  };
 
-    return (
-        <MuiAvatar
-            className={props.className}
-            sx={{ backgroundColor: stringToColor(props.name) }}
-        >
-            {getInitial(props.name).toUpperCase()}
-        </MuiAvatar>
-    );
-};
+  return (
+    <MuiAvatar
+      className={props.className}
+      sx={{ backgroundColor: stringToColor(props.name) }}
+    >
+      {getInitial(props.name).toUpperCase()}
+    </MuiAvatar>
+  );
+}
 
 export default Avatar;

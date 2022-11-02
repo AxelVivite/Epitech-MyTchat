@@ -1,19 +1,19 @@
-import React from "react";
+import React from 'react';
 
-type TitleVariant = "header" | "room";
+type TitleVariant = 'header' | 'room';
 
 interface TitleProps {
     children: string;
     className?: string;
     variant: TitleVariant;
-};
+}
 
-const Title = (props: TitleProps) => {
-    return (
-        <p className={`title--${props.variant} ${props.className}`}>
-            {props.children}
-        </p>
-    );
-};
+function Title(props: TitleProps) {
+  return (
+    <p className={`title--${props.variant} ${props.className}`}>
+      {props.children}
+    </p>
+  );
+}
 
 export default Title;
