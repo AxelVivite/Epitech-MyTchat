@@ -66,7 +66,7 @@ export const getRooms = async (token: string) => {
     try {
         let roomsIds = await getRoomsId(token);
         if (roomsIds.lenght() === 0)
-            return null;
+            return [];
         let rooms: [Room | null] = [null];
 
         for (const roomId in roomsIds) {

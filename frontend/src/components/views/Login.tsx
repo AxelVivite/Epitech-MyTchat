@@ -10,7 +10,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import * as React from 'react';
 import { login } from "../../utils/userManagment";
 //eslint-disable-next-line
-import { setGlobalState, useGlobalState } from "../../utils/globalStateManager/globalStateInit";
+import { useGlobalState } from "../../utils/globalStateManager/globalStateInit";
 import { User, Room } from "../../utils/globalStateManager/globalStateObjects";
 import { getRooms } from "../../utils/roomsManagment";
 
@@ -29,6 +29,11 @@ const ERRORS_REGISTER = new Map ([
 
 const Login: React.FC = () => {
     let navigate = useNavigate();
+
+    // const { addToken, addUser, updateRooms } = React.useContext(GlobalContext);
+    const { setState, state } = useGlobalState();
+
+    let isLog = false;
 
     const [values, setValues] = React.useState<State>({
         username: '',
@@ -54,18 +59,25 @@ const Login: React.FC = () => {
         event.preventDefault();
       };
     
-    const setupGsm = async (res: any) => {
-      setGlobalState("token", res?.data.token)
-      let user: User = {
-        userId: res?.data.userId,
-        username: values.username
+    const setupGSM = React.useCallback(
+      async (res: any, username: string) => {
+        let user: User = {
+          userId: res?.data.userId,
+          username: username
+        }  
+        let rooms: any = await getRooms(res?.data.token);
+        let data = {
+          user: user,
+          rooms: rooms,
+          token: res?.data.token,
+          lang: "fr",
+          darkModeIsOn: false,
+          websocket: null,
+        }
+        setState((prev) => ({ ...prev, ...data }));
+        console.log(data);
       }
-      setGlobalState("user", user)
-
-      let rooms: any = await getRooms(res?.data.token);
-      setGlobalState("rooms",rooms)
-
-    }
+    , [token]);
 
     return (
 <Box sx={{ display: 'flex', flexWrap: 'wrap', paddingBottom: 200, flexDirection: "column", alignContent: "center", paddingTop: 10 }}>
@@ -108,8 +120,9 @@ const Login: React.FC = () => {
                 try {
                     const res = await login(values.username, values.password);
                     if (res?.status === 200) {
+                        isLog = true;
                         setToken(res?.data.token);
-                        await setupGsm(res);
+                        await setupGSM(res, values.username);
                         navigate(`/home`);
                       }
                     
