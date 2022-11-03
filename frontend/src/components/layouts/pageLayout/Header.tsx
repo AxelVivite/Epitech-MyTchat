@@ -10,25 +10,20 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import logo from '../../../assets/logo.png';
 import logoDark from '../../../assets/logo-dark.png';
-import Button from '../../atoms/buttons/Button';
 import Title from '../../atoms/typography/Title';
 import { useGlobalState } from '../../../utils/globalStateManager/globalStateInit';
-import Avatar from '../../atoms/Avatar';
 import AvatarMenu from './AvatarMenu';
 
-interface HeaderProps {
-    handleClickDrawerButton: () => void;
-}
-
-function Header(props: HeaderProps): JSX.Element {
+const Header = function Header(
+  handleClickDrawerButton: () => void,
+): React.ReactElement<unknown, string> | null {
   const { setState, state } = useGlobalState();
-  const darkTheme = localStorage.getItem('darkTheme') === 'false';
 
   return (
     <AppBar position="sticky" className="mb--16">
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         <IconButton
-          onClick={props.handleClickDrawerButton}
+          onClick={handleClickDrawerButton}
           sx={{
             display: { xs: 'block', md: 'none' },
           }}
@@ -48,6 +43,6 @@ function Header(props: HeaderProps): JSX.Element {
       </Toolbar>
     </AppBar>
   );
-}
+};
 
 export default Header;

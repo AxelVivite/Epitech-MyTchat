@@ -5,11 +5,9 @@ import { Box } from '@mui/material';
 import Drawer from './Drawer';
 import Header from './Header';
 
-interface PageLayoutProps {
-    children: React.ReactNode;
-}
-
-function PageLayout(props: PageLayoutProps): JSX.Element {
+const PageLayout = function PageLayout(
+  children: React.ReactNode,
+): React.ReactElement<unknown, string> | null {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
   const handleClickDrawerButton = () => {
@@ -29,10 +27,10 @@ function PageLayout(props: PageLayoutProps): JSX.Element {
         }}
       >
         <Header handleClickDrawerButton={handleClickDrawerButton} />
-        {props.children}
+        {children}
       </Box>
     </>
   );
-}
+};
 
 export default PageLayout;

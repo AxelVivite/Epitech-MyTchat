@@ -12,26 +12,24 @@ import TextDate from '../atoms/typography/TextDate';
 
 // here add gsm for the rooms
 
-interface RoomProps {
-    'name': string;
-    'date': string;
-    'message': string;
-}
-
-export function Room(props: RoomProps): JSX.Element {
+export const Room = function Room(
+  name: string,
+  date: string,
+  message: string,
+): React.ReactElement<unknown, string> | null {
   return (
     <Box className="row width--full">
-      <Avatar name={props.name} />
+      <Avatar name={name} />
       <Box className="col pl--8" sx={{ width: 'calc(100% - 48px)' }}>
         <Box className="row mb--4">
-          <Text variant="name" className="flex-grow--1 width--150">{props.name}</Text>
-          <TextDate className="date">{props.date}</TextDate>
+          <Text variant="name" className="flex-grow--1 width--150">{name}</Text>
+          <TextDate className="date">{date}</TextDate>
         </Box>
-        <Text>{props.message}</Text>
+        <Text>{message}</Text>
       </Box>
     </Box>
   );
-}
+};
 
 const example = [
   {
@@ -56,7 +54,7 @@ const example = [
   },
 ];
 
-function Rooms(): JSX.Element {
+function Rooms(): React.ReactElement<unknown, string> | null {
   return (
     <List disablePadding>
       {example.map((item) => (

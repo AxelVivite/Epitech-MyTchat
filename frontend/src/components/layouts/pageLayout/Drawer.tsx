@@ -13,12 +13,10 @@ import AddRoom from './AddRoom';
 import Modal from '../../molecules/Modal';
 import Title from '../../atoms/typography/Title';
 
-interface DrawerProps {
-    handleClickDrawerButton: () => void;
-    isDrawerOpen: boolean;
-}
-
-function Drawer(props: DrawerProps): JSX.Element {
+const Drawer = function Drawer(
+  handleClickDrawerButton: () => void,
+  isDrawerOpen: boolean,
+): React.ReactElement<unknown, string> | null {
   const { t } = useTranslation();
 
   const drawer = (
@@ -43,8 +41,8 @@ function Drawer(props: DrawerProps): JSX.Element {
       <MuiDrawer
         id="drawer"
         variant="temporary"
-        open={props.isDrawerOpen}
-        onClose={props.handleClickDrawerButton}
+        open={isDrawerOpen}
+        onClose={handleClickDrawerButton}
         ModalProps={{
           keepMounted: true,
         }}
@@ -67,6 +65,6 @@ function Drawer(props: DrawerProps): JSX.Element {
       </MuiDrawer>
     </>
   );
-}
+};
 
 export default Drawer;

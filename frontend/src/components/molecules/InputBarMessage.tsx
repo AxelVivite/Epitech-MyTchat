@@ -5,17 +5,17 @@ import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
 import IconButton from '../atoms/buttons/IconButton';
 
-interface InputBarMessageProps {
-    onSubmit?: () => void;
-}
-
-function InputBarMessage(props: InputBarMessageProps): JSX.Element {
-  const handleSendMessage = (event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>) => {
+const InputBarMessage = function InputBarMessage(
+  onSubmit?: () => void,
+): React.ReactElement<unknown, string> | null {
+  const handleSendMessage = (
+    event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>,
+  ) => {
     event.preventDefault();
   };
 
   return (
-    <form onSubmit={props.onSubmit} className="row">
+    <form onSubmit={onSubmit} className="row">
       <TextField
         className="flex-grow--1"
         multiline
@@ -34,6 +34,6 @@ function InputBarMessage(props: InputBarMessageProps): JSX.Element {
       </IconButton>
     </form>
   );
-}
+};
 
 export default InputBarMessage;

@@ -1,19 +1,17 @@
 import React from 'react';
 
-import { default as MuiModal } from '@mui/material/Modal';
+import MuiModal from '@mui/material/Modal';
 import { Card } from '@mui/material';
 import Button from '../atoms/buttons/Button';
 import IconButton from '../atoms/buttons/IconButton';
 
 type clickableVariantType = 'button' | 'iconButton';
 
-interface ModalProps {
-    buttonLabel: JSX.Element;
-    children: JSX.Element;
-    clickableVariant: clickableVariantType;
-}
-
-function Modal(props: ModalProps) {
+const Modal = function Modal(
+  buttonLabel: React.ReactElement<unknown, string> | null,
+  children: React.ReactElement<unknown, string> | null,
+  clickableVariant: clickableVariantType,
+): React.ReactElement<unknown, string> | null {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -21,12 +19,12 @@ function Modal(props: ModalProps) {
   return (
     <>
       {(
-        props.clickableVariant === 'button'
-                && <Button onClick={handleOpen} type="button">{props.buttonLabel}</Button>
+        clickableVariant === 'button'
+        && <Button onClick={handleOpen} type="button">{buttonLabel}</Button>
       ) || (
-        props.clickableVariant === 'iconButton' && (
+        clickableVariant === 'iconButton' && (
           <IconButton onClick={handleOpen} variant="transparent" type="button">
-            {props.buttonLabel}
+            {buttonLabel}
           </IconButton>
         )
       )}
@@ -37,11 +35,11 @@ function Modal(props: ModalProps) {
         aria-describedby="modal-modal-description"
       >
         <Card className="modal--content width--70p height--70p p--24">
-          {props.children}
+          {children}
         </Card>
       </MuiModal>
     </>
   );
-}
+};
 
 export default Modal;
