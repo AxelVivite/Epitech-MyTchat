@@ -1,16 +1,14 @@
 import React from 'react';
 
-interface TextDateProps {
-    children: string;
-    className?: string;
-}
-
-function TextDate(props: TextDateProps) {
+const TextDate = function TextDate(
+  children: string,
+  className: string | undefined,
+): React.ReactElement<unknown, string> | null {
   return (
-    <p className={`date ${props.className}`}>
-      {props.children}
+    <p className={`date ${className}`}>
+      {children}
     </p>
   );
-}
+};
 
 export default TextDate;

@@ -2,18 +2,16 @@ import React from 'react';
 
 type TextVariant = 'name'
 
-interface TextProps {
-    children: string;
-    className?: string;
-    variant?: TextVariant;
-}
-
-function Text(props: TextProps) {
+const Text = function Text(
+  children: string,
+  className: string | undefined,
+  variant: TextVariant | undefined,
+): React.ReactElement<unknown, string> | null {
   return (
-    <p className={`${(props.variant && `text--${props.variant}`) || 'text'} ${props.className}`}>
-      {props.children}
+    <p className={`${(variant && `text--${variant}`) || 'text'} ${className}`}>
+      {children}
     </p>
   );
-}
+};
 
 export default Text;

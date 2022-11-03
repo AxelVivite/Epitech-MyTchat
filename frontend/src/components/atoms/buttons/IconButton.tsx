@@ -1,33 +1,31 @@
 import React from 'react';
 
-import { default as MuiIconButton } from '@mui/material/IconButton';
+import MuiIconButton from '@mui/material/IconButton';
 
 type IconButtonVariant = 'transparent' | 'primary' | 'outlined';
 
 type IconButtonType = 'button' | 'submit' | 'reset';
 
-interface IconButtonProps {
-    children?: JSX.Element;
-    className?: string;
-    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    onKeyDown?: (event: React.KeyboardEvent<HTMLButtonElement>) => void;
-    variant: IconButtonVariant;
-    type: IconButtonType;
-}
-
-function IconButton(props: IconButtonProps) {
+const IconButton = function IconButton(
+  children: React.ReactElement<unknown, string> | undefined,
+  className: string | undefined,
+  onClick: () => void | undefined,
+  onKeyDown: () => void | undefined,
+  variant: IconButtonVariant,
+  type: IconButtonType,
+): React.ReactElement<unknown, string> | null {
   return (
     <MuiIconButton
-      className={`icon-btn--${props.variant} ${props.className}`}
-      onClick={props.onClick}
-      onKeyDown={props.onKeyDown}
+      className={`icon-btn--${variant} ${className}`}
+      onClick={onClick}
+      onKeyDown={onKeyDown}
       size="small"
       sx={{ m: 'none' }}
-      type={props.type}
+      type={type}
     >
-      {props.children}
+      {children}
     </MuiIconButton>
   );
-}
+};
 
 export default IconButton;

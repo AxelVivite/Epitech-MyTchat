@@ -12,6 +12,11 @@ import AddIcon from '@mui/icons-material/Add';
 
 import IconButton from '../../atoms/buttons/IconButton';
 
+interface usersInterface {
+  username: string;
+  id: number;
+}
+
 const users: readonly usersInterface[] = [
   { username: 'Axel', id: 1 },
   { username: 'Axel', id: 1 },
@@ -31,11 +36,6 @@ const users: readonly usersInterface[] = [
   { username: 'Axel', id: 1 },
 ];
 
-interface usersInterface {
-    username: string;
-    id: number;
-}
-
 function AddRoom() {
   return (
     <>
@@ -48,14 +48,13 @@ function AddRoom() {
         autoHighlight
         getOptionLabel={(option) => option.username}
         renderOption={(props, option) => (
-          <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+          <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }}>
             {option.username}
           </Box>
         )}
         renderInput={(params) => (
           <div>
             <TextField
-              {...params}
               placeholder="Users to add"
               inputProps={{
                 ...params.inputProps,
@@ -72,7 +71,7 @@ function AddRoom() {
           </div>
         )}
       />
-      <Chip label="Clickable" variant="outlined" onDelete={() => console.log('hihi')} />
+      <Chip label="Clickable" variant="outlined" onDelete={} />
       <Button>Create</Button>
     </>
   );
