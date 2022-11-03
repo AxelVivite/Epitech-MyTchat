@@ -1,13 +1,38 @@
 export const zeroFillLeftShift = (nbr: number, ZerosToPushRight: number) => {
-  const bin = nbr.toString(2);
+  const isNegatif = nbr < 0;
+  const bin = nbr.toString(2).replace('-', '');
 
-  return parseInt(bin.slice(1) + '0'.repeat(ZerosToPushRight), 2);
+  let rtn = parseInt((bin + '0'.repeat(ZerosToPushRight)), 2);
+
+  while (rtn > 2147483648) {
+    rtn -= 2147483648 * 2;
+  }
+
+  while (rtn < -2147483647) {
+    rtn += 2147483648 * 2;
+  }
+
+  if (isNegatif) {
+    rtn = -rtn;
+  }
+
+  return rtn;
 };
 
 export const zeroFillRightShift = (nbr: number, bitToPopRight: number) => {
-  const bin = nbr.toString(2);
+  let bin = nbr.toString(2).slice(1);
+  bin = bin.slice(0, nbr.toString(2).length - bitToPopRight - 1);
+  let rtn = parseInt(bin, 2);
 
-  return parseInt(bin.slice(0, -bitToPopRight), 2);
+  while (rtn > 2147483648) {
+    rtn -= 2147483648 * 2;
+  }
+
+  while (rtn < -2147483647) {
+    rtn += 2147483648 * 2;
+  }
+
+  return rtn;
 };
 
 export const andBitOperator = (a: number, b: number) => {
@@ -19,13 +44,14 @@ export const andBitOperator = (a: number, b: number) => {
     binB = `0${binB}`;
   }
   while (binB.length > binA.length) {
-    binA = `0${binB}`;
+    binA = `0${binA}`;
   }
+
   for (let i = 0; binA[i] && binB[i]; i += 1) {
-    if (binA === '1' && binB === '1') {
-      binRes = `1${binRes}`;
+    if (binA[i] === '1' && binB[i] === '1') {
+      binRes = `${binRes}1`;
     } else {
-      binRes = `0${binRes}`;
+      binRes = `${binRes}0`;
     }
   }
 

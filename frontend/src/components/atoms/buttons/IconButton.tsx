@@ -13,6 +13,9 @@ const defaultProps = {
   onKeyDown: undefined,
 };
 
+// no-unused-vars unpatchable (eslint issue)
+/* eslint-disable */
+
 interface IconButtonProps {
   children?: React.ReactElement,
   className?: string,
@@ -23,6 +26,8 @@ interface IconButtonProps {
   variant: IconButtonVariant,
   type: IconButtonType,
 }
+
+/* eslint-enable */
 
 const IconButton = function IconButton({
   children,
