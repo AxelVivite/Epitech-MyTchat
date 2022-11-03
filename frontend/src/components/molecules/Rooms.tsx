@@ -19,7 +19,7 @@ export const Room = function Room(
 ): React.ReactElement<unknown, string> | null {
   return (
     <Box className="row width--full">
-      <Avatar name={name} />
+      <Avatar name={name} className="roomsClass" />
       <Box className="col pl--8" sx={{ width: 'calc(100% - 48px)' }}>
         <Box className="row mb--4">
           <Text variant="name" className="flex-grow--1 width--150">{name}</Text>

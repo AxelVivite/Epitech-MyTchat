@@ -64,7 +64,7 @@ function AvatarMenu() {
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
       >
-        <Avatar name="Axel" />
+        <Avatar name="Axel" className="avatarMenu" />
       </IconButton>
       <Menu
         anchorEl={anchorEl}
