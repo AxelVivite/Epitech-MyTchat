@@ -21,7 +21,7 @@ interface RoomProps {
 export function Room(props: RoomProps): JSX.Element {
   return (
     <Box className="row width--full">
-      <Avatar name={props.name} />
+      <Avatar name={props.name} className="roomsClass" />
       <Box className="col pl--8" sx={{ width: 'calc(100% - 48px)' }}>
         <Box className="row mb--4">
           <Text variant="name" className="flex-grow--1 width--150">{props.name}</Text>

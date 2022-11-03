@@ -9,7 +9,7 @@ export interface GlobalStateInterface {
     token: string;
     lang: string; // fr or eng to check the current language
     darkModeIsOn: boolean;
-    websocket?: any;
+    websocket?: object;
 }
 
 const GlobalStateContext = createContext({
@@ -26,6 +26,7 @@ function GlobalStateProvider({
   }) {
   const [state, setState] = useState(value);
   return (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <GlobalStateContext.Provider value={{ state, setState }}>
       {children}
     </GlobalStateContext.Provider>
