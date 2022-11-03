@@ -8,12 +8,10 @@ import getRandomInt from '../../utils/getRandomInt';
 import intToChar from '../../utils/intToChar';
 import stringToColor from '../../utils/stringToColor';
 
-interface AvatarProps {
-    className?: string;
-    name: string;
-}
-
-function Avatar(props: AvatarProps): JSX.Element {
+const Avatar = function Avatar(
+  className: string | undefined,
+  name: string,
+): React.ReactElement<unknown, string> | null {
   const getInitial = (str: string): string => {
     if (str.length === 0) return (intToChar(getRandomInt(26)));
     if (str.indexOf(' ') >= 0) return (`${str[0]}${str.split(' ')[1][0]}`);
@@ -22,12 +20,12 @@ function Avatar(props: AvatarProps): JSX.Element {
 
   return (
     <MuiAvatar
-      className={props.className}
-      sx={{ backgroundColor: stringToColor(props.name) }}
+      className={className}
+      sx={{ backgroundColor: stringToColor(name) }}
     >
-      {getInitial(props.name).toUpperCase()}
+      {getInitial(name).toUpperCase()}
     </MuiAvatar>
   );
-}
+};
 
 export default Avatar;

@@ -1,27 +1,23 @@
 import React from 'react';
 
-type ButtonType = 'button' | 'submit' | 'reset';
-
-interface ButtonProps {
-    children?: JSX.Element | string;
-    className?: string
-    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    onKeyDown?: (event: React.KeyboardEvent<HTMLButtonElement>) => void;
-    type: ButtonType;
-    hidden?: boolean;
-}
-
-function Button(props: ButtonProps) {
+const Button = function Button(
+  children: string | undefined,
+  className: string | undefined,
+  onClick: () => void | undefined,
+  onKeyDown: () => void | undefined,
+  type: React.ButtonHTMLAttributes<HTMLButtonElement>['type'],
+  hidden: boolean | undefined,
+): React.ReactElement<unknown, string> | null {
   return (
     <button
-      className={`${props.className} ${props.hidden && 'btn--hidden'}`}
-      onClick={props.onClick}
-      onKeyDown={props.onKeyDown}
-      type={props.type}
+      className={`${className} ${hidden && 'btn--hidden'}`}
+      onClick={onClick}
+      onKeyDown={onKeyDown}
+      type={type === 'submit' ? 'submit' : 'button'}
     >
-      {props.children}
+      {children}
     </button>
   );
-}
+};
 
 export default Button;
