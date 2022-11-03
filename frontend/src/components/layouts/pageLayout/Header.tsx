@@ -8,14 +8,13 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
-import Button from 'components/atoms/buttons/Button';
-import Title from 'components/atoms/typography/Title';
-import AvatarMenu from 'components/layouts/pageLayout/AvatarMenu';
-
-import logo from 'assets/logo.png';
-import logoDark from 'assets/logo-dark.png';
+import logo from '../../../assets/logo.png';
+import logoDark from '../../../assets/logo-dark.png';
+import Button from '../../atoms/buttons/Button';
+import Title from '../../atoms/typography/Title';
 import { useGlobalState } from '../../../utils/globalStateManager/globalStateInit';
 import Avatar from '../../atoms/Avatar';
+import AvatarMenu from './AvatarMenu';
 
 interface HeaderProps {
     handleClickDrawerButton: () => void;

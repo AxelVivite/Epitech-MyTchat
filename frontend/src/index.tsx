@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 // Global State Manager
-import './services/translation/i18n.ts';
+import './services/translation/i18n';
 import { GlobalStateProvider } from './utils/globalStateManager/globalStateInit';
 
 const root = ReactDOM.createRoot(

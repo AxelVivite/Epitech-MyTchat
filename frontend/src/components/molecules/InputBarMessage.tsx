@@ -3,7 +3,7 @@ import React from 'react';
 import TextField from '@mui/material/TextField';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
-import IconButton from 'components/atoms/buttons/IconButton';
+import IconButton from '../atoms/buttons/IconButton';
 
 interface InputBarMessageProps {
     onSubmit?: () => void;

@@ -6,12 +6,12 @@ import {
 } from '@mui/material/';
 import AddIcon from '@mui/icons-material/Add';
 import React from 'react';
-import Title from 'components/atoms/typography/Title';
 
-import Modal from 'components/molecules/Modal';
-import Rooms from 'components/molecules/Rooms';
+import Rooms from '../../molecules/Rooms';
 
-import AddRoom from 'components/layouts/pageLayout/AddRoom';
+import AddRoom from './AddRoom';
+import Modal from '../../molecules/Modal';
+import Title from '../../atoms/typography/Title';
 
 interface DrawerProps {
     handleClickDrawerButton: () => void;

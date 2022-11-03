@@ -10,7 +10,7 @@ import {
 
 import AddIcon from '@mui/icons-material/Add';
 
-import IconButton from 'components/atoms/buttons/IconButton';
+import IconButton from '../../atoms/buttons/IconButton';
 
 const users: readonly usersInterface[] = [
   { username: 'Axel', id: 1 },

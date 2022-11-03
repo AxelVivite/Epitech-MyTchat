@@ -15,9 +15,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import TranslateIcon from '@mui/icons-material/Translate';
 
-import i18n from 'services/translation/i18n';
+import i18n from '../../../services/translation/i18n';
 
-import Avatar from 'components/atoms/Avatar';
+import Avatar from '../../atoms/Avatar';
 
 function AvatarMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
