@@ -1,9 +1,14 @@
 import React from 'react';
 
-const TextDateTime = function TextDateTime(
+interface TextDateTimeProps {
   children: string,
   className: string | undefined,
-): React.ReactElement<unknown, string> | null {
+}
+
+const TextDateTime = function TextDateTime({
+  children,
+  className,
+}: TextDateTimeProps) {
   return (
     <p className={`datetime ${className}`}>
       {children}

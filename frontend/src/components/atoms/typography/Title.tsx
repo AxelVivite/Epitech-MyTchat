@@ -2,11 +2,17 @@ import React from 'react';
 
 type TitleVariant = 'header' | 'room';
 
-const Title = function Title(
+interface TitleProps {
   children: string,
   className: string | undefined,
   variant: TitleVariant,
-): React.ReactElement<unknown, string> | null {
+}
+
+const Title = function Title({
+  children,
+  className,
+  variant,
+}: TitleProps) {
   return (
     <p className={`title--${variant} ${className}`}>
       {children}

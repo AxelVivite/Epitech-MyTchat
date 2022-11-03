@@ -12,11 +12,17 @@ import TextDate from '../atoms/typography/TextDate';
 
 // here add gsm for the rooms
 
-export const Room = function Room(
+interface RoomProps {
   name: string,
   date: string,
   message: string,
-): React.ReactElement<unknown, string> | null {
+}
+
+export const Room = function Room({
+  name,
+  date,
+  message,
+}: RoomProps) {
   return (
     <Box className="row width--full">
       <Avatar name={name} className="roomsClass" />
@@ -54,7 +60,7 @@ const example = [
   },
 ];
 
-function Rooms(): React.ReactElement<unknown, string> | null {
+function Rooms() {
   return (
     <List disablePadding>
       {example.map((item) => (

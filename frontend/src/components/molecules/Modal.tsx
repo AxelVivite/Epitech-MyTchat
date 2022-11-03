@@ -5,13 +5,23 @@ import { Card } from '@mui/material';
 import Button from '../atoms/buttons/Button';
 import IconButton from '../atoms/buttons/IconButton';
 
-type clickableVariantType = 'button' | 'iconButton';
+const defaultProps = {
+  buttonLabel: undefined,
+  iconButton: undefined,
+  children: undefined,
+};
 
-const Modal = function Modal(
-  buttonLabel: React.ReactElement<unknown, string> | null,
-  children: React.ReactElement<unknown, string> | null,
-  clickableVariant: clickableVariantType,
-): React.ReactElement<unknown, string> | null {
+interface ModalProps {
+  buttonLabel?: string,
+  iconButton?: React.ReactElement,
+  children?: React.ReactElement,
+}
+
+const Modal = function Modal({
+  buttonLabel,
+  iconButton,
+  children,
+}: ModalProps) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -19,12 +29,12 @@ const Modal = function Modal(
   return (
     <>
       {(
-        clickableVariant === 'button'
+        buttonLabel
         && <Button onClick={handleOpen} type="button">{buttonLabel}</Button>
       ) || (
-        clickableVariant === 'iconButton' && (
+        iconButton && (
           <IconButton onClick={handleOpen} variant="transparent" type="button">
-            {buttonLabel}
+            {iconButton}
           </IconButton>
         )
       )}
@@ -41,5 +51,7 @@ const Modal = function Modal(
     </>
   );
 };
+
+Modal.defaultProps = defaultProps;
 
 export default Modal;

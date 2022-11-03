@@ -8,10 +8,15 @@ import getRandomInt from '../../utils/getRandomInt';
 import intToChar from '../../utils/intToChar';
 import stringToColor from '../../utils/stringToColor';
 
-export default function Avatar(
+interface AvatarProps {
   className: string | undefined,
   name: string,
-) {
+}
+
+const Avatar = function Avatar({
+  className,
+  name,
+}: AvatarProps) {
   const getInitial = (str: string): string => {
     if (str.length === 0) return (intToChar(getRandomInt(26)));
     if (str.indexOf(' ') >= 0) return (`${str[0]}${str.split(' ')[1][0]}`);
@@ -26,6 +31,6 @@ export default function Avatar(
       {getInitial(name).toUpperCase()}
     </MuiAvatar>
   );
-}
+};
 
-// export default Avatar;
+export default Avatar;
