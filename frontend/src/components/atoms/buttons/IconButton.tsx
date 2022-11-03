@@ -16,8 +16,10 @@ const defaultProps = {
 interface IconButtonProps {
   children?: React.ReactElement,
   className?: string,
+  // eslint-disable-next-line no-unused-vars
   onClick?: (event: React.MouseEvent<HTMLButtonElement>
     | React.KeyboardEvent<HTMLButtonElement>) => void,
+  // eslint-disable-next-line no-unused-vars
   onKeyDown?: (event: React.MouseEvent<HTMLButtonElement>
     | React.KeyboardEvent<HTMLButtonElement>) => void,
   variant: IconButtonVariant,
