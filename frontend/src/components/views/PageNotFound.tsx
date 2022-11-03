@@ -1,10 +1,11 @@
-// eslint-disable-next-line
-import { useNavigate } from "react-router-dom";
+import React, { ReactElement } from 'react';
 
-const PageNotFound: React.FC = () => (
-  <div className="Test">
-    <text>404 Not found</text>
-  </div>
-);
+const PageNotFound = function PageNotFound(): ReactElement<unknown, string> | null {
+  return (
+    <div className="Test">
+      <text>404 Not found</text>
+    </div>
+  );
+};
 
 export default PageNotFound;

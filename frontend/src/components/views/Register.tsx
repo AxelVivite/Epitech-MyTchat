@@ -18,14 +18,8 @@ interface InputForm {
     passwordConfirmation?: string;
 }
 
-export const validPassword = new RegExp('^(?=.*[A-Z])(?=.*[0-9]).{7,}$');
+export const validPassword = /^(?=.*[A-Z])(?=.*[0-9]).{7,}$/;
 
-const Register: React.ComponentType<any> = () =>
-// eslint-disable-next-line
-    
-  (
-    <Form />
-  );
 const form = (props: any) => {
   const {
     values,
@@ -98,7 +92,7 @@ const form = (props: any) => {
           </CardContent>
           <CardActions>
             <Button type="submit" color="primary" disabled={isSubmitting}>
-              S'enregistrer
+              Enregistrement
             </Button>
             <Button color="secondary" onClick={handleReset}>
               Effacer
@@ -168,5 +162,9 @@ const Form = withFormik<InputForm, InputForm>({
     }, 100);
   },
 })(form);
+
+const Register: React.ComponentType<any> = function () {
+  return <Form />;
+};
 
 export default Register;

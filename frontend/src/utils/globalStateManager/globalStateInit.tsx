@@ -1,15 +1,11 @@
-import { createGlobalState } from 'react-hooks-global-state';
 import React, {
-  createContext, Dispatch, SetStateAction, useContext, useReducer, useState,
+  createContext, Dispatch, SetStateAction, useContext, useState,
 } from 'react';
-import { User, Room } from './globalStateObjects.ts';
-
-const userInit: User = { userId: '', username: '' };
-const rooms: [Room | null] = [null]; // TODO: maybe it will be necessary to setup this in an other way when connected it with the reste of the app for using
+import { User, Room } from './globalStateObjects';
 
 export interface GlobalStateInterface {
     user: User;
-    rooms: [Room | null];
+    rooms: [Room | null] | never[] | null;
     token: string;
     lang: string; // fr or eng to check the current language
     darkModeIsOn: boolean;
@@ -35,6 +31,10 @@ function GlobalStateProvider({
     </GlobalStateContext.Provider>
   );
 }
+
+GlobalStateProvider.defaultProps = {
+  value: {},
+};
 
 const useGlobalState = () => {
   const context = useContext(GlobalStateContext);

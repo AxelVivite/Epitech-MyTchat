@@ -1,8 +1,7 @@
 {
     "env": {
         "browser": true,
-        "commonjs": true,
-        "es2021": true
+        "jest": true
     },
     "extends": [
         "eslint:recommended",
@@ -22,7 +21,7 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".tsx", ".ts"] }],
+        "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".tsx", ".ts", ".json"] }],
         "import/extensions": [2, {
             "tsx": "always" 
           }]

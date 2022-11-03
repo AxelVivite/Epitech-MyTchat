@@ -1,8 +1,8 @@
 import axios from 'axios';
-import {
-  Room, User, Post, Friend,
-} from '../utils/globalStateManager/globalStateObjects';
 import { getFriendsList } from './userManagment';
+import {
+  Room, Post, Friend,
+} from './globalStateManager/globalStateObjects';
 
 const devUrl = 'http://localhost:3000';
 
@@ -57,23 +57,9 @@ export const createRoom = async (token: string, name: string, users?: [string]) 
     }
   } catch (err) {
     console.log(err);
+    return null;
   }
-};
-
-export const getRooms = async (token: string) => {
-  try {
-    const roomsIds = await getRoomsId(token);
-    if (roomsIds.lenght() === 0) { return []; }
-    const rooms: [Room | null] = [null];
-
-    for (const roomId in roomsIds) {
-      const room = await roomInfo(token, roomId);
-      rooms.push(room);
-    }
-    return rooms;
-  } catch (err) {
-    console.log(err);
-  }
+  return null;
 };
 
 const getRoomsId = async (token: string) => {
@@ -92,5 +78,23 @@ const getRoomsId = async (token: string) => {
     return null;
   } catch (err) {
     console.log(err);
+    return null;
+  }
+};
+
+export const getRooms = async (token: string) => {
+  try {
+    const roomsIds = await getRoomsId(token);
+    if (roomsIds.lenght() === 0) { return []; }
+    const rooms: [Room | null] = [null];
+
+    roomsIds.forEach(async (value: string) => {
+      const room = await roomInfo(token, value);
+      rooms.push(room);
+    });
+    return rooms;
+  } catch (err) {
+    console.log(err);
+    return null;
   }
 };

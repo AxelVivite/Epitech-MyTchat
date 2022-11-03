@@ -7,7 +7,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import * as React from 'react';
+import React, { ReactElement } from 'react';
 import { login } from '../../utils/userManagment';
 import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 import { User, Room } from '../../utils/globalStateManager/globalStateObjects';
@@ -19,18 +19,17 @@ interface State {
     showPassword: boolean;
 }
 
-const ERRORS_REGISTER = new Map([
-  ['BadEmail', "Mauvais format d'email. Veuillez le modifier et recommencer"],
-  ['BadPassword', 'Mauvais format de mot de passe. Veuillez le modifier et recommencer'],
-  ['EmailTaken', 'Cet adresse email est déjà utiliser. Veuillez en utiliser une autre et recommencer'],
-]);
+// const ERRORS_REGISTER = new Map([
+//   ['BadEmail', "Mauvais format d'email. Veuillez le modifier et recommencer"],
+//   ['BadPassword', 'Mauvais format de mot de passe. Veuillez le modifier et recommencer'],
+//   ['EmailTaken',
+// 'Cet adresse email est déjà utiliser. Veuillez en utiliser une autre et recommencer'],
+// ]);
 
-const Login: React.FC = () => {
+const Login = function Login(): ReactElement<unknown, string> | null {
   const navigate = useNavigate();
 
-  const { setState, state } = useGlobalState();
-
-  let isLog = false;
+  const { setState } = useGlobalState();
 
   const [values, setValues] = React.useState<State>({
     username: '',
@@ -38,7 +37,6 @@ const Login: React.FC = () => {
     showPassword: false,
   });
 
-  const [token, setToken] = React.useState('');
   const handleChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [prop]: event.target.value });
   };
@@ -60,7 +58,7 @@ const Login: React.FC = () => {
         userId: res?.data.userId,
         username,
       };
-      const rooms: any = await getRooms(res?.data.token);
+      const rooms: [Room | null] | never[] | null = await getRooms(res?.data.token);
       const data = {
         user,
         rooms,
@@ -72,7 +70,7 @@ const Login: React.FC = () => {
       setState((prev) => ({ ...prev, ...data }));
       console.log(data);
     },
-    [token],
+    [setState],
   );
 
   return (
@@ -119,8 +117,6 @@ const Login: React.FC = () => {
         try {
           const res = await login(values.username, values.password);
           if (res?.status === 200) {
-            isLog = true;
-            setToken(res?.data.token);
             await setupGSM(res, values.username);
             navigate('/home');
           }
@@ -139,7 +135,7 @@ const Login: React.FC = () => {
         variant="outlined"
         sx={{ marginTop: 3 }}
       >
-        S'enregistrer
+        Enregistrement
       </Button>
     </Box>
   );

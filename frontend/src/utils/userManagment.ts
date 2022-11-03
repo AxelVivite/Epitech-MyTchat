@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Friend } from './globalStateManager/globalStateObjects.ts';
+import { Friend } from './globalStateManager/globalStateObjects';
 
 const devUrl = 'http://localhost:3000';
 
