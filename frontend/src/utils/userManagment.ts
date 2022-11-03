@@ -5,27 +5,26 @@ const devUrl = 'http://localhost:3000';
 
 export const register = async (email: string, password: string, username: string) => {
   try {
-    const { data, status } = await axios.post<any>(
+    const { data, status } = await axios.post<undefined>(
       `${devUrl}/login/register`,
       { email, password, username },
     );
-    alert(data.token + status);
     return { data, status };
   } catch (err) {
-    console.log(err);
     return null;
   }
 };
 
-const ERRORS_REGISTER = new Map([
-  ['BadEmail', "Mauvais format d'email. Veuillez le modifier et recommencer"],
-  ['BadPassword', 'Mauvais format de mot de passe. Veuillez le modifier et recommencer'],
-  ['EmailTaken', 'Cet adresse email est déjà utiliser. Veuillez en utiliser une autre et recommencer'],
-]);
+// const ERRORS_REGISTER = new Map([
+//   ['BadEmail', "Mauvais format d'email. Veuillez le modifier et recommencer"],
+//   ['BadPassword', 'Mauvais format de mot de passe. Veuillez le modifier et recommencer'],
+//   ['EmailTaken', 'Cet adresse email est déjà utiliser.
+// Veuillez en utiliser une autre et recommencer'],
+// ]);
 
 export const login = async (email: string, password: string) => {
   try {
-    const { data, status } = await axios.get<any>(
+    const { data, status } = await axios.get<object>(
       `${devUrl}/login/signin/${email}`,
       {
         headers: {
@@ -34,27 +33,23 @@ export const login = async (email: string, password: string) => {
       },
     );
     if (status === 200) {
-      // const navigator = useNavigate();
-      // navigator('/test');
-      console.log('Salut');
-      // TODO: Here change it with the home page screen when implemented
-    } else {
-      console.log(status);
-      console.log(data);
-      const { error } = data;
-      alert(ERRORS_REGISTER.get(error));
+      return { data, status };
     }
-    alert(`${data.token} | status => ${status}`);
     return { data, status };
   } catch (err) {
-    console.log(err);
     return null;
   }
 };
 
+interface getUsernameInterface {
+  data: {
+    username: string;
+  }
+}
+
 const getUsername = async (userId: string, token: string) => {
   try {
-    const { data, status } = await axios.get<any>(
+    const { data, status } = await axios.get<getUsernameInterface>(
       `${devUrl}/login/username/${userId}`,
       {
         headers: {
@@ -62,26 +57,25 @@ const getUsername = async (userId: string, token: string) => {
         },
       },
     );
-
+    // this was added for the princess airbnb not sure to work properly
     if (status === 200) {
-      return data.username;
+      return data.data.username;
     }
   } catch (err) {
-    console.log(err);
     return null;
   }
   return null;
 };
 
 export const getFriendsList = async (token: string, friendsId: [string]) => {
-  const friends: [Friend | null] = [null];
+  const friends: Friend[] = [];
 
   friendsId.forEach(async (value) => {
     const friendName = await getUsername(token, value);
 
-    const friend = {
+    const friend: Friend = {
       userId: value,
-      username: friendName,
+      username: friendName as string,
     };
     friends.push(friend);
   });
