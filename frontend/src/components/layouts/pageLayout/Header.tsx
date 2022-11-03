@@ -21,7 +21,7 @@ interface HeaderProps {
 const Header = function Header({
   handleClickDrawerButton,
 }: HeaderProps) {
-  const { setState, state } = useGlobalState();
+  const { state } = useGlobalState();
 
   return (
     <AppBar position="sticky" className="mb--16">
