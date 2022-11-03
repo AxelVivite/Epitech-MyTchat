@@ -1,9 +1,7 @@
 import React from 'react';
-
 import Box from '@mui/material/Box';
 // import { Button } from '@mui/material';
 import PageLayout from '../layouts/pageLayout/PageLayout';
-
 import Message from '../molecules/Message';
 import InputMessage from '../molecules/InputBarMessage';
 import { createRoom } from '../../utils/roomsManagment';

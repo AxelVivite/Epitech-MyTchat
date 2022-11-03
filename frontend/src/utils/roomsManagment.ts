@@ -6,9 +6,19 @@ import {
 
 const devUrl = 'http://localhost:3000';
 
+interface roomInfoProps {
+  lastPost: {
+    user: Friend,
+    content: string,
+    createdAt: Date,
+  };
+  name: string;
+  users: [string];
+}
+
 const roomInfo = async (token: string, roomId: string) => {
   try {
-    const { data, status } = await axios.get<any>(
+    const { data, status } = await axios.get<roomInfoProps>(
       `${devUrl}/room/info/${roomId}`,
       {
         headers: {
@@ -18,7 +28,7 @@ const roomInfo = async (token: string, roomId: string) => {
     );
 
     if (status === 200) {
-      const friends: [Friend | null] = await getFriendsList(token, data.users);
+      const friends: Friend[] = await getFriendsList(token, data.users);
       const lastMessage: Post = {
         sender: data.lastPost.user,
         message: data.lastPost.content,
@@ -29,22 +39,23 @@ const roomInfo = async (token: string, roomId: string) => {
         name: data.name,
         lastMessage,
         friends,
-
       };
       return room;
     }
   } catch (err) {
-    console.log(err);
     return null;
   }
   return null;
 };
 
+interface createRoomReturnProps {
+  roomId: string;
+}
 export const createRoom = async (token: string, name: string, users?: [string]) => {
   try {
-    const friends: any = users !== null ? users : [];
+    const friends: [string] | [] | undefined = users !== null ? users : [];
 
-    const { data, status } = await axios.post<any>(
+    const { data, status } = await axios.post<createRoomReturnProps>(
       `${devUrl}room/create`,
       {
         name,
@@ -56,15 +67,18 @@ export const createRoom = async (token: string, name: string, users?: [string]) 
       return await roomInfo(token, data.roomId);
     }
   } catch (err) {
-    console.log(err);
     return null;
   }
   return null;
 };
 
+interface getRoomsIdReturnProps {
+  rooms: string[];
+}
+
 const getRoomsId = async (token: string) => {
   try {
-    const { data, status } = await axios.get<any>(
+    const { data, status } = await axios.get<getRoomsIdReturnProps>(
       `${devUrl}/login/info/`,
       {
         headers: {
@@ -77,7 +91,6 @@ const getRoomsId = async (token: string) => {
     }
     return null;
   } catch (err) {
-    console.log(err);
     return null;
   }
 };
@@ -85,16 +98,15 @@ const getRoomsId = async (token: string) => {
 export const getRooms = async (token: string) => {
   try {
     const roomsIds = await getRoomsId(token);
-    if (roomsIds.lenght() === 0) { return []; }
+    if (roomsIds?.length === 0) { return []; }
     const rooms: [Room | null] = [null];
 
-    roomsIds.forEach(async (value: string) => {
+    roomsIds?.forEach(async (value: string) => {
       const room = await roomInfo(token, value);
       rooms.push(room);
     });
     return rooms;
   } catch (err) {
-    console.log(err);
     return null;
   }
 };
