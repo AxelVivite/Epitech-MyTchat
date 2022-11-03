@@ -22,7 +22,7 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".tsx"] }],
+        "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".tsx", ".ts"] }],
         "import/extensions": [2, {
             "tsx": "always" 
           }]

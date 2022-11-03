@@ -2,7 +2,7 @@ import { createGlobalState } from 'react-hooks-global-state';
 import React, {
   createContext, Dispatch, SetStateAction, useContext, useReducer, useState,
 } from 'react';
-import { User, Room } from './globalStateObjects';
+import { User, Room } from './globalStateObjects.ts';
 
 const userInit: User = { userId: '', username: '' };
 const rooms: [Room | null] = [null]; // TODO: maybe it will be necessary to setup this in an other way when connected it with the reste of the app for using

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Friend } from './globalStateManager/globalStateObjects';
+import { Friend } from './globalStateManager/globalStateObjects.ts';
 
 const devUrl = 'http://localhost:3000';
 
@@ -48,6 +48,7 @@ export const login = async (email: string, password: string) => {
     return { data, status };
   } catch (err) {
     console.log(err);
+    return null;
   }
 };
 
@@ -67,21 +68,23 @@ const getUsername = async (userId: string, token: string) => {
     }
   } catch (err) {
     console.log(err);
+    return null;
   }
+  return null;
 };
 
 export const getFriendsList = async (token: string, friendsId: [string]) => {
   const friends: [Friend | null] = [null];
 
-  for (const friendId in friendsId) {
-    const friendName = await getUsername(token, friendId);
+  friendsId.forEach(async (value) => {
+    const friendName = await getUsername(token, value);
 
     const friend = {
-      userId: friendId,
+      userId: value,
       username: friendName,
     };
     friends.push(friend);
-  }
+  });
 
   return friends;
 };
