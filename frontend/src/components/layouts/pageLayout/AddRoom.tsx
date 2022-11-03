@@ -71,7 +71,7 @@ function AddRoom() {
           </div>
         )}
       />
-      <Chip label="Clickable" variant="outlined" onDelete={} />
+      <Chip label="Clickable" variant="outlined" onDelete={() => console.log('delete')} />
       <Button>Create</Button>
     </>
   );

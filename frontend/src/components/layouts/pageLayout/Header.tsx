@@ -14,9 +14,13 @@ import Title from '../../atoms/typography/Title';
 import { useGlobalState } from '../../../utils/globalStateManager/globalStateInit';
 import AvatarMenu from './AvatarMenu';
 
-const Header = function Header(
+interface HeaderProps {
   handleClickDrawerButton: () => void,
-): React.ReactElement<unknown, string> | null {
+}
+
+const Header = function Header({
+  handleClickDrawerButton,
+}: HeaderProps) {
   const { setState, state } = useGlobalState();
 
   return (

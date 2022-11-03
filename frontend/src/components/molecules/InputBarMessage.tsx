@@ -5,9 +5,13 @@ import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
 import IconButton from '../atoms/buttons/IconButton';
 
-const InputBarMessage = function InputBarMessage(
-  onSubmit?: () => void,
-): React.ReactElement<unknown, string> | null {
+interface InputBarMessageProps {
+  onSubmit: () => void | undefined,
+}
+
+const InputBarMessage = function InputBarMessage({
+  onSubmit,
+}: InputBarMessageProps) {
   const handleSendMessage = (
     event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>,
   ) => {

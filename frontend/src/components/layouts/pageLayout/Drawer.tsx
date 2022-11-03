@@ -13,10 +13,15 @@ import AddRoom from './AddRoom';
 import Modal from '../../molecules/Modal';
 import Title from '../../atoms/typography/Title';
 
-const Drawer = function Drawer(
+interface DrawerProps {
   handleClickDrawerButton: () => void,
   isDrawerOpen: boolean,
-): React.ReactElement<unknown, string> | null {
+}
+
+const Drawer = function Drawer({
+  handleClickDrawerButton,
+  isDrawerOpen,
+}: DrawerProps) {
   const { t } = useTranslation();
 
   const drawer = (
@@ -25,10 +30,7 @@ const Drawer = function Drawer(
         <Title className="line-height--32" variant="room">
           {t('rooms')}
         </Title>
-        <Modal
-          buttonLabel={<AddIcon />}
-          clickableVariant="iconButton"
-        >
+        <Modal iconButton={<AddIcon />}>
           <AddRoom />
         </Modal>
       </Box>

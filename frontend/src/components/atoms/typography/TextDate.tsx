@@ -1,9 +1,14 @@
 import React from 'react';
 
-const TextDate = function TextDate(
+interface TextDateProps {
   children: string,
   className: string | undefined,
-): React.ReactElement<unknown, string> | null {
+}
+
+const TextDate = function TextDate({
+  children,
+  className,
+}: TextDateProps) {
   return (
     <p className={`date ${className}`}>
       {children}

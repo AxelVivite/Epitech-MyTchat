@@ -1,13 +1,30 @@
 import React from 'react';
 
-const Button = function Button(
-  children: string | undefined,
-  className: string | undefined,
-  onClick: () => void | undefined,
-  onKeyDown: () => void | undefined,
+const defaultProps = {
+  children: undefined,
+  className: undefined,
+  onClick: undefined,
+  onKeyDown: undefined,
+  hidden: undefined,
+};
+
+interface ButtonProps {
+  children?: string,
+  className?: string,
+  onClick?: () => void,
+  onKeyDown?: () => void,
   type: React.ButtonHTMLAttributes<HTMLButtonElement>['type'],
-  hidden: boolean | undefined,
-): React.ReactElement<unknown, string> | null {
+  hidden?: boolean,
+}
+
+const Button = function Button({
+  children,
+  className,
+  onClick,
+  onKeyDown,
+  type,
+  hidden,
+}: ButtonProps) {
   return (
     <button
       className={`${className} ${hidden && 'btn--hidden'}`}
@@ -19,5 +36,7 @@ const Button = function Button(
     </button>
   );
 };
+
+Button.defaultProps = defaultProps;
 
 export default Button;
