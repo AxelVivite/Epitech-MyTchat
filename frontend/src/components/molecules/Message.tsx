@@ -11,11 +11,17 @@ import TextDateTime from '../atoms/typography/TextDateTime';
 
 // getMessagesHere from gsm
 
+interface MessageElem {
+  username: string;
+  datetime: string;
+  message: string;
+}
+
 const Message = function Message(
   username: string,
   datetime: string,
   message: string,
-): React.ReactElement<unknown, string> | null {
+): React.ReactElement<MessageElem> | null {
   return (
     <Card className={`row p--16 mb--16 mr--16 tchat--message ${username === 'Axel' && 'ml--auto'}`}>
       <Avatar
