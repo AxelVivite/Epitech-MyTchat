@@ -20,6 +20,7 @@ interface InputForm {
 
 export const validPassword = /^(?=.*[A-Z])(?=.*[0-9]).{7,}$/;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const form = (props: any) => {
   const {
     values,
@@ -121,12 +122,13 @@ const validationsForm = yup.object({
     .required('La validation de mot de passe et obligatoire'),
 });
 
-const ERRORS_REGISTER = new Map([
-  ['BadEmail', "Mauvais format d'email. Veuillez le modifier et recommencer"],
-  ['BadPassword', 'Mauvais format de mot de passe. Veuillez le modifier et recommencer'],
-  ['EmailTaken', 'Cet adresse email est déjà utiliser. Veuillez en utiliser une autre et recommencer'],
-  ['UsernameTaken', 'Ce username est déjà utiliser. Veuillez en choisir un autre'],
-]);
+// const ERRORS_REGISTER = new Map([
+//   ['BadEmail', "Mauvais format d'email. Veuillez le modifier et recommencer"],
+//   ['BadPassword', 'Mauvais format de mot de passe. Veuillez le modifier et recommencer'],
+//   ['EmailTaken', 'Cet adresse email est déjà utiliser.
+// Veuillez en utiliser une autre et recommencer'],
+//   ['UsernameTaken', 'Ce username est déjà utiliser. Veuillez en choisir un autre'],
+// ]);
 
 const Form = withFormik<InputForm, InputForm>({
   mapPropsToValues: (props) => ({
@@ -143,27 +145,24 @@ const Form = withFormik<InputForm, InputForm>({
       // submit to the server
       // alert(JSON.stringify(values, null, 2));
       try {
-        const res = await register(values.email!, values.password!, values.username!);
+        const res = await
+        register(values.email as string, values.password as string, values.username as string);
         if (res?.status === 200) {
           const navigator = useNavigate();
           navigator('/home');
           // TODO: Here change it with the home page screen when implemented
         } else {
-          console.log(res?.status);
-          console.log(res?.data);
-          const error = res?.data.error;
-          alert(ERRORS_REGISTER.get(error));
+          // const error = res?.data.error;
         }
       } catch (err) {
-        console.log(err);
+        throw Error();
       }
-
       setSubmitting(false);
     }, 100);
   },
 })(form);
 
-const Register: React.ComponentType<any> = function () {
+const Register: React.ComponentType<InputForm> = function Register() {
   return <Form />;
 };
 

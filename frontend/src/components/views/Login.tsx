@@ -53,6 +53,7 @@ const Login = function Login(): ReactElement<unknown, string> | null {
   };
 
   const setupGSM = React.useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async (res: any, username: string) => {
       const user: User = {
         userId: res?.data.userId,
@@ -65,10 +66,9 @@ const Login = function Login(): ReactElement<unknown, string> | null {
         token: res?.data.token,
         lang: 'fr',
         darkModeIsOn: false,
-        websocket: null,
+        websocket: undefined,
       };
       setState((prev) => ({ ...prev, ...data }));
-      console.log(data);
     },
     [setState],
   );
@@ -121,8 +121,7 @@ const Login = function Login(): ReactElement<unknown, string> | null {
             navigate('/home');
           }
         } catch (err) {
-          alert(err);
-          console.log(err);
+          throw new Error();
         }
       }}
       >
