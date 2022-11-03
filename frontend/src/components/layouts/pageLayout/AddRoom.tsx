@@ -37,10 +37,16 @@ const users: readonly usersInterface[] = [
 ];
 
 function AddRoom() {
+  const [name, setName] = React.useState('');
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
+
   return (
     <>
       <p className="title--room line-height--32">New room</p>
-      <TextField placeholder="Room name" variant="outlined" />
+      <TextField placeholder="Room name" variant="outlined" required label="Required" onChange={handleChange} />
       <Autocomplete
         id="country-select-demo"
         sx={{ width: 300 }}
@@ -72,7 +78,7 @@ function AddRoom() {
         )}
       />
       <Chip label="Clickable" variant="outlined" onDelete={() => console.log('delete')} />
-      <Button>Create</Button>
+      <Button disabled={name === ''}>Create</Button>
     </>
   );
 }
