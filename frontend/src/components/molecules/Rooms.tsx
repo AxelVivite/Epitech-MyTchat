@@ -5,6 +5,7 @@ import {
   List,
   ListItem,
 } from '@mui/material';
+// import { useTranslation } from 'react-i18next';
 import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 
 import TextDate from '../atoms/typography/TextDate';
@@ -24,6 +25,8 @@ export const RoomBox = function RoomBox({
   date,
   message,
 }: RoomProps) {
+  // const { t } = useTranslation();
+
   return (
     <Box className="row width--full">
       <Avatar name={name} className="roomsClass" />
@@ -33,6 +36,8 @@ export const RoomBox = function RoomBox({
           <TextDate className="date">{date}</TextDate>
         </Box>
         <Text>{message}</Text>
+        {/* dont know why but the translation make text non print on screen */}
+        {/* <Text>{message === '' ? t('any_message_historic') : message}</Text> */}
       </Box>
     </Box>
   );
