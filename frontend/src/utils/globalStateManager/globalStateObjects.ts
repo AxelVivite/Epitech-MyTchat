@@ -10,8 +10,8 @@ export interface User {
 
 export interface Post {
     message: string,
-    messageDate: Date,
-    sender: Friend,
+    messageDate: string,
+    sender: Friend | null,
 }
 
 export interface Room {

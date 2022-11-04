@@ -5,7 +5,7 @@ import { User, Room } from './globalStateObjects';
 
 export interface GlobalStateInterface {
     user: User;
-    rooms: [Room | null] | never[] | null;
+    rooms: Room[] | never[] | null;
     token: string;
     lang: string; // fr or eng to check the current language
     darkModeIsOn: boolean;

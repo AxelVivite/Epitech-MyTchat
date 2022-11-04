@@ -5,10 +5,11 @@ import {
   List,
   ListItem,
 } from '@mui/material';
+import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 
+import TextDate from '../atoms/typography/TextDate';
 import Avatar from '../atoms/Avatar';
 import Text from '../atoms/typography/Text';
-import TextDate from '../atoms/typography/TextDate';
 
 // here add gsm for the rooms
 
@@ -18,7 +19,7 @@ interface RoomProps {
   message: string,
 }
 
-export const Room = function Room({
+export const RoomBox = function RoomBox({
   name,
   date,
   message,
@@ -37,39 +38,45 @@ export const Room = function Room({
   );
 };
 
-const example = [
-  {
-    name: 'Groupe révision pour le bac',
-    date: '11/22/2021',
-    message: "Salut, c'est pour avoir des infos sur le dernier devoir! Que faut-il faire ?",
-  },
-  {
-    name: 'Alexis',
-    date: '10/22/2021',
-    message: 'Salut, comment va ?',
-  },
-  {
-    name: 'Marie',
-    date: '09/22/2021',
-    message: 'Répond b****t',
-  },
-  {
-    name: 'Les zinzolins',
-    date: '05/22/2021',
-    message: 'Ca cuve ce soir ??',
-  },
-];
+// const example = [
+//   {
+//     name: 'Groupe révision pour le bac',
+//     date: '11/22/2021',
+//     message: "Salut, c'est pour avoir des infos sur le dernier devoir! Que faut-il faire ?",
+//   },
+//   {
+//     name: 'Alexis',
+//     date: '10/22/2021',
+//     message: 'Salut, comment va ?',
+//   },
+//   {
+//     name: 'Marie',
+//     date: '09/22/2021',
+//     message: 'Répond b****t',
+//   },
+//   {
+//     name: 'Les zinzolins',
+//     date: '05/22/2021',
+//     message: 'Ca cuve ce soir ??',
+//   },
+// ];
 
 function Rooms() {
+  const { state } = useGlobalState();
+
   return (
     <List disablePadding>
-      {example.map((item) => (
+      {state?.rooms?.map((item?) => (
         <ListItem
           disablePadding
           className="border--bottom border--contrast p--8"
-          key={`room-${item.name}`}
+          key={`room-${item?.name}`}
         >
-          <Room name={item.name} date={item.date} message={item.message} />
+          <RoomBox
+            name={item?.name as string}
+            date={item?.lastMessage?.messageDate as string}
+            message={item?.lastMessage?.message as string}
+          />
         </ListItem>
       ))}
     </List>

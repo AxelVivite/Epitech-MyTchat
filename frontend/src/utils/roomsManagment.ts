@@ -11,7 +11,7 @@ interface roomInfoProps {
     lastPost: {
       user: Friend,
       content: string,
-      createdAt: Date,
+      createdAt: string,
     };
     name: string;
     users: [string];
@@ -33,7 +33,11 @@ const roomInfo = async (token: string, roomId: string, userId: string) => {
     );
     if (status === 200) {
       // console.log(`${data.room.lastPost.content}`);
-      const lastMessage: Post | null = (data.room.lastPost === null) ? null : {
+      const lastMessage: Post = (data.room.lastPost === null) ? {
+        sender: null,
+        message: '',
+        messageDate: '',
+      } : {
         sender: data.room.lastPost.user,
         message: data.room.lastPost.content,
         messageDate: data.room.lastPost.createdAt,
@@ -110,10 +114,10 @@ export const getRooms = async (token: string, userId: string) => {
   try {
     const roomsIds = await getRoomsId(token);
     if (roomsIds?.length === 0) { return []; }
-    const rooms: [Room | null] = [null];
+    const rooms: Room[] = [];
     roomsIds?.forEach(async (value: string) => {
       const room = await roomInfo(token, value, userId);
-      rooms.push(room);
+      rooms.push(room as Room);
     });
     return rooms;
   } catch (err) {

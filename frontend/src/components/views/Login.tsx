@@ -37,7 +37,7 @@ const Login = function Login(): React.ReactElement<unknown, string> | null {
         userId: res?.data.userId,
         username: usernameToSet,
       };
-      const rooms: [Room | null] | never[] | null = await getRooms(res?.data.token, user.userId);
+      const rooms: Room[] | never[] | null = await getRooms(res?.data.token, user.userId);
       const data = {
         user,
         rooms,
