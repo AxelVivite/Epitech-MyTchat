@@ -17,7 +17,19 @@
     "logout": "Logout",
 
     "username": "Username",
-    "password": "password",
+    "password": "Password",
     "sign_up": "Sign up",
-    "sign_in": "Sign in"
+    "sign_in": "Sign in",
+    "email": "Email",
+    "confirm_password": "Confirm the password",
+
+    "delete": "Delete",
+    "register": "Register",
+    "invalid_email_format": "Invalid email format",
+    "email_required": "Email required",
+    "username_required": "Username required",
+    "password_required": "Password required",
+    "invalid_password_format": "Min. 7 characters, 1 capital letter and 1 digit",
+    "password_does_not_match": "The passwords does not match",
+    "confirm_password_required": "You have to confirm the password"
 }

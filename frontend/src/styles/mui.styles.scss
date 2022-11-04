@@ -53,4 +53,10 @@ body {
         border-color: var(--color-secondary);
         color: var(--color-secondary);
     }
+
+    .MuiFormHelperText-root {
+        margin: 0;
+        position: absolute;
+        top: 55px;
+    }
 }

@@ -17,7 +17,7 @@ const PageLayout = function PageLayout({
 }: PageLayoutProps) {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
   const navigate = useNavigate();
-  const { setState, state } = useGlobalState();
+  const { state } = useGlobalState();
 
   const handleClickDrawerButton = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -27,7 +27,7 @@ const PageLayout = function PageLayout({
     if (Object.keys(state).length === 0) {
       navigate('/sign-in');
     }
-  }, []);
+  }, [state, navigate]);
 
   return (
     <>
