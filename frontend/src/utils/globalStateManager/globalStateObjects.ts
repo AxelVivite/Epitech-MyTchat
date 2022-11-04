@@ -17,6 +17,6 @@ export interface Post {
 export interface Room {
     roomId: string,
     name: string,
-    lastMessage: Post,
+    lastMessage: Post | null,
     friends?: Friend[] | null,
 }

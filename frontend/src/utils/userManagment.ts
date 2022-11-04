@@ -62,8 +62,6 @@ const matchUsernameAndId = async (usersName: [string]) => {
       );
 
       if (status === 200) {
-        console.log(`data == ${data.userId}`);
-        console.log(`data == ${value}`);
         const newUser: usersInterface = {
           username: value,
           userId: data.userId,
@@ -72,7 +70,6 @@ const matchUsernameAndId = async (usersName: [string]) => {
         users.push(newUser);
       }
     });
-    console.log(`end === ${users.toString()}`);
     return users;
   } catch (err) {
     return null;
@@ -113,17 +110,18 @@ const getUsername = async (userId: string, token: string) => {
   return null;
 };
 
-export const getFriendsList = async (token: string, friendsId: [string]) => {
+export const getFriendsList = async (token: string, friendsId: string[], userId: string) => {
   const friends: Friend[] = [];
-
+  if (friendsId.length === 0) { return []; }
   friendsId.forEach(async (value) => {
-    const friendName = await getUsername(token, value);
-
-    const friend: Friend = {
-      userId: value,
-      username: friendName as string,
-    };
-    friends.push(friend);
+    if (value !== userId) {
+      const friendName = await getUsername(token, value);
+      const friend: Friend = {
+        userId: value,
+        username: friendName as string,
+      };
+      friends.push(friend);
+    }
   });
 
   return friends;

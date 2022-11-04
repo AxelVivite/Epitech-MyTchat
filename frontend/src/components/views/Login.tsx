@@ -37,7 +37,7 @@ const Login = function Login(): React.ReactElement<unknown, string> | null {
         userId: res?.data.userId,
         username: usernameToSet,
       };
-      const rooms: [Room | null] | never[] | null = await getRooms(res?.data.token);
+      const rooms: [Room | null] | never[] | null = await getRooms(res?.data.token, user.userId);
       const data = {
         user,
         rooms,
@@ -56,7 +56,7 @@ const Login = function Login(): React.ReactElement<unknown, string> | null {
       const res = await login(username, password);
       if (res?.status === 200) {
         await setupGSM(res, username);
-        navigate('/home');
+        navigate('/');
       }
     } catch (err) {
       throw new Error();

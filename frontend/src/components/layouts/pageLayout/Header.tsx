@@ -37,7 +37,7 @@ const Header = function Header({
         <Box className="row">
           <img src={state.darkModeIsOn ? logo : logoDark} alt="logo" className="width--40 mr--16" />
           <Title className="my--auto" variant="header">
-            RoomName
+            {`Cognac-Tabasco ${state.user?.username}`}
           </Title>
         </Box>
         <AvatarMenu />

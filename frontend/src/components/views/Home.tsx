@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import useWebSocket from 'react-use-websocket';
 
 import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
@@ -6,7 +6,7 @@ import PageLayout from '../layouts/pageLayout/PageLayout';
 
 const socketUrl = 'ws://localhost:3000/room/websocket';
 
-const Home: React.FC = (props: any) => {
+function Home() {
   // let [token] = useGlobalState("token");
   const { setState, state } = useGlobalState();
   const url = `${socketUrl}?token=${state.token}`;
@@ -32,6 +32,6 @@ const Home: React.FC = (props: any) => {
       </PageLayout>
     </div>
   );
-};
+}
 
 export default Home;

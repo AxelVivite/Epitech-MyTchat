@@ -4,15 +4,16 @@ import Box from '@mui/material/Box';
 import PageLayout from '../layouts/pageLayout/PageLayout';
 import Message from '../molecules/Message';
 import InputMessage from '../molecules/InputBarMessage';
-import { createRoom } from '../../utils/roomsManagment';
+// import { createRoom } from '../../utils/roomsManagment';
 
-function Tchat(): JSX.Element {
+function Tchat() {
   // const [token] = useGlobalState("token");
   // const [user] = useGlobalState("user");
 
-  const createRoomTest = async () => {
-    await createRoom('token', 'leTestEstmignon', ['eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzQxOGI3Zjk4ODk2ZTE3MTQ0YjVhOGIiLCJpYXQiOjE2NjUyMzk5NzYsImV4cCI6MTY2NjEwMzk3Nn0.ys0wYXdvT6ppHh1qZk8vXqn7rin25PxPR6Zz-AQWjK0']);
-  };
+  // const createRoomTest = async () => {
+  //   await createRoom('token', 'leTestEstmignon',
+  // ['eyJhbGciNzYsImV4cCI6MTY2NjEwMzk3Nn0.ys0wYXdvT6ppHh1qZk8vXqn7rin25PxPR6Zz-AQWjK0']);
+  // };
 
   const onSubmit = () => {
     console.log('ICH');

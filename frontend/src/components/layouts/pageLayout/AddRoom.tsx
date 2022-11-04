@@ -47,6 +47,7 @@ function AddRoom() {
   const [name, setName] = React.useState('');
   const [everyUsers, setEveryUsers] = React.useState([{ username: 'Vous êtes seul sur le réseaux', userId: '1', key: 0 }]);
   const [allUsersLoaded, setUsersLoaded] = React.useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [userToAdd, setUserToAdd] = React.useState(['']);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,9 +80,10 @@ function AddRoom() {
   const createNewRoom = async () => {
     let room: Room | null = null;
     if (userToAdd[0] === '') {
-      room = await createRoom(state.token as string, name);
+      room = await createRoom(state.token as string, name, state.user?.userId as string);
     } else {
-      room = await createRoom(state.token as string, name, userToAdd as [string]);
+      room = await
+      createRoom(state.token as string, name, state.user?.userId as string, userToAdd as [string]);
     }
     if (room !== null) {
       const newState = state;
