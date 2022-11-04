@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import TextField from '@mui/material/TextField';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
@@ -12,6 +13,8 @@ interface InputBarMessageProps {
 const InputBarMessage = function InputBarMessage({
   onSubmit,
 }: InputBarMessageProps) {
+  const { t } = useTranslation();
+
   const handleSendMessage = (
     event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>,
   ) => {
@@ -24,7 +27,7 @@ const InputBarMessage = function InputBarMessage({
         className="flex-grow--1"
         multiline
         maxRows={4}
-        placeholder="Message"
+        placeholder={t('Message')}
         variant="outlined"
       />
       <IconButton

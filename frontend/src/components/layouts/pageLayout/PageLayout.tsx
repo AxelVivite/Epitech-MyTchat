@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Box } from '@mui/material';
+
+import { useGlobalState } from '../../../utils/globalStateManager/globalStateInit';
 
 import Drawer from './Drawer';
 import Header from './Header';
@@ -13,10 +16,18 @@ const PageLayout = function PageLayout({
   children,
 }: PageLayoutProps) {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const navigate = useNavigate();
+  const { state } = useGlobalState();
 
   const handleClickDrawerButton = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
+
+  React.useEffect(() => {
+    if (Object.keys(state).length === 0) {
+      navigate('/sign-in');
+    }
+  }, [state, navigate]);
 
   return (
     <>

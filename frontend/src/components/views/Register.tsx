@@ -1,27 +1,31 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import * as yup from 'yup';
 import { withFormik } from 'formik';
 import {
   Card,
-  CardContent,
-  CardActions,
+  Box,
   TextField,
   Button,
 } from '@mui/material';
 import { register } from '../../utils/userManagment';
 
+import logoDark from '../../assets/logo-dark.png';
+import Title from '../atoms/typography/Title';
+
 interface InputForm {
-    email?: string;
-    username?: string;
-    password?: string;
-    passwordConfirmation?: string;
+  email?: string;
+  username?: string;
+  password?: string;
+  passwordConfirmation?: string;
 }
 
 export const validPassword = /^(?=.*[A-Z])(?=.*[0-9]).{7,}$/;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const form = (props: any) => {
+const FormDisplay = function FormDisplay(props: any) {
   const {
     values,
     touched,
@@ -33,102 +37,111 @@ const form = (props: any) => {
     handleReset,
   } = props;
 
+  const { t } = useTranslation();
+
   return (
     <div>
       <form onSubmit={handleSubmit} style={{ marginLeft: 300, marginRight: 300, marginTop: 200 }}>
-        <Card>
-          <CardContent>
-            <TextField
-              id="email"
-              label="Email"
-              type="email"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.email ? errors.email : ''}
-              error={touched.email && Boolean(errors.email)}
-              margin="dense"
+        <Card className="col flex--center-align div--centered p--16">
+          <Box className="row flex--center mb--24 mt--8">
+            <img src={logoDark} alt="logo" className="width--40 mr--16" />
+            <Title className="my--auto" variant="header">
+              Cognac-Tabasco
+            </Title>
+          </Box>
+          <TextField
+            classes={{ root: 'mb--16 width--280' }}
+            id="email"
+            placeholder={t('email')}
+            type="email"
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            helperText={touched.email ? t(errors.email) : ''}
+            error={touched.email && Boolean(errors.email)}
+            variant="outlined"
+            fullWidth
+          />
+          <TextField
+            classes={{ root: 'mb--16 width--280' }}
+            id="username"
+            placeholder={t('username')}
+            type="string"
+            value={values.username}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            helperText={touched.username ? t(errors.username) : ''}
+            error={touched.username && Boolean(errors.username)}
+            variant="outlined"
+            fullWidth
+          />
+          <TextField
+            classes={{ root: 'mb--16 width--280' }}
+            id="password"
+            placeholder={t('password')}
+            type="password"
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            helperText={touched.password ? t(errors.password) : ''}
+            error={touched.password && Boolean(errors.password)}
+            variant="outlined"
+            fullWidth
+          />
+          <TextField
+            classes={{ root: 'mb--16 width--280' }}
+            id="passwordConfirmation"
+            placeholder={t('confirm_password')}
+            type="password"
+            value={values.passwordConfirmation}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            helperText={touched.passwordConfirmation ? t(errors.passwordConfirmation) : ''}
+            error={touched.passwordConfirmation && Boolean(errors.passwordConfirmation)}
+            variant="outlined"
+            fullWidth
+          />
+          <Box className="row flex--center mt--8">
+            <Button
+              className="width--128 mr--8"
+              color="secondary"
+              onClick={handleReset}
               variant="outlined"
-              fullWidth
-            />
-            <TextField
-              id="username"
-              label="Username"
-              type="string"
-              value={values.username}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.username ? errors.username : ''}
-              error={touched.username && Boolean(errors.username)}
-              margin="dense"
-              variant="outlined"
-              fullWidth
-            />
-            <TextField
-              id="password"
-              label="Password"
-              type="password"
-              value={values.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.password ? errors.password : ''}
-              error={touched.password && Boolean(errors.password)}
-              margin="dense"
-              variant="outlined"
-              fullWidth
-            />
-            <TextField
-              id="passwordConfirmation"
-              label="Confirm Password"
-              type="password"
-              value={values.passwordConfirmation}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.passwordConfirmation ? errors.passwordConfirmation : ''}
-              error={touched.passwordConfirmation && Boolean(errors.passwordConfirmation)}
-              margin="dense"
-              variant="outlined"
-              fullWidth
-            />
-          </CardContent>
-          <CardActions>
-            <Button type="submit" color="primary" disabled={isSubmitting}>
-              Enregistrement
+            >
+              {t('delete')}
             </Button>
-            <Button color="secondary" onClick={handleReset}>
-              Effacer
+            <Button
+              className="width--128 ml--8"
+              type="submit"
+              color="primary"
+              disabled={isSubmitting}
+              variant="contained"
+            >
+              {t('register')}
             </Button>
-          </CardActions>
+          </Box>
         </Card>
       </form>
     </div>
   );
 };
 
-const validationsForm = yup.object({
+const validationSchemaConfig = yup.object({
   email: yup
     .string()
-    .email('Entrer un email valide')
-    .required('Email obligatoire'),
+    .email('invalid_email_format')
+    .required('email_required'),
   username: yup.string()
-    .required('Username obligatoire'),
+    .required('username_required'),
   password: yup
     .string()
-    .matches(validPassword, 'Le mot de passe doit contenir au moins 7 charactére avec au minimum une majuscule et 1 chiffre')
-    .required('Mot de passe obligatoire'),
+    .matches(validPassword, 'invalid_password_format')
+    .required('password_required'),
   passwordConfirmation: yup
     .string()
-    .oneOf([yup.ref('password')], 'Les mots de passe ne correspondent pas')
-    .required('La validation de mot de passe et obligatoire'),
+    .oneOf([yup.ref('password')], 'password_does_not_match')
+    .required('confirm_password_required'),
 });
-
-// const ERRORS_REGISTER = new Map([
-//   ['BadEmail', "Mauvais format d'email. Veuillez le modifier et recommencer"],
-//   ['BadPassword', 'Mauvais format de mot de passe. Veuillez le modifier et recommencer'],
-//   ['EmailTaken', 'Cet adresse email est déjà utiliser.
-// Veuillez en utiliser une autre et recommencer'],
-//   ['UsernameTaken', 'Ce username est déjà utiliser. Veuillez en choisir un autre'],
-// ]);
 
 const Form = withFormik<InputForm, InputForm>({
   mapPropsToValues: (props) => ({
@@ -138,21 +151,16 @@ const Form = withFormik<InputForm, InputForm>({
     passwordConfirmation: props.passwordConfirmation || '',
   }),
 
-  validationSchema: validationsForm,
+  validationSchema: validationSchemaConfig,
 
   handleSubmit: (values, { setSubmitting }) => {
     setTimeout(async () => {
-      // submit to the server
-      // alert(JSON.stringify(values, null, 2));
       try {
         const res = await
         register(values.email as string, values.password as string, values.username as string);
         if (res?.status === 200) {
-          const navigator = useNavigate();
-          navigator('/home');
-          // TODO: Here change it with the home page screen when implemented
-        } else {
-          // const error = res?.data.error;
+          const navigate = useNavigate();
+          navigate('/sign-in');
         }
       } catch (err) {
         throw Error();
@@ -160,7 +168,7 @@ const Form = withFormik<InputForm, InputForm>({
       setSubmitting(false);
     }, 100);
   },
-})(form);
+})(FormDisplay);
 
 const Register: React.ComponentType<InputForm> = function Register() {
   return <Form />;

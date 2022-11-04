@@ -19,9 +19,9 @@ function App() {
       <p />
       <Router>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/sign-in" element={<Login />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/sign-up" element={<Register />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>

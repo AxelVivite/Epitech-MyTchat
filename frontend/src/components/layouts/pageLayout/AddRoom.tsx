@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   Autocomplete,
@@ -41,6 +42,7 @@ interface usersInterface {
 // ];
 
 function AddRoom() {
+  const { t } = useTranslation();
   const { state, setState } = useGlobalState();
   const [name, setName] = React.useState('');
   const [everyUsers, setEveryUsers] = React.useState([{ username: 'Vous êtes seul sur le réseaux', userId: '1', key: 0 }]);
@@ -96,8 +98,8 @@ function AddRoom() {
 
   return (
     <>
-      <p className="title--room line-height--32">New room</p>
-      <TextField placeholder="Room name" variant="outlined" required label="Required" onChange={handleChange} />
+      <p className="title--room line-height--32">{t('new_room')}</p>
+      <TextField placeholder={t('room_name')} variant="outlined" required label="Required" onChange={handleChange} />
       { allUsersLoaded ? (
         <form onSubmit={(event) => handleSubmit(event)}>
           <Autocomplete
@@ -117,7 +119,7 @@ function AddRoom() {
                 {...params}
                 variant="standard"
                 label="Selectionner un utilisateur"
-                placeholder="User"
+                placeholder={t('add_user')}
               />
             )}
           />
@@ -204,8 +206,7 @@ function AddRoom() {
           await createNewRoom();
         }}
       >
-        Create
-
+        {t('create')}
       </Button>
     </>
   );

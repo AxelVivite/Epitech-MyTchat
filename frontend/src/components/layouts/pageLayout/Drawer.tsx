@@ -1,3 +1,4 @@
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -5,7 +6,6 @@ import {
   Drawer as MuiDrawer,
 } from '@mui/material/';
 import AddIcon from '@mui/icons-material/Add';
-import React from 'react';
 
 import Rooms from '../../molecules/Rooms';
 
