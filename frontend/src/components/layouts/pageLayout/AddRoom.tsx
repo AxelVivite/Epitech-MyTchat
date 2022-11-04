@@ -91,17 +91,18 @@ function AddRoom() {
     // here add a way to tell the user that the room creation had fail
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    // setEveryUsers(event.target.)
-    console.log(event.target);
-  };
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   // setEveryUsers(event.target.)
+  //   // console.log(event.target);
+  // };
 
   return (
     <>
       <p className="title--room line-height--32">{t('new_room')}</p>
       <TextField placeholder={t('room_name')} variant="outlined" required label="Required" onChange={handleChange} />
       { allUsersLoaded ? (
-        <form onSubmit={(event) => handleSubmit(event)}>
+        <form>
+          {/* <form onSubmit={(event) => handleSubmit(event)}> */}
           <Autocomplete
           // multiple
             autoHighlight
