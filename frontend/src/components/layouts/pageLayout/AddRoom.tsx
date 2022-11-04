@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   Autocomplete,
@@ -37,10 +38,12 @@ const users: readonly usersInterface[] = [
 ];
 
 function AddRoom() {
+  const { t } = useTranslation();
+
   return (
     <>
-      <p className="title--room line-height--32">New room</p>
-      <TextField placeholder="Room name" variant="outlined" />
+      <p className="title--room line-height--32">{t('new_room')}</p>
+      <TextField placeholder={t('room_name')} variant="outlined" />
       <Autocomplete
         id="country-select-demo"
         sx={{ width: 300 }}
@@ -55,7 +58,7 @@ function AddRoom() {
         renderInput={(params) => (
           <div>
             <TextField
-              placeholder="Users to add"
+              placeholder={t('add_user')}
               inputProps={{
                 ...params.inputProps,
                 autoComplete: 'new-password', // disable autocomplete and autofill
@@ -72,7 +75,7 @@ function AddRoom() {
         )}
       />
       <Chip label="Clickable" variant="outlined" onDelete={() => console.log('delete')} />
-      <Button>Create</Button>
+      <Button>{t('create')}</Button>
     </>
   );
 }

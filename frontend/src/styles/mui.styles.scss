@@ -34,4 +34,11 @@ body {
         border: none;
         box-shadow: var(--box-shadow);
     }
+
+    .MuiMenu-list, .MuiMenu-paper::before {
+        background-color: var(--color-primary);
+        color: var(--color-font);
+        box-shadow: var(--box-shadow);
+    }
+
 }

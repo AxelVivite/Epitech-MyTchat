@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   Divider,
@@ -24,6 +25,7 @@ function AvatarMenu() {
   const [darkTheme, setDarkTheme] = React.useState<boolean>(false);
   const [lng, setLng] = React.useState<string>(i18n.language);
   const open = Boolean(anchorEl);
+  const { t } = useTranslation();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -71,7 +73,6 @@ function AvatarMenu() {
         id="account-menu"
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -92,7 +93,6 @@ function AvatarMenu() {
               right: 14,
               width: 10,
               height: 10,
-              bgcolor: 'background.paper',
               transform: 'translateY(-50%) rotate(45deg)',
               zIndex: 0,
             },
@@ -105,13 +105,13 @@ function AvatarMenu() {
           <ListItemIcon>
             <PersonAddIcon fontSize="small" />
           </ListItemIcon>
-          Invite a user
+          {t('invite_users')}
         </MenuItem>
         <MenuItem>
           <ListItemIcon>
             <GroupRemoveIcon fontSize="small" />
           </ListItemIcon>
-          Leave the room
+          {t('leave_room')}
         </MenuItem>
         <Divider />
         <MenuItem onClick={changeLanguage}>
@@ -129,15 +129,15 @@ function AvatarMenu() {
               : <DarkModeIcon fontSize="small" />}
           </ListItemIcon>
           {darkTheme
-            ? 'Light mode'
-            : 'Dark mode'}
+            ? t('light_mode')
+            : t('dark_mode')}
         </MenuItem>
         <Divider />
         <MenuItem>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>
-          Logout
+          {t('logout')}
         </MenuItem>
       </Menu>
     </>

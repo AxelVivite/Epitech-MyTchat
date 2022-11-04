@@ -1,4 +1,18 @@
 {
     "nav-test": "Test de navigation",
-    "rooms": "Salons"
+
+    "rooms": "Salons",
+
+    "new_room": "Nouveau salon",
+    "room_name": "Nom du salon",
+    "add_user": "Ajouter un utilisateur",
+    "create": "Créer",
+
+    "message": "Message",
+
+    "invite_users": "Inviter des utilisateurs",
+    "leave_room": "Quitter le salon",
+    "light_mode": "Théme clair",
+    "dark_mode": "Théme foncé",
+    "logout": "Déconnexion"
 }
