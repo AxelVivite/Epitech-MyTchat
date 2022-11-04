@@ -22,7 +22,7 @@ const roomInfo = async (token: string, roomId: string) => {
       `${devUrl}/room/info/${roomId}`,
       {
         headers: {
-          token: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -52,23 +52,29 @@ interface createRoomReturnProps {
   roomId: string;
 }
 export const createRoom = async (token: string, name: string, users?: [string]) => {
-  try {
-    const friends: [string] | [] | undefined = users !== null ? users : [];
+  console.log('entrée de creatzRoom');
+  // try {
+  const friends: [string] | [] | undefined = users !== null ? users : [];
 
-    const { data, status } = await axios.post<createRoomReturnProps>(
-      `${devUrl}room/create`,
-      {
-        name,
-        otherUsers: friends,
+  const { data, status } = await axios.post<createRoomReturnProps>(
+    `${devUrl}/room/create`,
+    {
+      name,
+      otherUsers: friends,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
-
-    if (status === 200) {
-      return await roomInfo(token, data.roomId);
-    }
-  } catch (err) {
-    return null;
+    },
+  );
+  console.log(`status ==${status}`);
+  if (status === 200) {
+    return roomInfo(token, data.roomId);
   }
+  // } catch (err) {
+  //   return null;
+  // }
   return null;
 };
 
