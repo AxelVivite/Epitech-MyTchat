@@ -22,4 +22,9 @@
 #root {
     background-color: var(--color-background);
     height: 100vh;
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:focus {
+      transition: background-color 600000s 0s, color 600000s 0s;
+    }
 }

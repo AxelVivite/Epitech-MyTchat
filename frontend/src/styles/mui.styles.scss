@@ -41,4 +41,16 @@ body {
         box-shadow: var(--box-shadow);
     }
 
+    .MuiButtonBase-root {
+        text-transform: none;
+    }
+
+    .MuiButton-contained {
+        background-color: var(--color-secondary);
+    }
+
+    .MuiButton-outlined {
+        border-color: var(--color-secondary);
+        color: var(--color-secondary);
+    }
 }

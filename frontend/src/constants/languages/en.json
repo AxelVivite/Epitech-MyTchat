@@ -14,5 +14,10 @@
     "leave_room": "Leave the room",
     "light_mode": "Light mode",
     "dark_mode": "Dark mode",
-    "logout": "Logout"
+    "logout": "Logout",
+
+    "username": "Username",
+    "password": "password",
+    "sign_up": "Sign up",
+    "sign_in": "Sign in"
 }

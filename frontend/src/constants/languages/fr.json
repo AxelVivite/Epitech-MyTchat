@@ -14,5 +14,10 @@
     "leave_room": "Quitter le salon",
     "light_mode": "Théme clair",
     "dark_mode": "Théme foncé",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "sign_up": "S'inscrire",
+    "sign_in": "Se connecter"
 }
