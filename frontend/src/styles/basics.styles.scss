@@ -24,6 +24,7 @@ body {
         &--col-reverse { flex-direction: column-reverse; }
         &--row-reverse { flex-direction: row-reverse; }
         &--center-align { align-items: center; }
+        &--wrap { flex-wrap: wrap; }
     }
 
     .div--centered {
@@ -44,6 +45,7 @@ body {
         &--96 { width: 96px; }
         &--128 { width: 128px; }
         &--150 { width: 150px; }
+        &--224 { width: 224px; }
         &--280 { width: 280px; }
         &--10p { width: 10%; }
         &--20p { width: 20%; }
@@ -68,6 +70,8 @@ body {
         &--96 { height: 96px; }
         &--128 { height: 128px; }
         &--150 { height: 150px; }
+        &--224 { height: 224px; }
+        &--280 { height: 280px; }
         &--10p { height: 10%; }
         &--20p { height: 20%; }
         &--30p { height: 30%; }

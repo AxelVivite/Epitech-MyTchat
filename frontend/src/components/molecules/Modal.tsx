@@ -34,7 +34,7 @@ const Modal = function Modal({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Card className="modal--content width--70p height--70p p--24">
+        <Card className="col flex--center-align div--centered p--16">
           {children}
         </Card>
       </MuiModal>
