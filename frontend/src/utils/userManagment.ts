@@ -51,35 +51,40 @@ interface usersInterface {
   key: number;
 }
 
-const matchUsernameAndId = async (usersName: [string]) => {
-  const users: usersInterface[] = [];
+const matchUsernameAndId = async (usersName: [string], me?: string) => {
   try {
-    usersName.forEach(async (value, index) => {
+    const users: usersInterface[] = [];
+    await Promise.all(usersName.map(async (value, index) => {
       const { data, status } = await axios.get(
         `${devUrl}/login/userId/${value}`,
       );
 
       if (status === 200) {
-        const newUser: usersInterface = {
-          username: value,
-          userId: data.userId,
-          key: index,
-        };
-        users.push(newUser);
+        if ((me !== null && me !== value) || (me === null)) {
+          const newUser: usersInterface = {
+            username: value,
+            userId: data.userId,
+            key: index,
+          };
+          users.push(newUser);
+        }
       }
-    });
+    }));
     return users;
   } catch (err) {
     return null;
   }
 };
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (me?: string) => {
   try {
     const { data, status } = await axios.get(
       `${devUrl}/login/users`,
     );
     if (status === 200) {
+      if (me !== null) {
+        return matchUsernameAndId(data.users, me);
+      }
       return matchUsernameAndId(data.users);
     }
   } catch (err) {

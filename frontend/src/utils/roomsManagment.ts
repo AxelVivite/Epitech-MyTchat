@@ -60,9 +60,9 @@ const roomInfo = async (token: string, roomId: string, userId: string) => {
 interface createRoomReturnProps {
   roomId: string;
 }
-export const createRoom = async (token: string, name: string, userId: string, users?: [string]) => {
+export const createRoom = async (token: string, name: string, userId: string, users?: string[]) => {
   try {
-    const friends: [string] | [] | undefined = users !== null ? users : [];
+    const friends: string[] | [] | undefined = users !== null ? users : [];
 
     const { data, status } = await axios.post<createRoomReturnProps>(
       `${devUrl}/room/create`,
