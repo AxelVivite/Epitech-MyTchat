@@ -4,7 +4,7 @@ import useWebSocket from 'react-use-websocket';
 import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 import PageLayout from '../layouts/pageLayout/PageLayout';
 
-const socketUrl = 'ws://localhost:8080/room/websocket';
+const socketUrl = 'ws://localhost:3000/room/websocket';
 
 function Home() {
   // let [token] = useGlobalState("token");

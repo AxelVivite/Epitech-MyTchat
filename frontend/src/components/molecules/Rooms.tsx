@@ -2,7 +2,7 @@ import React from 'react';
 
 import {
   Box,
-  Button,
+  ListItemButton,
   List,
   ListItem,
 } from '@mui/material';
@@ -82,16 +82,16 @@ function Rooms() {
       {state?.rooms?.map((item?) => (
         <ListItem
           disablePadding
-          className="border--bottom border--contrast p--8"
+          className="border--bottom border--contrast"
           key={`room-${item?.name}`}
         >
-          <Button onClick={() => changeRoom(item?.roomId)}>
+          <ListItemButton onClick={() => changeRoom(item?.roomId)} className="p--8">
             <RoomBox
               name={item?.name as string}
               date={item?.lastMessage?.messageDate as string}
               message={item?.lastMessage?.message as string}
             />
-          </Button>
+          </ListItemButton>
         </ListItem>
       ))}
     </List>

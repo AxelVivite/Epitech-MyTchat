@@ -13,7 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 import { createRoom } from '../../../utils/roomsManagment';
 import { useGlobalState } from '../../../utils/globalStateManager/globalStateInit';
-import { getAllUsers } from '../../../utils/userManagment';
+import { getAllUsernames } from '../../../utils/userManagment';
 
 import IconButton from '../../atoms/buttons/IconButton';
 import Avatar from '../../atoms/Avatar';
@@ -42,31 +42,15 @@ const AddRoom = function AddRoom({
   const [name, setName] = React.useState('');
   const [everyUsers, setEveryUsers] = React.useState([{ username: 'Vous êtes seul sur le réseaux', userId: '1', key: 0 }]);
   const [allUsersLoaded, setUsersLoaded] = React.useState(false);
-  // eslint-disable-next-line no-unused-vars
-  const [userToAdd, setUserToAdd] = React.useState(['']);
-
-  const getAllUsernames = async () => {
-    try {
-      const allUsers = await getAllUsers(state.user?.username);
-      if (allUsers === null) {
-        return [];
-      }
-      console.log(allUsers);
-      return allUsers;
-    } catch (err) {
-      return [];
-    }
-  };
 
   React.useEffect(() => {
     (async () => {
       setUsersLoaded(false);
-      const res = await getAllUsernames();
+      const res = await getAllUsernames(state.user?.username);
       setEveryUsers([...res]);
       setUsersLoaded(true);
-      console.log(`users == ${everyUsers[1].username}`);
     })();
-  });
+  }, [state]);
 
   const getFriendIDs = () => {
     const friendIds: string[] = [];

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Friend } from './globalStateManager/globalStateObjects';
 
-const devUrl = 'http://localhost:8080';
+const devUrl = 'http://localhost:3000';
 
 export const register = async (email: string, password: string, username: string) => {
   try {
@@ -91,6 +91,19 @@ export const getAllUsers = async (me?: string) => {
     return [];
   }
   return [];
+};
+
+export const getAllUsernames = async (username: string | undefined) => {
+  try {
+    const allUsers = await getAllUsers(username);
+    if (allUsers === null) {
+      return [];
+    }
+    console.log(allUsers);
+    return allUsers;
+  } catch (err) {
+    return [];
+  }
 };
 
 export const getUsername = async (userId: string, token: string) => {
