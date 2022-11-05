@@ -33,56 +33,16 @@ const users: usersInterface[] = [
 
 const emptyUser = { username: '', userId: '', key: -1 };
 
-interface AddRoomProps {
+interface InviteRoomProps {
   handleClose: () => void,
 }
 
-const AddRoom = function AddRoom({
+const InviteRoom = function InviteRoom({
   handleClose,
-}: AddRoomProps) {
+}: InviteRoomProps) {
   const { t } = useTranslation();
   const [newFriend, setNewFriend] = React.useState<usersInterface>(emptyUser);
   const [newFriends, setNewFriends] = React.useState<usersInterface[]>([]);
-  const [name, setName] = React.useState('');
-
-  /* const getAllUsernames = async () => {
-    try {
-      const allUsers = await getAllUsers();
-      if (allUsers === null) {
-        return [];
-      }
-      return allUsers;
-    } catch (err) {
-      return [];
-    }
-  };
-
-  React.useEffect(() => {
-    (async () => {
-      setUsersLoaded(false);
-      const res = await getAllUsernames();
-      if (res !== null || undefined || []) {
-        console.log(`users == ${res}`);
-        setUsersLoaded(true);
-        setEveryUsers(res as usersInterface[]);
-      }
-    })();
-  }, []);
-
-  const createNewRoom = async () => {
-    let room: Room | null = null;
-    if (userToAdd[0] === '') {
-      room = await createRoom(state.token as string, name);
-    } else {
-      room = await createRoom(state.token as string, name, userToAdd as [string]);
-    }
-    if (room !== null) {
-      const newState = state;
-      newState.rooms?.push(room as never);
-      setState((prev) => ({ ...prev, ...newState }));
-    }
-    // here add a way to tell the user that the room creation had fail
-  }; */
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     const index = users.findIndex((object) => object.username === newFriend.username);
@@ -108,14 +68,7 @@ const AddRoom = function AddRoom({
 
   return (
     <>
-      <Title className="mb--24 mt--8" variant="header">{t('new_room')}</Title>
-      <TextField
-        className="mb--16 width--280"
-        placeholder={t('room_name')}
-        variant="outlined"
-        onChange={(event) => setName(event.target.value)}
-        value={name}
-      />
+      <Title className="mb--24 mt--8" variant="header">{t('invite_room')}</Title>
       <Autocomplete
         key={users.toString()}
         sx={{ width: 300 }}
@@ -171,14 +124,14 @@ const AddRoom = function AddRoom({
         }
       </Box>
       <Button
-        disabled={name === ''}
-        onClick={async () => handleClose()}
+        disabled={newFriends.length === 0}
+        onClick={handleClose}
         variant="contained"
       >
-        {t('create')}
+        {t('invite')}
       </Button>
     </>
   );
 };
 
-export default AddRoom;
+export default InviteRoom;

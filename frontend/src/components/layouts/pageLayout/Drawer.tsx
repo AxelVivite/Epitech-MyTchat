@@ -9,8 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 import Rooms from '../../molecules/Rooms';
 
-import AddRoom from './AddRoom';
-import Modal from '../../molecules/Modal';
+import ModalAddRoom from './ModalAddRoom';
 import Title from '../../atoms/typography/Title';
 
 interface DrawerProps {
@@ -30,9 +29,9 @@ const Drawer = function Drawer({
         <Title className="line-height--32" variant="room">
           {t('rooms')}
         </Title>
-        <Modal iconButton={<AddIcon />}>
-          <AddRoom />
-        </Modal>
+        <ModalAddRoom>
+          <AddIcon />
+        </ModalAddRoom>
       </Box>
       <Rooms />
     </>
