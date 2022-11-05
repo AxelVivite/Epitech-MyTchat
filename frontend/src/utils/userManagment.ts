@@ -47,6 +47,52 @@ interface getUsernameInterface {
   }
 }
 
+interface usersInterface {
+  username: string;
+  userId: string;
+  key: number;
+}
+
+const matchUsernameAndId = async (usersName: [string]) => {
+  const users: usersInterface[] = [];
+  try {
+    usersName.forEach(async (value, index) => {
+      const { data, status } = await axios.get(
+        `${devUrl}/login/userId/${value}`,
+      );
+
+      if (status === 200) {
+        console.log(`data == ${data.userId}`);
+        console.log(`data == ${value}`);
+        const newUser: usersInterface = {
+          username: value,
+          userId: data.userId,
+          key: index,
+        };
+        users.push(newUser);
+      }
+    });
+    console.log(`end === ${users.toString()}`);
+    return users;
+  } catch (err) {
+    return null;
+  }
+};
+
+export const getAllUsers = async () => {
+  try {
+    const { data, status } = await axios.get(
+      `${devUrl}/login/users`,
+    );
+    if (status === 200) {
+      return matchUsernameAndId(data.users);
+    }
+  } catch (err) {
+    return [];
+  }
+  return [];
+};
+
 const getUsername = async (userId: string, token: string) => {
   try {
     const { data, status } = await axios.get<getUsernameInterface>(
