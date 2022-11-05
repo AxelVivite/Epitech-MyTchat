@@ -10,6 +10,7 @@ export interface GlobalStateInterface {
     lang: string; // fr or eng to check the current language
     darkModeIsOn: boolean;
     websocket?: object;
+    activeRoom: string,
 }
 
 const GlobalStateContext = createContext({

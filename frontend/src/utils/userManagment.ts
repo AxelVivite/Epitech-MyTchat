@@ -42,9 +42,7 @@ export const login = async (email: string, password: string) => {
 };
 
 interface getUsernameInterface {
-  data: {
-    username: string;
-  }
+  username: string;
 }
 
 interface usersInterface {
@@ -90,7 +88,7 @@ export const getAllUsers = async () => {
   return [];
 };
 
-const getUsername = async (userId: string, token: string) => {
+export const getUsername = async (userId: string, token: string) => {
   try {
     const { data, status } = await axios.get<getUsernameInterface>(
       `${devUrl}/login/username/${userId}`,
@@ -100,9 +98,8 @@ const getUsername = async (userId: string, token: string) => {
         },
       },
     );
-    // this was added for the princess airbnb not sure to work properly
     if (status === 200) {
-      return data.data.username;
+      return data.username;
     }
   } catch (err) {
     return null;

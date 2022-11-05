@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getFriendsList } from './userManagment';
+import { getFriendsList, getUsername } from './userManagment';
 import {
   Room, Post, Friend,
 } from './globalStateManager/globalStateObjects';
@@ -13,6 +13,7 @@ interface roomInfoProps {
       content: string,
       createdAt: string,
     };
+    posts: string[],
     name: string;
     users: [string];
   }
@@ -32,7 +33,6 @@ const roomInfo = async (token: string, roomId: string, userId: string) => {
       },
     );
     if (status === 200) {
-      // console.log(`${data.room.lastPost.content}`);
       const lastMessage: Post = (data.room.lastPost === null) ? {
         sender: null,
         message: '',
@@ -90,6 +90,103 @@ interface getRoomsIdReturnProps {
     rooms: string[];
   }
 }
+
+const getPosts = async (token: string, roomId: string) => {
+  try {
+    const { data, status } = await axios.get<roomInfoProps>(
+      `${devUrl}/room/info/${roomId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          getLastPost: true,
+        },
+      },
+    );
+    if (status === 200) {
+      return data.room.posts;
+    }
+    return null;
+  } catch (err) {
+    return null;
+  }
+};
+
+interface PostInfo {
+  post: {
+    user: string;
+    content: string;
+    createdAt: string;
+  }
+}
+
+export const sendMessage = async (token: string, message: string, roomId: string) => {
+  try {
+    const { status } = await axios.post<createRoomReturnProps>(
+      `${devUrl}/room/post/${roomId}`,
+      {
+        content: message,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    if (status === 200) {
+      return true;
+    }
+    return false;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const getMessages = async (token: string, roomId: string) => {
+  try {
+    const postsId = await getPosts(token, roomId);
+    // if (postsId === []) { return []; }
+    const posts: Post[] = [];
+    postsId?.forEach(async (value) => {
+      const { data, status } = await axios.get<PostInfo>(
+        `${devUrl}/room/read/${value}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (status === 200) {
+        const username = await getUsername(data.post.user, token);
+        const postTmp: Post = {
+          sender: {
+            username: username as string,
+            userId: data.post.user,
+          },
+          message: data.post.content,
+          messageDate: data.post.createdAt,
+        };
+        posts.push(postTmp);
+      } else {
+        const postTmpError: Post = {
+          sender: {
+            username: 'error',
+            userId: 'error',
+          },
+          message: 'Error',
+          messageDate: '',
+        };
+        posts.push(postTmpError);
+      }
+      return posts;
+    });
+  } catch (err) {
+    return [];
+  }
+  return [];
+};
 
 const getRoomsId = async (token: string) => {
   try {

@@ -32,5 +32,6 @@
     "invalid_password_format": "Min. 7 lettres, 1 majuscule et 1 chiffre",
     "password_does_not_match": "Confirmation invalide",
     "confirm_password_required": "Confirmation requise",
-    "any_message_historic": "Aucun historique de message disponible"
+    "any_message_historic": "Aucun historique de message disponible",
+    "messages_loading": "Vos messages chargent..."
 }

@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   Box,
+  Button,
   List,
   ListItem,
 } from '@mui/material';
@@ -67,7 +68,14 @@ export const RoomBox = function RoomBox({
 // ];
 
 function Rooms() {
-  const { state } = useGlobalState();
+  const { state, setState } = useGlobalState();
+
+  const changeRoom = (roomId: string) => {
+    const newState = state;
+    newState.activeRoom = roomId;
+
+    setState((prev) => ({ ...prev, ...newState }));
+  };
 
   return (
     <List disablePadding>
@@ -77,11 +85,13 @@ function Rooms() {
           className="border--bottom border--contrast p--8"
           key={`room-${item?.name}`}
         >
-          <RoomBox
-            name={item?.name as string}
-            date={item?.lastMessage?.messageDate as string}
-            message={item?.lastMessage?.message as string}
-          />
+          <Button onClick={() => changeRoom(item?.roomId)}>
+            <RoomBox
+              name={item?.name as string}
+              date={item?.lastMessage?.messageDate as string}
+              message={item?.lastMessage?.message as string}
+            />
+          </Button>
         </ListItem>
       ))}
     </List>

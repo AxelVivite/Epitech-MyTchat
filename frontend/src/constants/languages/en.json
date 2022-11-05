@@ -32,5 +32,6 @@
     "invalid_password_format": "Min. 7 characters, 1 capital letter and 1 digit",
     "password_does_not_match": "The passwords does not match",
     "confirm_password_required": "You have to confirm the password",
-    "any_message_historic": "Any historic message available"
+    "any_message_historic": "Any historic message available",
+    "messages_loading": "Messages are loading..."
 }
