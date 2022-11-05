@@ -4,7 +4,7 @@ import {
   Room, Post, Friend,
 } from './globalStateManager/globalStateObjects';
 
-const devUrl = 'http://localhost:3000';
+const devUrl = 'http://localhost:8080';
 
 interface roomInfoProps {
   room: {
