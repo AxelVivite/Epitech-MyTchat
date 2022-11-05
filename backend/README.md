@@ -21,7 +21,9 @@ You can find more details in ```/doc/Websocket.md```.
 
 ### Start the server
 
-You will need to have mongodb running on **mongodb://localhost:27017/vueexpress**. It is a temporary url that we use for tests.
+You will need to have mongodb running on **mongodb://localhost:27017/**.\
+You can run one easily with docker using:
+```docker run -p 27017:27017 -d mongo```
 
 To start the server run (with each environment):\
 **dev** ```npm run start```\
