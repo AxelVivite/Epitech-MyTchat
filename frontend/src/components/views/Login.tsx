@@ -56,7 +56,7 @@ const Login = function Login(): React.ReactElement<unknown, string> | null {
       const res = await login(username, password);
       if (res?.status === 200) {
         await setupGSM(res, username);
-        navigate('/home');
+        navigate('/');
       }
     } catch (err) {
       throw new Error();

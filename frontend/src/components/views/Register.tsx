@@ -34,10 +34,14 @@ const FormDisplay = function FormDisplay(props: any) {
     handleChange,
     handleBlur,
     handleSubmit,
-    handleReset,
   } = props;
 
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate('/sign-in');
+  };
 
   return (
     <div>
@@ -105,10 +109,10 @@ const FormDisplay = function FormDisplay(props: any) {
             <Button
               className="width--128 mr--8"
               color="secondary"
-              onClick={handleReset}
+              onClick={handleNavigate}
               variant="outlined"
             >
-              {t('delete')}
+              {t('sign_in')}
             </Button>
             <Button
               className="width--128 ml--8"
@@ -158,9 +162,8 @@ const Form = withFormik<InputForm, InputForm>({
       try {
         const res = await
         register(values.email as string, values.password as string, values.username as string);
-        if (res?.status === 200) {
-          const navigate = useNavigate();
-          navigate('/sign-in');
+        if (res?.status === 201) {
+          console.log('Youpi');
         }
       } catch (err) {
         throw Error();
