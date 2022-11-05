@@ -1,30 +1,64 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 // import { Button } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { getMessages } from '../../utils/roomsManagment';
+import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 import PageLayout from '../layouts/pageLayout/PageLayout';
 import Message from '../molecules/Message';
 import InputMessage from '../molecules/InputBarMessage';
-import { createRoom } from '../../utils/roomsManagment';
+import { Post } from '../../utils/globalStateManager/globalStateObjects';
+// import { createRoom } from '../../utils/roomsManagment';
 
-function Tchat(): JSX.Element {
+function MessagesLoad() {
+  const { t } = useTranslation();
+
+  return (
+    <div>
+      <text>{t('messages_loading')}</text>
+    </div>
+  );
+}
+
+function Tchat() {
   // const [token] = useGlobalState("token");
   // const [user] = useGlobalState("user");
 
-  const createRoomTest = async () => {
-    await createRoom('token', 'leTestEstmignon', ['eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzQxOGI3Zjk4ODk2ZTE3MTQ0YjVhOGIiLCJpYXQiOjE2NjUyMzk5NzYsImV4cCI6MTY2NjEwMzk3Nn0.ys0wYXdvT6ppHh1qZk8vXqn7rin25PxPR6Zz-AQWjK0']);
-  };
+  // const createRoomTest = async () => {
+  //   await createRoom('token', 'leTestEstmignon',
+  // ['eyJhbGciNzYsImV4cCI6MTY2NjEwMzk3Nn0.ys0wYXdvT6ppHh1qZk8vXqn7rin25PxPR6Zz-AQWjK0']);
+  // };
+  const { state } = useGlobalState();
+  const [messages, setMessages] = React.useState([] as Post[]);
+  const [messagesAreLoaded, setMessagesAreLoaded] = React.useState(false);
 
   const onSubmit = () => {
     console.log('ICH');
   };
 
   React.useEffect(() => {
+    (async () => {
+      setMessagesAreLoaded(false);
+      const messagesHere = await getMessages(state.token as string, state.activeRoom as string);
+      console.log('message loadé');
+      console.log(messagesHere);
+      setMessages(messagesHere);
+      setMessagesAreLoaded(true);
+    })();
     const element = document.getElementById('tchat');
 
     if (element) {
       element.scrollTop = element.scrollHeight;
     }
-  }, [/* message state update */]);
+  }, [state.activeRoom, state.token]);
+
+  const loadMessages = () => messages.map((value: Post) => (
+    <Message
+      username={value?.sender?.username as string}
+      datetime={value?.messageDate}
+      message={value?.message}
+    />
+  ));
 
   return (
     <PageLayout>
@@ -37,20 +71,15 @@ function Tchat(): JSX.Element {
           sx={{ maxHeight: 'calc(100vh - 96px - 72px)' }}
           className="pl--8 mr--8 tchat__scrollbar flex-shrink--1 mb--16 tchat"
         >
-          <Message username="Axel" datetime="16/09/2022 18h32" message="! SaluuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuutSaluuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuutSaluuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuutSaluuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuut BISOUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUS" />
-          <Message username="Jean-Marie El fou" datetime="16/09/2022 18h32" message="Salut!" />
-          <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
-          <Message username="Axel" datetime="16/09/2022 18h32" message="Salut!" />
-          <Message username="Gaetan" datetime="16/09/2022 18h32" message="Salut!" />
-          <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
-          <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
-          <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
-          <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
-          <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
-          <Message username="Axel" datetime="16/09/2022 18h32" message="Salut!" />
-          <Message username="Gael" datetime="16/09/2022 18h32" message="Salut!" />
+          {
+            messagesAreLoaded ? (
+              loadMessages()
+            ) : (
+              <MessagesLoad />
+            )
+          }
         </Box>
-        <InputMessage onSubmit={onSubmit} />
+        <InputMessage onSubmit={onSubmit} messages={messages} setMessages={setMessages} />
       </Box>
     </PageLayout>
   );

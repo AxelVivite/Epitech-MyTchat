@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Friend } from './globalStateManager/globalStateObjects';
 
-const devUrl = 'http://localhost:3000';
+const devUrl = 'http://localhost:8080';
 
 export const register = async (email: string, password: string, username: string) => {
   try {
@@ -42,9 +42,7 @@ export const login = async (email: string, password: string) => {
 };
 
 interface getUsernameInterface {
-  data: {
-    username: string;
-  }
+  username: string;
 }
 
 interface usersInterface {
@@ -53,38 +51,40 @@ interface usersInterface {
   key: number;
 }
 
-const matchUsernameAndId = async (usersName: [string]) => {
-  const users: usersInterface[] = [];
+const matchUsernameAndId = async (usersName: [string], me?: string) => {
   try {
-    usersName.forEach(async (value, index) => {
+    const users: usersInterface[] = [];
+    await Promise.all(usersName.map(async (value, index) => {
       const { data, status } = await axios.get(
         `${devUrl}/login/userId/${value}`,
       );
 
       if (status === 200) {
-        console.log(`data == ${data.userId}`);
-        console.log(`data == ${value}`);
-        const newUser: usersInterface = {
-          username: value,
-          userId: data.userId,
-          key: index,
-        };
-        users.push(newUser);
+        if ((me !== null && me !== value) || (me === null)) {
+          const newUser: usersInterface = {
+            username: value,
+            userId: data.userId,
+            key: index,
+          };
+          users.push(newUser);
+        }
       }
-    });
-    console.log(`end === ${users.toString()}`);
+    }));
     return users;
   } catch (err) {
     return null;
   }
 };
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (me?: string) => {
   try {
     const { data, status } = await axios.get(
       `${devUrl}/login/users`,
     );
     if (status === 200) {
+      if (me !== null) {
+        return matchUsernameAndId(data.users, me);
+      }
       return matchUsernameAndId(data.users);
     }
   } catch (err) {
@@ -93,7 +93,7 @@ export const getAllUsers = async () => {
   return [];
 };
 
-const getUsername = async (userId: string, token: string) => {
+export const getUsername = async (userId: string, token: string) => {
   try {
     const { data, status } = await axios.get<getUsernameInterface>(
       `${devUrl}/login/username/${userId}`,
@@ -103,9 +103,8 @@ const getUsername = async (userId: string, token: string) => {
         },
       },
     );
-    // this was added for the princess airbnb not sure to work properly
     if (status === 200) {
-      return data.data.username;
+      return data.username;
     }
   } catch (err) {
     return null;
@@ -113,17 +112,18 @@ const getUsername = async (userId: string, token: string) => {
   return null;
 };
 
-export const getFriendsList = async (token: string, friendsId: [string]) => {
+export const getFriendsList = async (token: string, friendsId: string[], userId: string) => {
   const friends: Friend[] = [];
-
+  if (friendsId.length === 0) { return []; }
   friendsId.forEach(async (value) => {
-    const friendName = await getUsername(token, value);
-
-    const friend: Friend = {
-      userId: value,
-      username: friendName as string,
-    };
-    friends.push(friend);
+    if (value !== userId) {
+      const friendName = await getUsername(token, value);
+      const friend: Friend = {
+        userId: value,
+        username: friendName as string,
+      };
+      friends.push(friend);
+    }
   });
 
   return friends;

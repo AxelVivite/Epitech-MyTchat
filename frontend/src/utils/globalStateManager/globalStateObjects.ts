@@ -10,13 +10,13 @@ export interface User {
 
 export interface Post {
     message: string,
-    messageDate: Date,
-    sender: Friend,
+    messageDate: string,
+    sender: Friend | null,
 }
 
 export interface Room {
     roomId: string,
     name: string,
-    lastMessage: Post,
+    lastMessage: Post | null,
     friends?: Friend[] | null,
 }

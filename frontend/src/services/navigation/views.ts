@@ -4,8 +4,12 @@ import { View } from '../../shared/interfaces';
 
 const Views: View[] = [
   {
-    path: '/',
+    path: '/sign-in',
     component: Login,
+  },
+  {
+    path: '/',
+    component: Home,
   },
   {
     path: '/test',

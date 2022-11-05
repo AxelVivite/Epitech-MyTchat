@@ -37,7 +37,8 @@ const Login = function Login(): React.ReactElement<unknown, string> | null {
         userId: res?.data.userId,
         username: usernameToSet,
       };
-      const rooms: [Room | null] | never[] | null = await getRooms(res?.data.token);
+      const rooms: Room[] | never[] | null = await getRooms(res?.data.token, user.userId);
+      const activeRoom = rooms !== undefined && rooms !== null && rooms?.length > 0 ? rooms[0].roomId : '';
       const data = {
         user,
         rooms,
@@ -45,6 +46,7 @@ const Login = function Login(): React.ReactElement<unknown, string> | null {
         lang: 'fr',
         darkModeIsOn: false,
         websocket: undefined,
+        activeRoom,
       };
       setState((prev) => ({ ...prev, ...data }));
     },
