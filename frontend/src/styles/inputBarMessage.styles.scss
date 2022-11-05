@@ -1,6 +1,18 @@
+#root {
+    .input-bar {
+        &--btn {
+            margin: 8px;
+            vertical-align: top;
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-primary) !important;
+            border: 1px solid rgba(0, 0, 0, 0.23) !important;
+        }
+    }
+}
+
 .input-bar {
     &--btn {
-        margin: 8px !important;
         vertical-align: top;
         width: 40px;
         height: 40px;

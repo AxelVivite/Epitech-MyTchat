@@ -1,24 +1,20 @@
 import React from 'react';
 
 import MuiModal from '@mui/material/Modal';
-import { Box, Card } from '@mui/material';
-import IconButton from '../atoms/buttons/IconButton';
+import { Card } from '@mui/material';
+
+import IconButton from '../../atoms/buttons/IconButton';
+import AddRoom from './AddRoom';
 
 const defaultProps = {
-  componentButton: undefined,
-  iconButton: undefined,
   children: undefined,
 };
 
 interface ModalProps {
-  componentButton?: React.ReactElement,
-  iconButton?: React.ReactElement,
   children?: React.ReactElement,
 }
 
-const Modal = function Modal({
-  componentButton,
-  iconButton,
+const ModalAddRoom = function Modal({
   children,
 }: ModalProps) {
   const [open, setOpen] = React.useState(false);
@@ -27,17 +23,11 @@ const Modal = function Modal({
 
   return (
     <>
-      {iconButton
+      {children
         && (
           <IconButton onClick={handleOpen} variant="transparent" type="button">
-            {iconButton}
+            {children}
           </IconButton>
-        )}
-      {componentButton
-        && (
-          <Box onClick={handleOpen}>
-            {componentButton}
-          </Box>
         )}
       <MuiModal
         open={open}
@@ -46,13 +36,13 @@ const Modal = function Modal({
         aria-describedby="modal-modal-description"
       >
         <Card className="col flex--center-align div--centered p--16">
-          {children}
+          <AddRoom handleClose={handleClose} />
         </Card>
       </MuiModal>
     </>
   );
 };
 
-Modal.defaultProps = defaultProps;
+ModalAddRoom.defaultProps = defaultProps;
 
-export default Modal;
+export default ModalAddRoom;

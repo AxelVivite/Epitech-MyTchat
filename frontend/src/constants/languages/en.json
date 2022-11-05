@@ -33,5 +33,10 @@
     "password_does_not_match": "The passwords does not match",
     "confirm_password_required": "You have to confirm the password",
     "any_message_historic": "Any historic message available",
-    "messages_loading": "Messages are loading..."
+    "messages_loading": "Messages are loading...",
+    "invite_room": "Invite users in the room",
+    "confirm_leave_room": "Leave this room ?",
+    "no": "No",
+    "quit": "Quit",
+    "invite": "Invite"
 }

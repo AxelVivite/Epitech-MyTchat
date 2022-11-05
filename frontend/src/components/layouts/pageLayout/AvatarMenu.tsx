@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Divider,
@@ -16,14 +17,18 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import TranslateIcon from '@mui/icons-material/Translate';
 
-import i18n from '../../../services/translation/i18n';
-
 import Avatar from '../../atoms/Avatar';
+import i18n from '../../../services/translation/i18n';
+import { useGlobalState } from '../../../utils/globalStateManager/globalStateInit';
+import ModalInviteRoom from './ModalInviteRoom';
+import ModalConfirmation from './ModalConfirmation';
 
 function AvatarMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [darkTheme, setDarkTheme] = React.useState<boolean>(false);
   const [lng, setLng] = React.useState<string>(i18n.language);
+  const navigate = useNavigate();
+  const { setState } = useGlobalState();
   const open = Boolean(anchorEl);
   const { t } = useTranslation();
 
@@ -54,6 +59,11 @@ function AvatarMenu() {
       i18n.changeLanguage('fr');
       setLng('fr');
     }
+  };
+
+  const logout = () => {
+    setState({});
+    navigate('/sign-in');
   };
 
   return (
@@ -101,19 +111,26 @@ function AvatarMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem>
-          <ListItemIcon>
-            <PersonAddIcon fontSize="small" />
-          </ListItemIcon>
-          {t('invite_users')}
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <GroupRemoveIcon fontSize="small" />
-          </ListItemIcon>
-          {t('leave_room')}
-        </MenuItem>
-        <Divider />
+        <ModalInviteRoom>
+          <MenuItem>
+            <ListItemIcon>
+              <PersonAddIcon fontSize="small" />
+            </ListItemIcon>
+            {t('invite_users')}
+          </MenuItem>
+        </ModalInviteRoom>
+        <ModalConfirmation
+          title={t('confirm_leave_room')}
+          handleConfirmation={() => console.log('leave')}
+        >
+          <MenuItem>
+            <ListItemIcon>
+              <GroupRemoveIcon fontSize="small" />
+            </ListItemIcon>
+            {t('leave_room')}
+          </MenuItem>
+        </ModalConfirmation>
+        <Divider className="mt--8 mb--8" />
         <MenuItem onClick={changeLanguage}>
           <ListItemIcon>
             <TranslateIcon fontSize="small" />
@@ -133,7 +150,7 @@ function AvatarMenu() {
             : t('dark_mode')}
         </MenuItem>
         <Divider />
-        <MenuItem>
+        <MenuItem onClick={logout}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>

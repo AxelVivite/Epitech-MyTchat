@@ -33,5 +33,10 @@
     "password_does_not_match": "Confirmation invalide",
     "confirm_password_required": "Confirmation requise",
     "any_message_historic": "Aucun historique de message disponible",
-    "messages_loading": "Vos messages chargent..."
+    "messages_loading": "Vos messages chargent...",
+    "invite_room": "Inviter dans le salon",
+    "confirm_leave_room": "Quitter le salon ?",
+    "no": "Non",
+    "quit": "Quitter",
+    "invite": "Inviter"
 }
