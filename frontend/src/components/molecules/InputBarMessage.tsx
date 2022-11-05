@@ -1,11 +1,11 @@
-import React, { FormEventHandler } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import TextField from '@mui/material/TextField';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
-import { getMessages, sendMessage } from 'utils/roomsManagment';
-import { useGlobalState } from 'utils/globalStateManager/globalStateInit';
+import { sendMessage } from '../../utils/roomsManagment';
+import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 import IconButton from '../atoms/buttons/IconButton';
 import { Post } from '../../utils/globalStateManager/globalStateObjects';
 
@@ -17,6 +17,7 @@ interface InputBarMessageProps {
 }
 
 const InputBarMessage = function InputBarMessage({
+  // eslint-disable-next-line no-unused-vars
   onSubmit,
   messages,
   setMessages,
@@ -40,7 +41,6 @@ state.token as string,
 formData.target,
 state.activeRoom as string,
     );
-    console.log('test');
     if (statSend) {
       const msgTmp = messages;
       const newMsg: Post = {

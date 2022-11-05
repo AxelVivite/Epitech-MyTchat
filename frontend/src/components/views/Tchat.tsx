@@ -79,7 +79,7 @@ function Tchat() {
             )
           }
         </Box>
-        <InputMessage onSubmit={onSubmit} messages={messages} setMessages={setMessages}/>
+        <InputMessage onSubmit={onSubmit} messages={messages} setMessages={setMessages} />
       </Box>
     </PageLayout>
   );

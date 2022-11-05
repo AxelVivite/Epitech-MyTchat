@@ -66,7 +66,7 @@ const AddRoom = function AddRoom({
       setUsersLoaded(true);
       console.log(`users == ${everyUsers[1].username}`);
     })();
-  }, []);
+  });
 
   const getFriendIDs = () => {
     const friendIds: string[] = [];
