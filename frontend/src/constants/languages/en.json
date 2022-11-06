@@ -30,7 +30,7 @@
     "username_required": "Username required",
     "password_required": "Password required",
     "invalid_password_format": "Min. 7 characters, 1 capital letter and 1 digit",
-    "password_does_not_match": "The passwords does not match",
+    "password_does_not_match": "The passwords do not match",
     "confirm_password_required": "You have to confirm the password",
     "any_message_historic": "*No message*",
     "messages_loading": "Messages are loading...",
@@ -53,6 +53,6 @@
     "come_back": "Come back!",
     "welcome_back": "Welcome back!",
     "welcome": "Welcome!",
-    "success_leave_room": "You succesfully leave the room",
-    "fail_leave_room": "Error when leave the room. Please try again"
+    "success_leave_room": "You successfully left the room",
+    "fail_leave_room": "Error when leaving the room. Please try again"
 }

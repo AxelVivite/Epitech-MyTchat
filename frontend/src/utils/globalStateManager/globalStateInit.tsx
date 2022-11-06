@@ -7,7 +7,7 @@ export interface GlobalStateInterface {
     user: User;
     rooms: Room[] | never[] | null;
     token: string;
-    lang: string; // fr or eng to check the current language
+    lang: string;
     darkModeIsOn: boolean;
     websocket?: object;
     activeRoom: string,
