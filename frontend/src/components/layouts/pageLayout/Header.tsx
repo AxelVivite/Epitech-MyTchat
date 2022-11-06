@@ -26,7 +26,6 @@ const Header = function Header({
   const findRoomName = () => {
     if (state && state.rooms) {
       const index = state.rooms.findIndex((object) => object.roomId === state.activeRoom);
-      console.log(state.rooms[index].name);
       return state.rooms[index].name;
     }
     return '';

@@ -186,7 +186,6 @@ export const getMessages = async (token: string, roomId: string) => {
   } catch (err) {
     console.error(err);
   }
-  console.log(posts);
   return posts;
 };
 

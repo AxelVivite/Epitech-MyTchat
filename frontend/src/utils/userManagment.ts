@@ -99,7 +99,6 @@ export const getAllUsernames = async (username: string | undefined) => {
     if (allUsers === null) {
       return [];
     }
-    console.log(allUsers);
     return allUsers;
   } catch (err) {
     return [];

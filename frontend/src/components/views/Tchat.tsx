@@ -28,7 +28,6 @@ function Tchat() {
   React.useEffect(() => {
     (async () => {
       const messagesHere = await getMessages(state.token as string, state.activeRoom as string);
-      console.log(messagesHere);
       setMessages(messagesHere);
     })();
     const element = document.getElementById('tchat');
