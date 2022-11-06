@@ -9,8 +9,7 @@ import Avatar from '../atoms/Avatar';
 import Text from '../atoms/typography/Text';
 import TextDateTime from '../atoms/typography/TextDateTime';
 import { parseDatetime } from '../../utils/parseDatetime';
-
-// getMessagesHere from gsm
+import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 
 interface MessageProps {
   username: string,
@@ -23,8 +22,10 @@ const Message = function Message({
   datetime,
   message,
 }: MessageProps) {
+  const { state } = useGlobalState();
+
   return (
-    <Card className={`row p--16 mb--16 mr--16 tchat--message ${username === 'Axel' && 'ml--auto'}`}>
+    <Card className={`row p--16 mb--16 mr--16 tchat--message ${username === state.user?.username && 'ml--auto'}`}>
       <Avatar
         name={username}
         className="mr--16 tchat--message__avatar"
@@ -39,24 +40,5 @@ const Message = function Message({
     </Card>
   );
 };
-
-/* const Message = (props: MessageProps): JSX.Element => {
-    return (
-        <Box className={`row ${username === "Axel" && "flex--end"}`}>
-            {username !== "Axel" &&
-                <Avatar name={username} className="mr--16" />
-            }
-            <Card className="row p--16 mb--16 width--70">
-                <Box className="col m--0 flex-grow--1">
-                    <Box className="row">
-                        <Typography className="name">{username}</Typography>
-                        <Typography className="datetime">{datetime}</Typography>
-                    </Box>
-                    <Typography className="message">{message}</Typography>
-                </Box>
-            </Card>
-        </Box>
-    );
-}; */
 
 export default Message;

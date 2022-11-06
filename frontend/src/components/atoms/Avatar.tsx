@@ -18,7 +18,7 @@ const Avatar = function Avatar({
   name,
 }: AvatarProps) {
   const getInitial = (str: string): string => {
-    if (str.length === 0) return (intToChar(getRandomInt(26)));
+    if (!str || str.length === 0) return (intToChar(getRandomInt(26)));
     if (str.indexOf(' ') >= 0) return (`${str[0]}${str.split(' ')[1][0]}`);
     return (str[0]);
   };

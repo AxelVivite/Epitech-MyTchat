@@ -8,6 +8,10 @@ const stringToColor = (str: string): string => {
   let hash = 0;
   let color = '#';
 
+  if (!str) {
+    return '#ffffff';
+  }
+
   for (let i = 0; i < str.length; i += 1) {
     hash = str.charCodeAt(i) + ((zeroFillLeftShift(hash, 5)) - hash);
   }
