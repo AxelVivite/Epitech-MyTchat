@@ -62,6 +62,16 @@ export async function postMsg(token, roomId, content) {
   });
 }
 
+export async function readAllMsgs(token, roomId) {
+  return axios({
+    method: 'get',
+    url: `${url}/room/readAll/${roomId}`,
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
+}
+
 export async function readMsg(token, postId) {
   return axios({
     method: 'get',

@@ -12,6 +12,7 @@ import invite from './room/invite';
 import leave from './room/leave';
 import postMsg from './room/postMsg';
 import readMsg from './room/readMsg';
+import readAllMsgs from './room/readAllMsgs';
 
 import connectWs from './websocket/connectWs';
 import wsPostMsg from './websocket/postMsg';
@@ -40,7 +41,8 @@ describe('backend', () => {
     describe('POST /room/invite/{roomId}', invite);
     describe('POST /room/leave/{roomId}', leave);
     describe('POST /room/post/{roomId}', postMsg);
-    describe('POST /room/read/{postId}', readMsg);
+    describe('GET /room/read/{postId}', readMsg);
+    describe('GET /room/readAll/{roomId}', readAllMsgs);
   });
 
   describe('websocket', () => {

@@ -538,7 +538,7 @@ roomRouter.post(
  *       410:
  *         description: User has been deleted
  *       200:
- *         description: Returns info on the room
+ *         description: Returns info on the post
  *         content:
  *           application/json:
  *             schema:
@@ -558,6 +558,69 @@ roomRouter.get('/read/:postId', [checkToken, getUser, getPost], async (req, res)
       createdAt: req.state.post.createdAt,
       updatedAt: req.state.post.updatedAt,
     },
+  });
+});
+
+/**
+ * @openapi
+ * /room/readAll/{roomId}:
+ *   get:
+ *     tags:
+ *       - room
+ *     description: Get all posts in room
+ *     parameters:
+ *       - in: path
+ *         name: roomId
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/MongoId'
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       400:
+ *         description: >-
+ *           Bad request, details are returned, can be because of:
+ *           MissingToken, BadAuthType (ex: Basic instead of Bearer)
+ *       401:
+ *         description: >-
+ *           Bad token (not created by this server or expired)
+ *           or user doesn't have access to the room
+ *       404:
+ *         description: The user or the room was not found
+ *       410:
+ *         description: User has been deleted
+ *       200:
+ *         description: Returns info on all the posts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - posts
+ *               properties:
+ *                 posts:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Post'
+ */
+roomRouter.get('/readAll/:roomId', [checkToken, checkUserExists, getRoom], async (req, res) => {
+  const { state: { room } } = req;
+
+  const posts = await Promise.all(room.posts.map(async (id) => {
+    const post = await Post.findById(id);
+
+    return {
+      id: post._id,
+      user: post.user,
+      room: post.room,
+      content: post.content,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+    };
+  }));
+
+  res.status(200).json({
+    posts,
   });
 });
 
