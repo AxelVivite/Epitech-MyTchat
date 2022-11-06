@@ -144,11 +144,13 @@ export const sendMessage = async (token: string, message: string, roomId: string
 };
 
 export const getMessages = async (token: string, roomId: string) => {
+  const posts: Post[] = [];
+
   try {
     const postsId = await getPosts(token, roomId);
-    // if (postsId === []) { return []; }
-    const posts: Post[] = [];
-    postsId?.forEach(async (value) => {
+
+    for (let i = 0; postsId && postsId[i]; i++) {
+      const value = postsId[i];
       const { data, status } = await axios.get<PostInfo>(
         `${devUrl}/room/read/${value}`,
         {
@@ -180,12 +182,12 @@ export const getMessages = async (token: string, roomId: string) => {
         };
         posts.push(postTmpError);
       }
-      return posts;
-    });
+    }
   } catch (err) {
-    return [];
+    console.error(err);
   }
-  return [];
+  console.log(posts);
+  return posts;
 };
 
 const getRoomsId = async (token: string) => {

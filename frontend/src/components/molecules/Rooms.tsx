@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   Box,
@@ -6,8 +7,9 @@ import {
   List,
   ListItem,
 } from '@mui/material';
-// import { useTranslation } from 'react-i18next';
+
 import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
+import { parseDate } from '../../utils/parseDatetime';
 
 import TextDate from '../atoms/typography/TextDate';
 import Avatar from '../atoms/Avatar';
@@ -26,7 +28,8 @@ export const RoomBox = function RoomBox({
   date,
   message,
 }: RoomProps) {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
+  const noMessage = t('any_message_historic');
 
   return (
     <Box className="row width--full">
@@ -34,38 +37,15 @@ export const RoomBox = function RoomBox({
       <Box className="col pl--8" sx={{ width: 'calc(100% - 48px)' }}>
         <Box className="row mb--4">
           <Text variant="name" className="flex-grow--1 width--150">{name}</Text>
-          <TextDate className="date">{date}</TextDate>
+          <TextDate className="date">{date && parseDate(date)}</TextDate>
         </Box>
-        <Text>{message}</Text>
-        {/* dont know why but the translation make text non print on screen */}
-        {/* <Text>{message === '' ? t('any_message_historic') : message}</Text> */}
+        <Text className={message === '' ? 'text--italic' : ''}>
+          {message === '' ? noMessage : message}
+        </Text>
       </Box>
     </Box>
   );
 };
-
-// const example = [
-//   {
-//     name: 'Groupe révision pour le bac',
-//     date: '11/22/2021',
-//     message: "Salut, c'est pour avoir des infos sur le dernier devoir! Que faut-il faire ?",
-//   },
-//   {
-//     name: 'Alexis',
-//     date: '10/22/2021',
-//     message: 'Salut, comment va ?',
-//   },
-//   {
-//     name: 'Marie',
-//     date: '09/22/2021',
-//     message: 'Répond b****t',
-//   },
-//   {
-//     name: 'Les zinzolins',
-//     date: '05/22/2021',
-//     message: 'Ca cuve ce soir ??',
-//   },
-// ];
 
 function Rooms() {
   const { state, setState } = useGlobalState();

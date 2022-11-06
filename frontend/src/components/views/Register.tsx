@@ -50,7 +50,7 @@ const FormDisplay = function FormDisplay(props: any) {
           <Box className="row flex--center mb--24 mt--8">
             <img src={logoDark} alt="logo" className="width--40 mr--16" />
             <Title className="my--auto" variant="header">
-              Cognac-Tabasco
+              MyTchat
             </Title>
           </Box>
           <TextField

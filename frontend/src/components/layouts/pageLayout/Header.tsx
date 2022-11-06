@@ -23,6 +23,15 @@ const Header = function Header({
 }: HeaderProps) {
   const { state } = useGlobalState();
 
+  const findRoomName = () => {
+    if (state && state.rooms) {
+      const index = state.rooms.findIndex((object) => object.roomId === state.activeRoom);
+      console.log(state.rooms[index].name);
+      return state.rooms[index].name;
+    }
+    return '';
+  };
+
   return (
     <AppBar position="sticky" className="mb--16">
       <Toolbar sx={{ justifyContent: 'space-between' }}>
@@ -37,7 +46,7 @@ const Header = function Header({
         <Box className="row">
           <img src={state.darkModeIsOn ? logo : logoDark} alt="logo" className="width--40 mr--16" />
           <Title className="my--auto" variant="header">
-            {`Cognac-Tabasco ${state.user?.username}`}
+            {state.activeRoom ? findRoomName() : 'MyTchat'}
           </Title>
         </Box>
         <AvatarMenu />

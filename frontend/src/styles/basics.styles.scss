@@ -216,5 +216,9 @@ body {
         }
     }
 
+    .text {
+        &--italic { font-style: italic; }
+    }
+
     .bg-color { background-color: var(--color-background); }
 }

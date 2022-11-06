@@ -8,6 +8,7 @@ import {
 import Avatar from '../atoms/Avatar';
 import Text from '../atoms/typography/Text';
 import TextDateTime from '../atoms/typography/TextDateTime';
+import { parseDatetime } from '../../utils/parseDatetime';
 
 // getMessagesHere from gsm
 
@@ -31,7 +32,7 @@ const Message = function Message({
       <Box className="col flex-grow--1">
         <Box className="row flex--space-between mb--8">
           <Text variant="name" className="flex-shrink--1">{username}</Text>
-          <TextDateTime className="ml--8 my--auto">{datetime}</TextDateTime>
+          <TextDateTime className="ml--8 my--auto">{parseDatetime(datetime)}</TextDateTime>
         </Box>
         <Text>{message}</Text>
       </Box>

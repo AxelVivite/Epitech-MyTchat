@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 // import { Button } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+
 import { getMessages } from '../../utils/roomsManagment';
 import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 import PageLayout from '../layouts/pageLayout/PageLayout';
@@ -9,16 +9,6 @@ import Message from '../molecules/Message';
 import InputMessage from '../molecules/InputBarMessage';
 import { Post } from '../../utils/globalStateManager/globalStateObjects';
 // import { createRoom } from '../../utils/roomsManagment';
-
-function MessagesLoad() {
-  const { t } = useTranslation();
-
-  return (
-    <div>
-      <text>{t('messages_loading')}</text>
-    </div>
-  );
-}
 
 function Tchat() {
   // const [token] = useGlobalState("token");
@@ -30,7 +20,6 @@ function Tchat() {
   // };
   const { state } = useGlobalState();
   const [messages, setMessages] = React.useState([] as Post[]);
-  const [messagesAreLoaded, setMessagesAreLoaded] = React.useState(false);
 
   const onSubmit = () => {
     console.log('ICH');
@@ -38,12 +27,9 @@ function Tchat() {
 
   React.useEffect(() => {
     (async () => {
-      setMessagesAreLoaded(false);
       const messagesHere = await getMessages(state.token as string, state.activeRoom as string);
-      console.log('message loadé');
       console.log(messagesHere);
       setMessages(messagesHere);
-      setMessagesAreLoaded(true);
     })();
     const element = document.getElementById('tchat');
 
@@ -52,35 +38,36 @@ function Tchat() {
     }
   }, [state.activeRoom, state.token]);
 
-  const loadMessages = () => messages.map((value: Post) => (
-    <Message
-      username={value?.sender?.username as string}
-      datetime={value?.messageDate}
-      message={value?.message}
-    />
-  ));
-
   return (
     <PageLayout>
-      <Box
-        sx={{ minHeight: 'calc(100vh - 96px)', maxHeight: 'calc(100vh - 96px)' }}
-        className="col"
-      >
-        <Box
-          id="tchat"
-          sx={{ maxHeight: 'calc(100vh - 96px - 72px)' }}
-          className="pl--8 mr--8 tchat__scrollbar flex-shrink--1 mb--16 tchat"
-        >
-          {
-            messagesAreLoaded ? (
-              loadMessages()
-            ) : (
-              <MessagesLoad />
-            )
-          }
-        </Box>
-        <InputMessage onSubmit={onSubmit} messages={messages} setMessages={setMessages} />
-      </Box>
+      {state.activeRoom
+        && (
+          <Box
+            sx={{ minHeight: 'calc(100vh - 96px)', maxHeight: 'calc(100vh - 96px)' }}
+            className="col"
+          >
+            <Box
+              id="tchat"
+              sx={{ maxHeight: 'calc(100vh - 96px - 72px)' }}
+              className="pl--8 mr--8 tchat__scrollbar flex-grow--1 mb--16 tchat"
+            >
+              {
+                !messages ? <div /> : messages.map((value: Post) => (
+                  <Message
+                    username={value?.sender?.username as string}
+                    datetime={value?.messageDate}
+                    message={value?.message}
+                  />
+                ))
+              }
+            </Box>
+            <InputMessage
+              onSubmit={onSubmit}
+              messages={messages}
+              setMessages={setMessages}
+            />
+          </Box>
+        )}
     </PageLayout>
   );
 }

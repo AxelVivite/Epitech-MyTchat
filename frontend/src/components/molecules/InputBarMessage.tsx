@@ -24,24 +24,18 @@ const InputBarMessage = function InputBarMessage({
 }: InputBarMessageProps) {
   const { t } = useTranslation();
   const { state } = useGlobalState();
+  const [formData, setFormData] = React.useState<string>('');
 
-  const formReducer = (formState: any, event: any) => ({
-    ...formState,
-    target: event.target.value,
-  });
-  const [formData, setFormData] = React.useReducer(formReducer, {});
+  const handleSubmit = () => {
+    if (formData === '') {
+      return;
+    }
 
-  const handleSubmit = async (
-    event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>,
-  ): Promise<void> => {
-    // event: FormEventHandler<HTMLFormElement>,
-    event.preventDefault();
-    const statSend = await sendMessage(
-state.token as string,
-formData.target,
-state.activeRoom as string,
-    );
-    if (statSend) {
+    sendMessage(
+      state.token as string,
+      formData,
+      state.activeRoom as string,
+    ).then(() => {
       const msgTmp = messages;
       const newMsg: Post = {
         message: formData,
@@ -51,41 +45,34 @@ state.activeRoom as string,
         },
         messageDate: new Date().toString(),
       };
+
       msgTmp.push(newMsg);
       setMessages(msgTmp);
-    }
-    // setTimeout(() => {
-    //   setSubmitting(false);
-    // }, 3000);
+    })
+      .catch((err) => {
+        console.error(err);
+      });
   };
-  // const handleSendMessage = (
-  //   event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>,
-  // ) => {
-  //   event.preventDefault();
-  // };
 
   return (
-    // <form onSubmit={onSubmit} className="row">
-    <div>
+    <div className="row">
       <TextField
         className="flex-grow--1"
         multiline
         maxRows={4}
         placeholder={t('Message')}
         variant="outlined"
-        onChange={setFormData}
+        onChange={(event) => setFormData(event.target.value)}
       />
       <IconButton
         className="input-bar--btn"
-        onKeyDown={handleSubmit}
         onClick={handleSubmit}
-        type="submit"
+        type="button"
         variant="outlined"
       >
         <KeyboardReturnIcon />
       </IconButton>
     </div>
-    // </form>
   );
 };
 
