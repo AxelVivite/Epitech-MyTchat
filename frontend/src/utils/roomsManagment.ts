@@ -85,6 +85,26 @@ export const createRoom = async (token: string, name: string, userId: string, us
   return null;
 };
 
+export const makeLeaveRoom = async (roomId: string, token: string) => {
+  try {
+    const { status } = await axios.post<createRoomReturnProps>(
+      `${devUrl}/room/leave/${roomId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    if (status === 204) {
+      return true;
+    }
+  } catch (err) {
+    return false;
+  }
+  return false;
+};
+
 interface getRoomsIdReturnProps {
   user: {
     rooms: string[];
