@@ -47,5 +47,8 @@
     "account_created": "Account created",
     "invalid_mail_password_format": "Email or password format is invalid",
     "mail_username_already_used": "Email or username already in use",
-    "unknown_error": "Unknown error"
+    "unknown_error": "Unknown error",
+
+    "page_not_found": "Page not found",
+    "come_back": "Come back!"
 }
