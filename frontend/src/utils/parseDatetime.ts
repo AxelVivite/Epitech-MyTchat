@@ -7,7 +7,7 @@ const digitToNumber = (str: string) => {
 
 export const parseDatetime = (datetime: string) => {
   const dateFmt = new Date(datetime);
-  const day = digitToNumber(dateFmt.getDay().toString());
+  const day = digitToNumber(dateFmt.getDate().toString());
   const month = digitToNumber(dateFmt.getMonth().toString());
   const year = digitToNumber(dateFmt.getFullYear().toString());
   const hours = digitToNumber(dateFmt.getHours().toString());
@@ -18,7 +18,7 @@ export const parseDatetime = (datetime: string) => {
 
 export const parseDate = (datetime: string) => {
   const dateFmt = new Date(datetime);
-  const day = digitToNumber(dateFmt.getDay().toString());
+  const day = digitToNumber(dateFmt.getDate().toString());
   const month = digitToNumber(dateFmt.getMonth().toString());
   const year = digitToNumber(dateFmt.getFullYear().toString());
 
