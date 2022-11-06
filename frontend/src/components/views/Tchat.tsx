@@ -35,8 +35,6 @@ function Tchat() {
     }
   }, [state.token, state.activeRoom, setState]);
 
-  console.log(state);
-
   return (
     <PageLayout>
       <Box
