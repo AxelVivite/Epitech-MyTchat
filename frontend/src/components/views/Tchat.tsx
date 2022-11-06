@@ -13,7 +13,7 @@ import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 function Tchat() {
   const { state, setState } = useGlobalState();
   const [messages, setMessages] = React.useState([] as Post[]);
-  const [socketUrl] = React.useState(`ws://localhost:3000/room/websocket?token=${state.token}`);
+  const [socketUrl] = React.useState(`ws://13.68.235.186:8080/room/websocket?token=${state.token}`);
   const { lastMessage } = useWebSocket(socketUrl);
 
   React.useEffect(() => {
@@ -33,15 +33,8 @@ function Tchat() {
         setMessages([...messages.concat(newMsg)]);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastMessage]);
-
-  // const connectionStatus = {
-  //   [ReadyState.CONNECTING]: 'Connecting',
-  //   [ReadyState.OPEN]: 'Open',
-  //   [ReadyState.CLOSING]: 'Closing',
-  //   [ReadyState.CLOSED]: 'Closed',
-  //   [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-  // }[readyState];
 
   React.useEffect(() => {
     (async () => {

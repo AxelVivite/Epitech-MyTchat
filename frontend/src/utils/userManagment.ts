@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Friend } from './globalStateManager/globalStateObjects';
 
-const devUrl = 'http://localhost:3000';
+const devUrl = 'http://13.68.235.186:8080';
 
 export const register = async (email: string, password: string, username: string) => {
   const { data, status } = await axios.post<undefined>(
