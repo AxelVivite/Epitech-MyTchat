@@ -608,18 +608,28 @@ roomRouter.get('/readAll/:roomId', [checkToken, checkUserExists, getRoom], async
 
   const posts = await Promise.all(room.posts.map(async (id) => {
     const post = await Post.findById(id);
-    const { username } = await User.findById(post.user);
 
     return {
       id: post._id,
       user: post.user,
-      username,
       room: post.room,
       content: post.content,
       createdAt: post.createdAt,
       updatedAt: post.updatedAt,
     };
   }));
+
+  const users = new Map(await Promise.all(
+    [...new Set(posts.map(({ user }) => user))].map(async (id) => {
+      const user = await User.findById(id);
+      return [id.toString(), user.username];
+    }),
+  ));
+
+  posts.forEach((post) => {
+    // eslint-disable-next-line no-param-reassign
+    post.username = users.get(post.user.toString());
+  });
 
   res.status(200).json({
     posts,

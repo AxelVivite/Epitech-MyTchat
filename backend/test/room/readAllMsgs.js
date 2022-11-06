@@ -53,4 +53,13 @@ export default () => {
       assert.equal(post1.updatedAt, post2.updatedAt);
     }));
   });
+
+  it('Should get 0 posts if there are none in the room', async () => {
+    const { token } = await rndRegister();
+    const { data: { roomId } } = await createRoom(token);
+
+    const { data: { posts } } = await readAllMsgs(token, roomId);
+
+    assert.equal(posts.length, 0);
+  });
 };
