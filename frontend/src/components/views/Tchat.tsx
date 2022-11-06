@@ -33,15 +33,8 @@ function Tchat() {
         setMessages([...messages.concat(newMsg)]);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastMessage]);
-
-  // const connectionStatus = {
-  //   [ReadyState.CONNECTING]: 'Connecting',
-  //   [ReadyState.OPEN]: 'Open',
-  //   [ReadyState.CLOSING]: 'Closing',
-  //   [ReadyState.CLOSED]: 'Closed',
-  //   [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-  // }[readyState];
 
   React.useEffect(() => {
     (async () => {
