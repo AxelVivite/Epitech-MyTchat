@@ -18,7 +18,7 @@ function Tchat() {
   //   await createRoom('token', 'leTestEstmignon',
   // ['eyJhbGciNzYsImV4cCI6MTY2NjEwMzk3Nn0.ys0wYXdvT6ppHh1qZk8vXqn7rin25PxPR6Zz-AQWjK0']);
   // };
-  const { state } = useGlobalState();
+  const { state, setState } = useGlobalState();
   const [messages, setMessages] = React.useState([] as Post[]);
 
   const onSubmit = () => {
@@ -35,7 +35,17 @@ function Tchat() {
     if (element) {
       element.scrollTop = element.scrollHeight;
     }
-  }, [state.activeRoom, state.token]);
+
+    if (localStorage.getItem('darkTheme') === 'true') {
+      document.body.classList.add('dark-theme');
+      localStorage.setItem('darkTheme', 'true');
+      setState((prev) => ({ ...prev, darkModeIsOn: true }));
+    } else {
+      document.body.classList.remove('dark-theme');
+      localStorage.setItem('darkTheme', 'false');
+      setState((prev) => ({ ...prev, darkModeIsOn: false }));
+    }
+  }, [state.token, state.activeRoom, setState]);
 
   return (
     <PageLayout>
@@ -53,6 +63,7 @@ function Tchat() {
               {
                 !messages ? <div /> : messages.map((value: Post) => (
                   <Message
+                    key={`key-message-${value?.sender?.username}-${value?.messageDate}-${value?.message}`}
                     username={value?.sender?.username as string}
                     datetime={value?.messageDate}
                     message={value?.message}

@@ -6,16 +6,15 @@ body {
     .MuiCard-root {
         background-color: var(--color-card);
         box-shadow: var(--box-shadow);
-
     }
 
     .Mui-focused fieldset {
-        border-color: var(--color-input)  !important;
+        border-color: var(--color-input) !important;
     }
 
     .MuiOutlinedInput-root {
         &:hover fieldset {
-            border-color: var(--color-input)  !important;
+            border-color: var(--color-input) !important;
         }
     }
 
@@ -35,8 +34,15 @@ body {
         box-shadow: var(--box-shadow);
     }
 
-    .MuiMenu-list, .MuiMenu-paper::before {
+    .MuiMenu-list,
+    .MuiMenu-paper::before {
         background-color: var(--color-primary);
+        color: var(--color-font);
+        box-shadow: var(--box-shadow);
+    }
+
+    .MuiAutocomplete-paper {
+        background-color: var(--color-card);
         color: var(--color-font);
         box-shadow: var(--box-shadow);
     }
@@ -47,6 +53,7 @@ body {
 
     .MuiButton-contained {
         background-color: var(--color-secondary);
+        color: var(--color-primary);
     }
 
     .MuiButton-outlined {
@@ -62,5 +69,9 @@ body {
 
     .MuiButtonBase-root .MuiChip-avatar {
         color: #fff;
+    }
+
+    .MuiChip-label, .MuiChip-deleteIcon {
+        color: var(--color-font) !important;
     }
 }

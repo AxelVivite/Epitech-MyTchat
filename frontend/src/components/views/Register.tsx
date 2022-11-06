@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { register } from '../../utils/userManagment';
 
+import logo from '../../assets/logo.png';
 import logoDark from '../../assets/logo-dark.png';
 import Title from '../atoms/typography/Title';
 
@@ -43,12 +44,22 @@ const FormDisplay = function FormDisplay(props: any) {
     navigate('/sign-in');
   };
 
+  React.useEffect(() => {
+    if (localStorage.getItem('darkTheme') === 'true') {
+      document.body.classList.add('dark-theme');
+    }
+  }, []);
+
   return (
     <div>
       <form onSubmit={handleSubmit} style={{ marginLeft: 300, marginRight: 300, marginTop: 200 }}>
         <Card className="col flex--center-align div--centered p--16">
           <Box className="row flex--center mb--24 mt--8">
-            <img src={logoDark} alt="logo" className="width--40 mr--16" />
+            <img
+              src={localStorage.getItem('darkTheme') === 'true' ? logo : logoDark}
+              alt="logo"
+              className="width--40 mr--16"
+            />
             <Title className="my--auto" variant="header">
               MyTchat
             </Title>

@@ -25,10 +25,10 @@ import ModalConfirmation from './ModalConfirmation';
 
 function AvatarMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [darkTheme, setDarkTheme] = React.useState<boolean>(false);
   const [lng, setLng] = React.useState<string>(i18n.language);
   const navigate = useNavigate();
-  const { setState } = useGlobalState();
+  const { state, setState } = useGlobalState();
+  const [darkTheme, setDarkTheme] = React.useState<boolean>(false);
   const open = Boolean(anchorEl);
   const { t } = useTranslation();
 
@@ -44,9 +44,11 @@ function AvatarMenu() {
     if (!darkTheme) {
       document.body.classList.add('dark-theme');
       localStorage.setItem('darkTheme', 'true');
+      setState((prev) => ({ ...prev, darkModeIsOn: true }));
     } else {
       document.body.classList.remove('dark-theme');
-      localStorage.setItem('darkTheme', 'true');
+      localStorage.setItem('darkTheme', 'false');
+      setState((prev) => ({ ...prev, darkModeIsOn: false }));
     }
     setDarkTheme(!darkTheme);
   };
@@ -65,6 +67,10 @@ function AvatarMenu() {
     setState({});
     navigate('/sign-in');
   };
+
+  React.useEffect(() => {
+    setDarkTheme(state.darkModeIsOn !== undefined ? state.darkModeIsOn : false);
+  }, [state.darkModeIsOn]);
 
   return (
     <>

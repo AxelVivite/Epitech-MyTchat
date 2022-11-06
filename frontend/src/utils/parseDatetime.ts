@@ -1,8 +1,9 @@
 const digitToNumber = (str: string) => {
-  if (str.length === 1)
+  if (str.length === 1) {
     return `0${str}`;
+  }
   return str;
-}
+};
 
 export const parseDatetime = (datetime: string) => {
   const dateFmt = new Date(datetime);
