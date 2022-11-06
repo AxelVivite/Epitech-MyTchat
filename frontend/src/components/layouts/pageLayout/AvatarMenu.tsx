@@ -14,14 +14,12 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import LogoutIcon from '@mui/icons-material/Logout';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import TranslateIcon from '@mui/icons-material/Translate';
 
 import { toastifyError, toastifySuccess } from '../../../utils/toastify';
 import Avatar from '../../atoms/Avatar';
 import i18n from '../../../services/translation/i18n';
 import { useGlobalState } from '../../../utils/globalStateManager/globalStateInit';
-import ModalInviteRoom from './ModalInviteRoom';
 import ModalConfirmation from './ModalConfirmation';
 import { makeLeaveRoom } from '../../../utils/roomsManagment';
 
