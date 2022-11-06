@@ -19,7 +19,7 @@ function Tchat() {
   React.useEffect(() => {
     if (lastMessage !== null) {
       const msg = JSON.parse(lastMessage.data);
-      if (msg.type === 'NewPost') {
+      if (msg.type === 'NewPost' && msg.roomId === state.activeRoom) {
         const actRoom: Room | undefined = state.rooms?.filter(
           (room) => room.roomId === state.activeRoom,
         )[0];
