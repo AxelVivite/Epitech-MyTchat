@@ -185,7 +185,6 @@ export const getRooms = async (token: string, userId: string) => {
 
     roomsIds?.forEach(async (value: string) => {
       const room = roomInfo(token, value, userId) as Promise<Room>;
-      console.log(room);
       roomsPromised.push(room);
     });
     return (await Promise.all(roomsPromised));
