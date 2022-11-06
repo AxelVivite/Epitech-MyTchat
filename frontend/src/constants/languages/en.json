@@ -52,5 +52,7 @@
     "page_not_found": "Page not found",
     "come_back": "Come back!",
     "welcome_back": "Welcome back!",
-    "welcome": "Welcome!"
+    "welcome": "Welcome!",
+    "success_leave_room": "You succesfully leave the room",
+    "fail_leave_room": "Error when leave the room. Please try again"
 }

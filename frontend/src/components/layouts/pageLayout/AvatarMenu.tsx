@@ -17,11 +17,13 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import TranslateIcon from '@mui/icons-material/Translate';
 
+import { toastifyError, toastifySuccess } from '../../../utils/toastify';
 import Avatar from '../../atoms/Avatar';
 import i18n from '../../../services/translation/i18n';
 import { useGlobalState } from '../../../utils/globalStateManager/globalStateInit';
 import ModalInviteRoom from './ModalInviteRoom';
 import ModalConfirmation from './ModalConfirmation';
+import { makeLeaveRoom } from '../../../utils/roomsManagment';
 
 function AvatarMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -71,6 +73,28 @@ function AvatarMenu() {
   React.useEffect(() => {
     setDarkTheme(state.darkModeIsOn !== undefined ? state.darkModeIsOn : false);
   }, [state.darkModeIsOn]);
+
+  const leaveRoom = async () => {
+    const roomToLeave = state.activeRoom;
+
+    const roomIsLived = await makeLeaveRoom(roomToLeave as string, state.token as string);
+    if (roomIsLived) {
+      const newState = state;
+      const newRoomList = newState.rooms?.filter((room) => room.roomId !== roomToLeave);
+      let newActiveRoom = '';
+      if (newRoomList !== undefined && newRoomList?.length === 0) {
+        newActiveRoom = newRoomList[0]?.roomId;
+      }
+      newState.rooms = newRoomList;
+      newState.activeRoom = newActiveRoom;
+      setState((prev) => ({ ...prev, ...newState }));
+      handleClose();
+      toastifySuccess(t('success_leave_room'));
+    } else {
+      handleClose();
+      toastifyError(t('fail_leave_room'));
+    }
+  };
 
   return (
     <>
@@ -135,7 +159,7 @@ function AvatarMenu() {
           && (
             <ModalConfirmation
               title={t('confirm_leave_room')}
-              handleConfirmation={() => console.log('leave')}
+              handleConfirmation={() => leaveRoom()}
             >
 
               <MenuItem>

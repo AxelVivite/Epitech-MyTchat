@@ -52,5 +52,7 @@
     "page_not_found": "Page inexistante",
     "come_back": "Reviens!",
     "welcome_back": "Bon retour!",
-    "welcome": "Bienvenue"
+    "welcome": "Bienvenue",
+    "success_leave_room": "Vous avez bien quitter la room",
+    "fail_leave_room": "Erreur en quittant la room, veuillez réessayer"
 }
