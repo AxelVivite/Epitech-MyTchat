@@ -1,6 +1,12 @@
-# Getting Started with Create React App
+# Frontend-JS-Fullstack
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository is part of a school project made for Epitech, for the module JavaScript Full Stack Development. This is the frontend part of the project. You can find the frontend [here](https://gitlab.com/david-tedesco/frontend-js-fullstack).
+
+Our project is a simple chat web app. The backend is made with [React](https://reactjs.org/) is made in Typescript. It uses ESlint with the [eslint-config-airbnb-base configuration](https://www.npmjs.com/package/eslint-config-airbnb-base).
+
+**The project is still early in its development, It's design and features may change significantly in the near future.**
+
+## Usage
 
 ## Available Scripts
 
@@ -39,8 +45,4 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
