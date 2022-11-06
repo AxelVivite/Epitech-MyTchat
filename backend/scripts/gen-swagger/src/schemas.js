@@ -32,6 +32,35 @@ export const Post = {
   },
 };
 
+export const PostReadAll = {
+  type: 'object',
+  required: [
+    'id',
+    'user',
+    'username',
+    'room',
+    'content',
+    'createdAt',
+    'updatedAt',
+  ],
+  properties: {
+    id: MongoId,
+    user: MongoId,
+    username: {
+      type: 'string',
+      format: 'string',
+    },
+    room: MongoId,
+    content: {
+      type: 'string',
+      format: 'string',
+      description: 'Content of the post',
+    },
+    createdAt: Timestamp,
+    updatedAt: Timestamp,
+  },
+};
+
 export const Room = {
   type: 'object',
   required: [

@@ -27,7 +27,7 @@ export default () => {
   describe('room auth', roomAuthTests);
 
   it('Should get all posts in a room', async () => {
-    const { token } = await rndRegister();
+    const { token, username } = await rndRegister();
     const { data: { roomId } } = await createRoom(token);
 
     await Promise.all([...new Array(5)].map(() => postMsg(token, roomId, makeId())));
@@ -41,11 +41,12 @@ export default () => {
       const { data: { post: post1 } } = await readMsg(token, postId);
 
       // Order of posts is not guaranted when so close together
-      const post2 = posts.find((post) => post.id === postId);
+      const post2 = posts.find(({ id }) => id === postId);
       assert.notEqual(post2, undefined);
 
       assert.equal(postId, post2.id);
       assert.equal(post1.user, post2.user);
+      assert.equal(username, post2.username);
       assert.equal(post1.room, post2.room);
       assert.equal(post1.content, post2.content);
       assert.equal(post1.createdAt, post2.createdAt);

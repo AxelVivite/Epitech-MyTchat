@@ -601,17 +601,19 @@ roomRouter.get('/read/:postId', [checkToken, getUser, getPost], async (req, res)
  *                 posts:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Post'
+ *                     $ref: '#/components/schemas/PostReadAll'
  */
 roomRouter.get('/readAll/:roomId', [checkToken, checkUserExists, getRoom], async (req, res) => {
   const { state: { room } } = req;
 
   const posts = await Promise.all(room.posts.map(async (id) => {
     const post = await Post.findById(id);
+    const { username } = await User.findById(post.user);
 
     return {
       id: post._id,
       user: post.user,
+      username,
       room: post.room,
       content: post.content,
       createdAt: post.createdAt,
