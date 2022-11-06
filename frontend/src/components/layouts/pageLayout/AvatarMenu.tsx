@@ -146,17 +146,6 @@ function AvatarMenu() {
       >
         {state.activeRoom
           && (
-            <ModalInviteRoom>
-              <MenuItem>
-                <ListItemIcon>
-                  <PersonAddIcon fontSize="small" />
-                </ListItemIcon>
-                {t('invite_users')}
-              </MenuItem>
-            </ModalInviteRoom>
-          )}
-        {state.activeRoom
-          && (
             <ModalConfirmation
               title={t('confirm_leave_room')}
               handleConfirmation={() => leaveRoom()}
