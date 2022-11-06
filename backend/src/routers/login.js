@@ -177,7 +177,7 @@ loginRouter.get('/username/:userId', [], async (req, res) => {
  *       400:
  *         description: Email or password is missing or has bad format
  *       409:
- *         description: Email is already taken
+ *         description: Email or username is already taken
  *       201:
  *         description: >-
  *           Returns the new user id, a token, and the time it will take for the token to expire
