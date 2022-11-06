@@ -15,8 +15,6 @@ import TextDate from '../atoms/typography/TextDate';
 import Avatar from '../atoms/Avatar';
 import Text from '../atoms/typography/Text';
 
-// here add gsm for the rooms
-
 interface RoomProps {
   name: string,
   date: string,

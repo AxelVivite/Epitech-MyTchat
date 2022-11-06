@@ -11,8 +11,6 @@ import {
 
 import AddIcon from '@mui/icons-material/Add';
 
-// import { getAllUsers } from '../../../utils/userManagment';
-
 import IconButton from '../../atoms/buttons/IconButton';
 import Avatar from '../../atoms/Avatar';
 import Title from '../../atoms/typography/Title';

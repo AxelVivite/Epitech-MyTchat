@@ -24,7 +24,6 @@ function Tchat() {
           (room) => room.roomId === state.activeRoom,
         )[0];
         const newMsgSender = actRoom?.friends?.filter((friend) => friend.userId === msg.userId)[0];
-        // const senderUsername = await getUsername(msg.userId, state.token as string);
         const newMsg: Post = {
           message: msg.content,
           messageDate: msg.createdAt,
