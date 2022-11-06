@@ -20,7 +20,7 @@ const WelcomeBack = function WelcomeBack(): React.ReactElement<unknown, string> 
       <Box style={{ marginBottom: '20vh' }}>
         <Card className="col p--16 width--280 flex--center-align m--auto">
           <p style={{ fontSize: '24px' }} className="mb--16 mt--8">
-            {`\u2B50  ${t('welcome_back')}  \u2B50`}
+            {`\u2B50  ${t('welcome')}  \u2B50`}
           </p>
           <p style={{ fontSize: '32px' }} className="mb--24">
             {state.user?.username}

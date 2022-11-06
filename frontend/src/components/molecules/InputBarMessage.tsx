@@ -50,7 +50,14 @@ const InputBarMessage = function InputBarMessage({
       .catch(() => {
         toastifyError(t('unknown_error'));
       });
+    setFormData('');
   };
+
+  React.useEffect(() => {
+    if (formData && formData[0] === '\n') {
+      setFormData(formData.slice(1));
+    }
+  }, [formData]);
 
   return (
     <div className="row">
@@ -60,7 +67,17 @@ const InputBarMessage = function InputBarMessage({
         maxRows={4}
         placeholder={t('Message')}
         variant="outlined"
-        onChange={(event) => setFormData(event.target.value)}
+        onChange={(event) => {
+          if (event.target.value !== '\n') {
+            setFormData(event.target.value);
+          }
+        }}
+        value={formData}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            handleSubmit();
+          }
+        }}
       />
       <IconButton
         className="input-bar--btn"

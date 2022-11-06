@@ -35,7 +35,9 @@ const Message = function Message({
           <Text variant="name" className="flex-shrink--1">{username}</Text>
           <TextDateTime className="ml--8 my--auto">{parseDatetime(datetime)}</TextDateTime>
         </Box>
-        <Text>{message}</Text>
+        <Text>
+          {message}
+        </Text>
       </Box>
     </Card>
   );

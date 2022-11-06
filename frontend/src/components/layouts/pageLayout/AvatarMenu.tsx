@@ -122,28 +122,34 @@ function AvatarMenu() {
       >
         {state.activeRoom
           && (
-            <>
-              <ModalInviteRoom>
-                <MenuItem>
-                  <ListItemIcon>
-                    <PersonAddIcon fontSize="small" />
-                  </ListItemIcon>
-                  {t('invite_users')}
-                </MenuItem>
-              </ModalInviteRoom>
-              <ModalConfirmation
-                title={t('confirm_leave_room')}
-                handleConfirmation={() => console.log('leave')}
-              >
-                <MenuItem>
-                  <ListItemIcon>
-                    <GroupRemoveIcon fontSize="small" />
-                  </ListItemIcon>
-                  {t('leave_room')}
-                </MenuItem>
-              </ModalConfirmation>
-              <Divider className="mt--8 mb--8" />
-            </>
+            <ModalInviteRoom>
+              <MenuItem>
+                <ListItemIcon>
+                  <PersonAddIcon fontSize="small" />
+                </ListItemIcon>
+                {t('invite_users')}
+              </MenuItem>
+            </ModalInviteRoom>
+          )}
+        {state.activeRoom
+          && (
+            <ModalConfirmation
+              title={t('confirm_leave_room')}
+              handleConfirmation={() => console.log('leave')}
+            >
+
+              <MenuItem>
+                <ListItemIcon>
+                  <GroupRemoveIcon fontSize="small" />
+                </ListItemIcon>
+                {t('leave_room')}
+              </MenuItem>
+            </ModalConfirmation>
+
+          )}
+        {state.activeRoom
+          && (
+            <Divider className="mt--8 mb--8" />
           )}
         <MenuItem onClick={changeLanguage}>
           <ListItemIcon>
