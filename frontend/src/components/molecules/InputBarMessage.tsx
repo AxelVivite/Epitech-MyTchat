@@ -45,7 +45,7 @@ const InputBarMessage = function InputBarMessage({
       };
 
       msgTmp.push(newMsg);
-      setMessages(msgTmp);
+      setMessages([...msgTmp]);
     })
       .catch(() => {
         toastifyError(t('unknown_error'));

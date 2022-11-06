@@ -1,17 +1,47 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 
+import useWebSocket from 'react-use-websocket';
 import PageLayout from '../layouts/pageLayout/PageLayout';
 import WelcomeBack from '../molecules/WelcomeBack';
 import Message from '../molecules/Message';
 import InputMessage from '../molecules/InputBarMessage';
-import { Post } from '../../utils/globalStateManager/globalStateObjects';
+import { Post, Room, Friend } from '../../utils/globalStateManager/globalStateObjects';
 import { getMessages } from '../../utils/roomsManagment';
 import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 
 function Tchat() {
   const { state, setState } = useGlobalState();
   const [messages, setMessages] = React.useState([] as Post[]);
+  const [socketUrl] = React.useState(`ws://localhost:3000/room/websocket?token=${state.token}`);
+  const { lastMessage } = useWebSocket(socketUrl);
+
+  React.useEffect(() => {
+    if (lastMessage !== null) {
+      const msg = JSON.parse(lastMessage.data);
+      if (msg.type === 'NewPost') {
+        const actRoom: Room | undefined = state.rooms?.filter(
+          (room) => room.roomId === state.activeRoom,
+        )[0];
+        const newMsgSender = actRoom?.friends?.filter((friend) => friend.userId === msg.userId)[0];
+        // const senderUsername = await getUsername(msg.userId, state.token as string);
+        const newMsg: Post = {
+          message: msg.content,
+          messageDate: msg.createdAt,
+          sender: newMsgSender as Friend,
+        };
+        setMessages([...messages.concat(newMsg)]);
+      }
+    }
+  }, [lastMessage]);
+
+  // const connectionStatus = {
+  //   [ReadyState.CONNECTING]: 'Connecting',
+  //   [ReadyState.OPEN]: 'Open',
+  //   [ReadyState.CLOSING]: 'Closing',
+  //   [ReadyState.CLOSED]: 'Closed',
+  //   [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+  // }[readyState];
 
   React.useEffect(() => {
     (async () => {

@@ -114,7 +114,7 @@ export const getFriendsList = async (token: string, friendsId: string[], userId:
   if (friendsId.length === 0) { return []; }
   friendsId.forEach(async (value) => {
     if (value !== userId) {
-      const friendName = await getUsername(token, value);
+      const friendName = await getUsername(value, token);
       const friend: Friend = {
         userId: value,
         username: friendName as string,
