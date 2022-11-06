@@ -18,11 +18,6 @@ function Tchat() {
       const messagesHere = await getMessages(state.token as string, state.activeRoom as string);
       setMessages(messagesHere);
     })();
-    const element = document.getElementById('tchat');
-
-    if (element) {
-      element.scrollTop = element.scrollHeight;
-    }
 
     if (localStorage.getItem('darkTheme') === 'true') {
       document.body.classList.add('dark-theme');
@@ -34,6 +29,14 @@ function Tchat() {
       setState((prev) => ({ ...prev, darkModeIsOn: false }));
     }
   }, [state.token, state.activeRoom, setState]);
+
+  React.useEffect(() => {
+    const element = document.getElementById('tchat');
+
+    if (element) {
+      element.scrollTop = element.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <PageLayout>
