@@ -82,7 +82,10 @@ function AvatarMenu() {
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
       >
-        <Avatar name="Axel" className="avatarMenu" />
+        <Avatar
+          name={state.user ? state.user?.username : ''}
+          className="avatarMenu"
+        />
       </IconButton>
       <Menu
         anchorEl={anchorEl}
@@ -117,26 +120,31 @@ function AvatarMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <ModalInviteRoom>
-          <MenuItem>
-            <ListItemIcon>
-              <PersonAddIcon fontSize="small" />
-            </ListItemIcon>
-            {t('invite_users')}
-          </MenuItem>
-        </ModalInviteRoom>
-        <ModalConfirmation
-          title={t('confirm_leave_room')}
-          handleConfirmation={() => console.log('leave')}
-        >
-          <MenuItem>
-            <ListItemIcon>
-              <GroupRemoveIcon fontSize="small" />
-            </ListItemIcon>
-            {t('leave_room')}
-          </MenuItem>
-        </ModalConfirmation>
-        <Divider className="mt--8 mb--8" />
+        {state.activeRoom
+          && (
+            <>
+              <ModalInviteRoom>
+                <MenuItem>
+                  <ListItemIcon>
+                    <PersonAddIcon fontSize="small" />
+                  </ListItemIcon>
+                  {t('invite_users')}
+                </MenuItem>
+              </ModalInviteRoom>
+              <ModalConfirmation
+                title={t('confirm_leave_room')}
+                handleConfirmation={() => console.log('leave')}
+              >
+                <MenuItem>
+                  <ListItemIcon>
+                    <GroupRemoveIcon fontSize="small" />
+                  </ListItemIcon>
+                  {t('leave_room')}
+                </MenuItem>
+              </ModalConfirmation>
+              <Divider className="mt--8 mb--8" />
+            </>
+          )}
         <MenuItem onClick={changeLanguage}>
           <ListItemIcon>
             <TranslateIcon fontSize="small" />

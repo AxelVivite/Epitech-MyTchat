@@ -1,12 +1,13 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 
-import { getMessages } from '../../utils/roomsManagment';
-import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 import PageLayout from '../layouts/pageLayout/PageLayout';
+import WelcomeBack from '../molecules/WelcomeBack';
 import Message from '../molecules/Message';
 import InputMessage from '../molecules/InputBarMessage';
 import { Post } from '../../utils/globalStateManager/globalStateObjects';
+import { getMessages } from '../../utils/roomsManagment';
+import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 
 function Tchat() {
   const { state, setState } = useGlobalState();
@@ -34,14 +35,16 @@ function Tchat() {
     }
   }, [state.token, state.activeRoom, setState]);
 
+  console.log(state);
+
   return (
     <PageLayout>
-      {state.activeRoom
-        && (
-          <Box
-            sx={{ minHeight: 'calc(100vh - 96px)', maxHeight: 'calc(100vh - 96px)' }}
-            className="col"
-          >
+      <Box
+        sx={{ minHeight: 'calc(100vh - 96px)', maxHeight: 'calc(100vh - 96px)' }}
+        className="col"
+      >
+        {state.activeRoom ? (
+          <>
             <Box
               id="tchat"
               sx={{ maxHeight: 'calc(100vh - 96px - 72px)' }}
@@ -62,8 +65,11 @@ function Tchat() {
               messages={messages}
               setMessages={setMessages}
             />
-          </Box>
+          </>
+        ) : (
+          <WelcomeBack />
         )}
+      </Box>
     </PageLayout>
   );
 }
