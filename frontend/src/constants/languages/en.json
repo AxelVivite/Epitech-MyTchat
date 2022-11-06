@@ -38,5 +38,14 @@
     "confirm_leave_room": "Leave this room ?",
     "no": "No",
     "quit": "Quit",
-    "invite": "Invite"
+    "invite": "Invite",
+
+    "bad_request": "Bad request",
+    "invalid_password": "Invalid password",
+    "no_user": "User not found",
+    "user_deleted": "User not found",
+    "account_created": "Account created",
+    "invalid_mail_password_format": "Email or password format is invalid",
+    "mail_username_already_used": "Email or username already in use",
+    "unknown_error": "Unknown error"
 }

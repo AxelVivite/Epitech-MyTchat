@@ -1,6 +1,5 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-// import { Button } from '@mui/material';
 
 import { getMessages } from '../../utils/roomsManagment';
 import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
@@ -8,22 +7,10 @@ import PageLayout from '../layouts/pageLayout/PageLayout';
 import Message from '../molecules/Message';
 import InputMessage from '../molecules/InputBarMessage';
 import { Post } from '../../utils/globalStateManager/globalStateObjects';
-// import { createRoom } from '../../utils/roomsManagment';
 
 function Tchat() {
-  // const [token] = useGlobalState("token");
-  // const [user] = useGlobalState("user");
-
-  // const createRoomTest = async () => {
-  //   await createRoom('token', 'leTestEstmignon',
-  // ['eyJhbGciNzYsImV4cCI6MTY2NjEwMzk3Nn0.ys0wYXdvT6ppHh1qZk8vXqn7rin25PxPR6Zz-AQWjK0']);
-  // };
   const { state, setState } = useGlobalState();
   const [messages, setMessages] = React.useState([] as Post[]);
-
-  const onSubmit = () => {
-    console.log('ICH');
-  };
 
   React.useEffect(() => {
     (async () => {
@@ -72,7 +59,6 @@ function Tchat() {
               }
             </Box>
             <InputMessage
-              onSubmit={onSubmit}
               messages={messages}
               setMessages={setMessages}
             />

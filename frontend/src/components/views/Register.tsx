@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
+import { AxiosError } from 'axios';
 
 import * as yup from 'yup';
 import { withFormik } from 'formik';
@@ -10,7 +12,9 @@ import {
   TextField,
   Button,
 } from '@mui/material';
+
 import { register } from '../../utils/userManagment';
+import { toastifySuccess, toastifyError } from '../../utils/toastify';
 
 import logo from '../../assets/logo.png';
 import logoDark from '../../assets/logo-dark.png';
@@ -52,7 +56,7 @@ const FormDisplay = function FormDisplay(props: any) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} style={{ marginLeft: 300, marginRight: 300, marginTop: 200 }}>
+      <form onSubmit={handleSubmit}>
         <Card className="col flex--center-align div--centered p--16">
           <Box className="row flex--center mb--24 mt--8">
             <img
@@ -174,10 +178,21 @@ const Form = withFormik<InputForm, InputForm>({
         const res = await
         register(values.email as string, values.password as string, values.username as string);
         if (res?.status === 201) {
-          console.log('Youpi');
+          toastifySuccess(i18n.t('account_created'));
         }
-      } catch (err) {
-        throw Error();
+      } catch (err: unknown) {
+        const axiosErr = err as AxiosError;
+        if (axiosErr && axiosErr.response) {
+          const { status } = axiosErr.response;
+
+          if (status === 400) {
+            toastifyError(i18n.t('invalid_mail_password_format'));
+          } else if (status === 409) {
+            toastifyError(i18n.t('mail_username_already_used'));
+          } else {
+            toastifyError(i18n.t('unknown_error'));
+          }
+        }
       }
       setSubmitting(false);
     }, 100);

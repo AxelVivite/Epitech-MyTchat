@@ -54,7 +54,7 @@ const InviteRoom = function InviteRoom({
     }
   };
 
-  const handleDeleteFriend = (event: any, item: usersInterface) => {
+  const handleDeleteFriend = (item: usersInterface) => {
     const index = newFriends.findIndex((object) => object.username === item.username);
 
     if (index > -1) {
@@ -76,7 +76,9 @@ const InviteRoom = function InviteRoom({
         autoHighlight
         onChange={(_, value) => value && setNewFriend(value)}
         getOptionLabel={(option) => option.username}
-        isOptionEqualToValue={(option: any, value: any) => option.username === value.username}
+        isOptionEqualToValue={
+          (option: usersInterface, value: usersInterface) => option.username === value.username
+        }
         renderOption={(props, option) => (
           // eslint-disable-next-line react/jsx-props-no-spreading
           <Box component="li" className="p--8" {...props}>
@@ -117,7 +119,7 @@ const InviteRoom = function InviteRoom({
               avatar={<Avatar name={item.username} className="" />}
               label={item.username}
               variant="outlined"
-              onDelete={(event) => handleDeleteFriend(event, item)}
+              onDelete={() => handleDeleteFriend(item)}
               size="small"
             />
           ))

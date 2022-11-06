@@ -51,12 +51,12 @@ body {
         text-transform: none;
     }
 
-    .MuiButton-contained {
+    .MuiButton-contained, .MuiButton-contained:hover {
         background-color: var(--color-secondary);
         color: var(--color-primary);
     }
 
-    .MuiButton-outlined {
+    .MuiButton-outlined, .MuiButton-outlined:hover {
         border-color: var(--color-secondary);
         color: var(--color-secondary);
     }

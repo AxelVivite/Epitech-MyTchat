@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 
 import {
   Box,
@@ -20,6 +21,7 @@ import Title from '../atoms/typography/Title';
 
 import { login } from '../../utils/userManagment';
 import { getRooms } from '../../utils/roomsManagment';
+import { toastifyError } from '../../utils/toastify';
 
 import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 
@@ -61,8 +63,24 @@ const Login = function Login(): React.ReactElement<unknown, string> | null {
         await setupGSM(res, username);
         navigate('/');
       }
-    } catch (err) {
-      throw new Error();
+    } catch (err: unknown) {
+      const axiosErr = err as AxiosError;
+
+      if (axiosErr && axiosErr.response) {
+        const { status } = axiosErr.response;
+
+        if (status === 400) {
+          toastifyError(t('bad_request'));
+        } else if (status === 401) {
+          toastifyError(t('invalid_password'));
+        } else if (status === 404) {
+          toastifyError(t('no_user'));
+        } else if (status === 410) {
+          toastifyError(t('user_deleted'));
+        } else {
+          toastifyError(t('unknown_error'));
+        }
+      }
     }
   };
 

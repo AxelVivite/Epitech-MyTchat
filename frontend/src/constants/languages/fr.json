@@ -38,5 +38,14 @@
     "confirm_leave_room": "Quitter le salon ?",
     "no": "Non",
     "quit": "Quitter",
-    "invite": "Inviter"
+    "invite": "Inviter",
+
+    "bad_request": "Mauvaise requête",
+    "invalid_password": "Mot de passe invalide",
+    "no_user": "Utilisateur inexistant",
+    "user_deleted": "Utilisateur inexistant",
+    "account_created": "Compte créé",
+    "invalid_mail_password_format": "Format du mail ou du mot de passe invalide",
+    "mail_username_already_used": "Mail ou nom d'utilisateur déjà utilisé",
+    "unknown_error": "Erreur inconnue"
 }

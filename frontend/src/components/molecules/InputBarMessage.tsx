@@ -4,21 +4,19 @@ import { useTranslation } from 'react-i18next';
 import TextField from '@mui/material/TextField';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
+import IconButton from '../atoms/buttons/IconButton';
+
 import { sendMessage } from '../../utils/roomsManagment';
 import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
-import IconButton from '../atoms/buttons/IconButton';
 import { Post } from '../../utils/globalStateManager/globalStateObjects';
+import { toastifyError } from '../../utils/toastify';
 
 interface InputBarMessageProps {
-  onSubmit: () => void | undefined,
   messages: Post[],
   setMessages: React.Dispatch<React.SetStateAction<Post[]>>,
-
 }
 
 const InputBarMessage = function InputBarMessage({
-  // eslint-disable-next-line no-unused-vars
-  onSubmit,
   messages,
   setMessages,
 }: InputBarMessageProps) {
@@ -49,8 +47,8 @@ const InputBarMessage = function InputBarMessage({
       msgTmp.push(newMsg);
       setMessages(msgTmp);
     })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
+        toastifyError(t('unknown_error'));
       });
   };
 

@@ -77,7 +77,6 @@ const AddRoom = function AddRoom({
       setState((prev) => ({ ...prev, ...newState }));
       handleClose();
     }
-    // here add a way to tell the user that the room creation had fail
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -90,7 +89,7 @@ const AddRoom = function AddRoom({
     }
   };
 
-  const handleDeleteFriend = (event: any, item: usersInterface) => {
+  const handleDeleteFriend = (item: usersInterface) => {
     const index = newFriends.findIndex((object) => object.username === item.username);
 
     if (index > -1) {
@@ -121,8 +120,11 @@ const AddRoom = function AddRoom({
             autoHighlight
             onChange={(_, value) => value && setNewFriend(value)}
             getOptionLabel={(option) => option.username}
-            isOptionEqualToValue={(option: any, value: any) => option.username === value.username}
+            isOptionEqualToValue={
+              (option: usersInterface, value: usersInterface) => option.username === value.username
+            }
             renderOption={(props, option) => (
+            // Mui issue
             // eslint-disable-next-line react/jsx-props-no-spreading
               <Box component="li" className="p--8" {...props}>
                 <Avatar name={option.username} className="mr--16 width--32 height--32" />
@@ -135,6 +137,7 @@ const AddRoom = function AddRoom({
                 onSubmit={(event) => handleSubmit(event)}
               >
                 <TextField
+                // Mui issue
                 // eslint-disable-next-line react/jsx-props-no-spreading
                   {...params}
                   classes={{ root: 'mb--16 width--224' }}
@@ -161,7 +164,7 @@ const AddRoom = function AddRoom({
                 avatar={<Avatar name={item.username} className="" />}
                 label={item.username}
                 variant="outlined"
-                onDelete={(event) => handleDeleteFriend(event, item)}
+                onDelete={() => handleDeleteFriend(item)}
                 size="small"
               />
             ))}

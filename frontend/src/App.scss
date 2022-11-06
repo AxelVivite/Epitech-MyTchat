@@ -19,9 +19,19 @@
 @import "styles/mui.styles.scss";
 
 
+html, body {
+  height: 100%;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+}
+
 #root {
     background-color: var(--color-background);
-    height: 100vh;
+    top: 0;
+    left: 0;
+    height: 100%;
 
     input:-webkit-autofill,
     input:-webkit-autofill:focus {

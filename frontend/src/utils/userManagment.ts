@@ -4,41 +4,26 @@ import { Friend } from './globalStateManager/globalStateObjects';
 const devUrl = 'http://localhost:3000';
 
 export const register = async (email: string, password: string, username: string) => {
-  try {
-    const { data, status } = await axios.post<undefined>(
-      `${devUrl}/login/register`,
-      { email, password, username },
-    );
-    return { data, status };
-  } catch (err) {
-    return null;
-  }
+  const { data, status } = await axios.post<undefined>(
+    `${devUrl}/login/register`,
+    { email, password, username },
+  );
+  return { data, status };
 };
 
-// const ERRORS_REGISTER = new Map([
-//   ['BadEmail', "Mauvais format d'email. Veuillez le modifier et recommencer"],
-//   ['BadPassword', 'Mauvais format de mot de passe. Veuillez le modifier et recommencer'],
-//   ['EmailTaken', 'Cet adresse email est déjà utiliser.
-// Veuillez en utiliser une autre et recommencer'],
-// ]);
-
 export const login = async (email: string, password: string) => {
-  try {
-    const { data, status } = await axios.get<object>(
-      `${devUrl}/login/signin/${email}`,
-      {
-        headers: {
-          Authorization: `Basic ${password}`,
-        },
+  const { data, status } = await axios.get<object>(
+    `${devUrl}/login/signin/${email}`,
+    {
+      headers: {
+        Authorization: `Basic ${password}`,
       },
-    );
-    if (status === 200) {
-      return { data, status };
-    }
+    },
+  );
+  if (status === 200) {
     return { data, status };
-  } catch (err) {
-    return null;
   }
+  return { data, status };
 };
 
 interface getUsernameInterface {

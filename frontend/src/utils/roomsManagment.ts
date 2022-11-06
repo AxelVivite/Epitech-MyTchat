@@ -146,46 +146,43 @@ export const sendMessage = async (token: string, message: string, roomId: string
 export const getMessages = async (token: string, roomId: string) => {
   const posts: Post[] = [];
 
-  try {
-    const postsId = await getPosts(token, roomId);
+  const postsId = await getPosts(token, roomId);
 
-    for (let i = 0; postsId && postsId[i]; i++) {
-      const value = postsId[i];
-      const { data, status } = await axios.get<PostInfo>(
-        `${devUrl}/room/read/${value}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+  for (let i = 0; postsId && postsId[i]; i += 1) {
+    const value = postsId[i];
+    const { data, status } = await axios.get<PostInfo>(
+      `${devUrl}/room/read/${value}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      },
+    );
 
-      if (status === 200) {
-        const username = await getUsername(data.post.user, token);
-        const postTmp: Post = {
-          sender: {
-            username: username as string,
-            userId: data.post.user,
-          },
-          message: data.post.content,
-          messageDate: data.post.createdAt,
-        };
-        posts.push(postTmp);
-      } else {
-        const postTmpError: Post = {
-          sender: {
-            username: 'error',
-            userId: 'error',
-          },
-          message: 'Error',
-          messageDate: '',
-        };
-        posts.push(postTmpError);
-      }
+    if (status === 200) {
+      const username = await getUsername(data.post.user, token);
+      const postTmp: Post = {
+        sender: {
+          username: username as string,
+          userId: data.post.user,
+        },
+        message: data.post.content,
+        messageDate: data.post.createdAt,
+      };
+      posts.push(postTmp);
+    } else {
+      const postTmpError: Post = {
+        sender: {
+          username: 'error',
+          userId: 'error',
+        },
+        message: 'Error',
+        messageDate: '',
+      };
+      posts.push(postTmpError);
     }
-  } catch (err) {
-    console.error(err);
   }
+
   return posts;
 };
 

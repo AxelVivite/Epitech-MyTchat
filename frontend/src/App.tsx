@@ -1,4 +1,5 @@
 import React from 'react';
+import { ToastContainer } from 'react-toastify';
 
 import {
   BrowserRouter as Router,
@@ -11,12 +12,12 @@ import Login from './components/views/Login';
 import PageNotFound from './components/views/PageNotFound';
 import Register from './components/views/Register';
 
+import 'react-toastify/dist/ReactToastify.min.css';
 import './App.scss';
 
 function App() {
   return (
     <div className="App">
-      <p />
       <Router>
         <Routes>
           <Route path="/sign-in" element={<Login />} />
@@ -24,6 +25,7 @@ function App() {
           <Route path="/sign-up" element={<Register />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
+        <ToastContainer />
       </Router>
     </div>
   );
