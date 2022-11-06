@@ -13,7 +13,7 @@ import { useGlobalState } from '../../utils/globalStateManager/globalStateInit';
 function Tchat() {
   const { state, setState } = useGlobalState();
   const [messages, setMessages] = React.useState([] as Post[]);
-  const [socketUrl] = React.useState(`ws://localhost:3000/room/websocket?token=${state.token}`);
+  const [socketUrl] = React.useState(`ws://13.68.235.186:/room/websocket?token=${state.token}`);
   const { lastMessage } = useWebSocket(socketUrl);
 
   React.useEffect(() => {
