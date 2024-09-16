@@ -1,0 +1,40 @@
+//BASICS
+@import "styles/theme.styles.scss";
+@import "styles/basics.styles.scss";
+
+//ATOMS
+@import "styles/button.styles.scss";
+@import "styles/typography.styles.scss";
+
+//LAYOUTS
+
+//MOLECULES
+@import "styles/inputBarMessage.styles.scss";
+@import "styles/modal.styles.scss";
+
+//VIEWS
+@import "styles/tchat.styles.scss";
+
+//MUI STYLING
+@import "styles/mui.styles.scss";
+
+
+html, body {
+  height: 100%;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+    background-color: var(--color-background);
+    top: 0;
+    left: 0;
+    height: 100%;
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:focus {
+      transition: background-color 600000s 0s, color 600000s 0s;
+    }
+}

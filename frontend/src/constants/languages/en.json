@@ -1,0 +1,58 @@
+{
+    "nav-test": "Navigation test",
+
+    "rooms": "Rooms",
+
+    "new_room": "New room",
+    "room_name": "Room name",
+    "add_user": "Add a user",
+    "create": "Create",
+
+    "message": "Message",
+
+    "invite_users": "Invite users",
+    "leave_room": "Leave the room",
+    "light_mode": "Light mode",
+    "dark_mode": "Dark mode",
+    "logout": "Logout",
+
+    "username": "Username",
+    "password": "Password",
+    "sign_up": "Sign up",
+    "sign_in": "Sign in",
+    "email": "Email",
+    "confirm_password": "Confirm the password",
+
+    "delete": "Delete",
+    "register": "Register",
+    "invalid_email_format": "Invalid email format",
+    "email_required": "Email required",
+    "username_required": "Username required",
+    "password_required": "Password required",
+    "invalid_password_format": "Min. 7 characters, 1 capital letter and 1 digit",
+    "password_does_not_match": "The passwords do not match",
+    "confirm_password_required": "You have to confirm the password",
+    "any_message_historic": "*No message*",
+    "messages_loading": "Messages are loading...",
+    "invite_room": "Invite users in the room",
+    "confirm_leave_room": "Leave this room ?",
+    "no": "No",
+    "quit": "Quit",
+    "invite": "Invite",
+
+    "bad_request": "Bad request",
+    "invalid_password": "Invalid password",
+    "no_user": "User not found",
+    "user_deleted": "User not found",
+    "account_created": "Account created",
+    "invalid_mail_password_format": "Email or password format is invalid",
+    "mail_username_already_used": "Email or username already in use",
+    "unknown_error": "Unknown error",
+
+    "page_not_found": "Page not found",
+    "come_back": "Come back!",
+    "welcome_back": "Welcome back!",
+    "welcome": "Welcome!",
+    "success_leave_room": "You successfully left the room",
+    "fail_leave_room": "Error when leaving the room. Please try again"
+}

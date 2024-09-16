@@ -1,0 +1,77 @@
+body {
+    .MuiSvgIcon-root {
+        color: var(--color-font);
+    }
+
+    .MuiCard-root {
+        background-color: var(--color-card);
+        box-shadow: var(--box-shadow);
+    }
+
+    .Mui-focused fieldset {
+        border-color: var(--color-input) !important;
+    }
+
+    .MuiOutlinedInput-root {
+        &:hover fieldset {
+            border-color: var(--color-input) !important;
+        }
+    }
+
+    .MuiInputBase-input {
+        color: var(--color-font);
+    }
+
+    .MuiAppBar-colorPrimary {
+        border-radius: 0 0 20px 20px;
+        background-color: var(--color-primary);
+        box-shadow: var(--box-shadow);
+    }
+
+    .MuiDrawer-paper {
+        background-color: var(--color-primary);
+        border: none;
+        box-shadow: var(--box-shadow);
+    }
+
+    .MuiMenu-list,
+    .MuiMenu-paper::before {
+        background-color: var(--color-primary);
+        color: var(--color-font);
+        box-shadow: var(--box-shadow);
+    }
+
+    .MuiAutocomplete-paper {
+        background-color: var(--color-card);
+        color: var(--color-font);
+        box-shadow: var(--box-shadow);
+    }
+
+    .MuiButtonBase-root {
+        text-transform: none;
+    }
+
+    .MuiButton-contained, .MuiButton-contained:hover {
+        background-color: var(--color-secondary);
+        color: var(--color-primary);
+    }
+
+    .MuiButton-outlined, .MuiButton-outlined:hover {
+        border-color: var(--color-secondary);
+        color: var(--color-secondary);
+    }
+
+    .MuiFormHelperText-root {
+        margin: 0;
+        position: absolute;
+        top: 55px;
+    }
+
+    .MuiButtonBase-root .MuiChip-avatar {
+        color: #fff;
+    }
+
+    .MuiChip-label, .MuiChip-deleteIcon {
+        color: var(--color-font) !important;
+    }
+}
